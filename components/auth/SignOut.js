@@ -1,6 +1,8 @@
+import { LogOut } from "lucide-react";
 import { signOut } from "../../auth.js";
+import { Button } from "../ui/button.jsx";
 
-export function SignOut() {
+export default function SignOut({ isFull }) {
   return (
     <form
       action={async () => {
@@ -8,7 +10,9 @@ export function SignOut() {
         await signOut();
       }}
     >
-      <button type="submit">Sign Out</button>
+      <Button variant="outline" type="submit" className={isFull && "w-full"}>
+        Sign Out <LogOut className="ml-2 text-xl" />
+      </Button>
     </form>
   );
 }

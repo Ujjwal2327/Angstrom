@@ -15,14 +15,12 @@ datasource db {
 
 model User {
   id             Int             @id @default(autoincrement())
-  authProviderId String          @unique
   username       String          @unique
   email          String          @unique
-  password       String
-  firstname      String
+  firstname      String?
   lastname       String?
-  about          String?
   pic            String?
+  about          String?
   codingProfiles CodingProfile[]
   socialProfiles SocialProfile[]
   projects       Project[]

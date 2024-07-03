@@ -1,15 +1,13 @@
+import { getUserByEmail } from "@/action/user";
 import { auth } from "@/auth";
-import { GoogleSignIn } from "@/components/auth/GoogleSignIn";
-import { SignOut } from "@/components/auth/SignOut";
+import { permanentRedirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth();
-
-  return (
-    <>
-      home
-      {!session && <GoogleSignIn />}
-      {session && <SignOut />}
-    </>
-  );
+  if (session?.user?.email) {
+    const user = await getUserByEmail(session.user.email);
+    // console.log("USER in Home: ", user);
+    if (!user) permanentRedirect(`/register`);
+  }
+  return <></>;
 }

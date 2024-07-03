@@ -1,6 +1,8 @@
 import { signIn } from "@/auth";
+import { Button } from "../ui/button";
+import { FaGoogle } from "react-icons/fa";
 
-export function GoogleSignIn() {
+export default function GoogleSignIn({ isFull }) {
   return (
     <form
       action={async () => {
@@ -8,7 +10,10 @@ export function GoogleSignIn() {
         await signIn("google");
       }}
     >
-      <button type="submit">Signin with Google</button>
+      <Button variant="outline" type="submit" className={isFull && "w-full"}>
+        Signin with Google
+        <FaGoogle className="ml-2 text-xl" />
+      </Button>
     </form>
   );
 }
