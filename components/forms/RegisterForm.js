@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-// Define the Zod schema
 const FormSchema = z.object({
   username: z
     .string()
@@ -55,7 +54,7 @@ export default function InputForm({ session }) {
       if (data.user) {
         router.push("/");
         toast.success("User created successfully");
-      } else throw new Error(data.error || "Failed to create user");
+      } else throw new Error(data.error);
     } catch (error) {
       console.log("Error submitting form:", error.message);
       toast.error(error.message);

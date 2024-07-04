@@ -15,3 +15,15 @@ export async function getUserByEmail(email) {
     return user;
   }
 }
+
+export async function getAllUsers() {
+  const prisma = connectDB();
+  let users = [];
+  try {
+    users = await prisma.user.findMany();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return users;
+  }
+}
