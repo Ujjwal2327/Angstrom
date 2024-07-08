@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useState } from "react";
+import Spinner from "../Spinner";
 
 const FormSchema = z.object({
   username: z
@@ -27,6 +29,7 @@ const FormSchema = z.object({
 });
 
 export default function InputForm({ session }) {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm({
@@ -42,6 +45,7 @@ export default function InputForm({ session }) {
     formdata = { ...formdata, email, firstname, lastname, pic };
 
     try {
+      setLoading(true);
       const response = await fetch("/api/user", {
         method: "POST",
         headers: {
@@ -58,6 +62,8 @@ export default function InputForm({ session }) {
     } catch (error) {
       console.log("Error submitting form:", error.message);
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -80,7 +86,15 @@ export default function InputForm({ session }) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={loading} className="w-full font-bold">
+          {loading ? (
+            <>
+              Loading <Spinner className="size-4 ml-2" />
+            </>
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </form>
     </Form>
   );

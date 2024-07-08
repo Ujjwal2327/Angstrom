@@ -29,7 +29,7 @@ export default function Navbar({ session }) {
     };
     if (session?.user?.email && !user) getUser(session.user.email);
     else if (!session) setUser(null);
-    console.log("in navbar: ", { username: user?.username });
+    // console.log("in navbar: ", { username: user?.username });
   }, [session, router, user, setUser]);
   return (
     <div>
@@ -39,7 +39,7 @@ export default function Navbar({ session }) {
           <div className="grid place-items-center">
             <div className="flex justify-center items-center gap-x-3 mb-4">
               <span className="font-bold text-xl">Angstrom</span>
-              <ModeToggle />
+              {/* <ModeToggle /> */}
             </div>
 
             <TopMenuItemsList />

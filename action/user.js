@@ -8,6 +8,11 @@ export async function getUserByEmail(email) {
       where: {
         email,
       },
+      include: {
+        projects: true,
+        education: true,
+        experience: true,
+      },
     });
   } catch (error) {
     console.log(error);
