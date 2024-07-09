@@ -92,7 +92,7 @@ export default function InputForm({ session }) {
               Loading <Spinner className="size-4 ml-2" />
             </>
           ) : (
-            "Submit"
+            "Register"
           )}
         </Button>
       </form>

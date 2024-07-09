@@ -16,6 +16,9 @@ export default async function UserPage({ params }) {
           </Link>
         </div>
       )}
+      <Link href={`/portfolio/${params.username}`} className="ml-3">
+        <Button variant="outline">Portfolio</Button>
+      </Link>
     </div>
   );
 }

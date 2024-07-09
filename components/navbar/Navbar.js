@@ -1,6 +1,11 @@
 "use client";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { ModeToggle } from "../ModeToggle";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+// import { ModeToggle } from "../ModeToggle";
 import TopMenuItemsList from "./TopMenuItemsList";
 import BottomMenuItemsList from "./BottomMenuIntemsList";
 import { useRouter } from "next/navigation";
@@ -8,8 +13,9 @@ import { useEffect } from "react";
 import useStore from "@/stores/useStore";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { LogOut } from "lucide-react";
+import { LogOut, UserPlus } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Navbar({ session }) {
   const router = useRouter();
@@ -21,7 +27,7 @@ export default function Navbar({ session }) {
         const data = await response.json();
         if (data.user) setUser(data.user);
         else if (data.error) throw new Error(data.error);
-        else router.push("/register");
+        // else router.push("/register");
       } catch (error) {
         console.log("Error in fetching user:", error.message);
         toast.error(error.message);
@@ -29,7 +35,6 @@ export default function Navbar({ session }) {
     };
     if (session?.user?.email && !user) getUser(session.user.email);
     else if (!session) setUser(null);
-    // console.log("in navbar: ", { username: user?.username });
   }, [session, router, user, setUser]);
   return (
     <div>
@@ -45,32 +50,36 @@ export default function Navbar({ session }) {
             <TopMenuItemsList />
 
             <div className="absolute bottom-10 w-5/6 justify-center items-center">
-              {user ? (
+              {session ? (
                 <>
-                  <BottomMenuItemsList />
-                  <Button
-                    onClick={() => {
-                      router.push("sign-out");
-                    }}
-                    variant="outline"
-                    type="submit"
-                    className="w-full"
-                  >
-                    Sign Out <LogOut className="ml-2 text-xl" />
-                  </Button>
+                  {user ? (
+                    <BottomMenuItemsList />
+                  ) : (
+                    <SheetClose asChild>
+                      <Link href="/register" className="w-full">
+                        <Button className="w-full">
+                          Register <UserPlus className="ml-2 text-xl" />
+                        </Button>
+                      </Link>
+                    </SheetClose>
+                  )}
+                  <SheetClose asChild>
+                    <Link href="/sign-out" className="w-full">
+                      <Button variant="ghost" className="w-full">
+                        Sign Out <LogOut className="ml-2 text-xl" />
+                      </Button>
+                    </Link>
+                  </SheetClose>
                 </>
               ) : (
-                <Button
-                  onClick={() => {
-                    router.push("sign-in");
-                  }}
-                  variant="outline"
-                  type="submit"
-                  className="w-full"
-                >
-                  Signin with Google
-                  <FaGoogle className="ml-2 text-xl" />
-                </Button>
+                <SheetClose asChild>
+                  <Link href="/sign-in" className="w-full">
+                    <Button variant="ghost" className="w-full">
+                      Signin with Google
+                      <FaGoogle className="ml-2 text-xl" />
+                    </Button>
+                  </Link>
+                </SheetClose>
               )}
             </div>
           </div>
