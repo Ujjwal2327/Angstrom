@@ -32,3 +32,24 @@ export async function getAllUsers() {
     return users;
   }
 }
+
+export async function getUserByUsername(username) {
+  const prisma = connectDB();
+  let user;
+  try {
+    user = await prisma.user.findUnique({
+      where: {
+        username,
+      },
+      include: {
+        projects: true,
+        education: true,
+        experience: true,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    return user;
+  }
+}

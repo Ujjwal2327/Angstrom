@@ -80,34 +80,16 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
-/* Customize scrollbar track */
-*::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-  /* Light gray background */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #888888b0 #121B2B;
 }
 
-/* Customize scrollbar thumb */
-*::-webkit-scrollbar-thumb {
-  background-color: #888;
-  /* Dark gray thumb */
-  border-radius: 5px;
-  /* Rounded corners */
-}
-
-/* Hover state for scrollbar thumb */
-*::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-  /* Darker color on hover */
-}
-
-/* Optional: Adjust scrollbar width and height */
-*::-webkit-scrollbar-thumb {
-  width: 10px;
-  /* Width of the thumb */
-  height: 50px;
-  /* Height of the thumb */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
 }
 
 /* spinner class */

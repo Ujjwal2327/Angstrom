@@ -128,8 +128,19 @@ async function updateUser(data) {
         lastname: data.lastname,
         pic: data.pic,
         about: data.about,
+        achievements: data.achievements,
         profiles: data.profiles,
         skills: { set: data.skills },
+        experience: {
+          deleteMany: {},
+          create: data.experience.map((exp) => ({
+            company: exp.company,
+            position: exp.position,
+            start: exp.start,
+            end: exp.end,
+            about: exp.about,
+          })),
+        },
         projects: {
           deleteMany: {},
           create: data.projects.map((project) => ({
@@ -149,16 +160,6 @@ async function updateUser(data) {
             score: edu.score,
             start: edu.start,
             end: edu.end,
-          })),
-        },
-        experience: {
-          deleteMany: {},
-          create: data.experience.map((exp) => ({
-            company: exp.company,
-            position: exp.position,
-            start: exp.start,
-            end: exp.end,
-            about: exp.about,
           })),
         },
       },

@@ -25,15 +25,19 @@ import { RotateCcw, Trash } from "lucide-react";
 import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 import Spinner from "../Spinner";
+import dynamic from "next/dynamic";
+const Tiptap = dynamic(() => import("@/components/Tiptap"), {
+  ssr: false,
+});
 
 // Define form schema
 const projectSchema = z
   .object({
-    name: z.string().min(1, { message: "Project name is required" }),
-    code_url: z.string().url({ message: "Invalid URL" }),
-    live_url: z.string().optional(),
+    name: z.string().min(1, { message: "Project name is required" }).trim(),
+    code_url: z.string().url({ message: "Invalid URL" }).trim(),
+    live_url: z.string().trim().optional(),
     skills: z
-      .array(z.string())
+      .array(z.string().trim())
       .refine(
         (skills) => skills.filter((skill) => skill.trim() !== "").length > 0,
         {
@@ -53,12 +57,12 @@ const projectSchema = z
 
 const educationSchema = z
   .object({
-    college: z.string().min(1, { message: "College name is required" }),
-    degree: z.string().min(1, { message: "Degree is required" }),
-    specialization: z.string().optional(),
-    score: z.string().optional(),
-    start: z.string().min(1, { message: "Start date is required" }),
-    end: z.string().optional(),
+    college: z.string().min(1, { message: "College name is required" }).trim(),
+    degree: z.string().min(1, { message: "Degree is required" }).trim(),
+    specialization: z.string().trim().optional(),
+    score: z.string().trim().optional(),
+    start: z.string().min(1, { message: "Start date is required" }).trim(),
+    end: z.string().trim().optional(),
   })
   .transform((data) => ({
     ...data,
@@ -67,11 +71,11 @@ const educationSchema = z
 
 const experienceSchema = z
   .object({
-    company: z.string().min(1, { message: "Company name is required" }),
-    position: z.string().min(1, { message: "Position is required" }),
-    start: z.string().min(1, { message: "Start date is required" }),
-    end: z.string().optional(),
-    about: z.string().min(1, { message: "Description is required" }),
+    company: z.string().min(1, { message: "Company name is required" }).trim(),
+    position: z.string().min(1, { message: "Position is required" }).trim(),
+    start: z.string().min(1, { message: "Start date is required" }).trim(),
+    end: z.string().trim().optional(),
+    about: z.string().min(1, { message: "Description is required" }).trim(),
   })
   .transform((data) => ({
     ...data,
@@ -82,19 +86,30 @@ const formSchema = z.object({
   username: z
     .string()
     .min(2, { message: "Username must be at least 2 characters." })
+    .trim()
     .refine((username) => !/\s/.test(username), {
       message: "Username must not contain spaces.",
     })
     .transform((username) => username.toLowerCase()),
-  email: z.string().email({ message: "Invalid email" }),
-  firstname: z.string().optional(),
-  lastname: z.string().optional(),
-  pic: z.string().url().optional(),
-  about: z.string().optional(),
+  email: z.string().email({ message: "Invalid email" }).trim(),
+  firstname: z.string().trim().optional(),
+  lastname: z.string().trim().optional(),
+  pic: z.string().url().trim().optional(),
+  about: z.string().trim().optional(),
+  achievements: z.string().trim().optional(),
   skills: z.array(
-    z.string().min(1, { message: "Project must have at least one skill" })
+    z
+      .string()
+      .min(1, { message: "Project must have at least one skill" })
+      .trim()
   ),
-  profiles: z.record(z.string(), z.string().optional()),
+  profiles: z
+    .record(z.string().trim(), z.string().trim().optional())
+    .transform((profiles) => {
+      return Object.fromEntries(
+        Object.entries(profiles).filter(([key, value]) => value !== "")
+      );
+    }),
   projects: z.array(projectSchema),
   education: z.array(educationSchema),
   experience: z.array(experienceSchema),
@@ -113,7 +128,8 @@ export default function ProfileForm({ user }) {
       lastname: user.lastname || "",
       pic: user.pic || "",
       about: user.about || "",
-      skills: user?.skills || [],
+      achievements: user.achievements || "",
+      skills: user.skills || [],
       profiles: Object.keys(profiles).reduce((acc, p) => {
         if (user.profiles?.[p]) acc[p] = user.profiles[p];
         return acc;
@@ -146,7 +162,7 @@ export default function ProfileForm({ user }) {
     },
   });
 
-  const { control, handleSubmit, watch, setValue, getValues } = form;
+  const { control, handleSubmit, watch, setValue } = form;
   const {
     fields: skillsFields,
     append: appendSkill,
@@ -214,6 +230,9 @@ export default function ProfileForm({ user }) {
         <BasicInfoSection control={control} user={user} />
         <Separator />
 
+        <AchievementsSection control={control} />
+        <Separator />
+
         <ProfilesSection control={control} />
         <Separator />
 
@@ -253,7 +272,9 @@ export default function ProfileForm({ user }) {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full font-bold my-10"
+          className={`w-full font-bold my-10 ${
+            loading && "cursor-not-allowed"
+          }`}
         >
           {loading ? (
             <>
@@ -308,7 +329,13 @@ function BasicInfoSection({ control, user }) {
               <FormItem>
                 <FormLabel>About</FormLabel>
                 <FormControl>
-                  <Textarea {...field} className="sm:h-[6.13rem] resize-none" />
+                  <Textarea
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") e.preventDefault();
+                    }}
+                    {...field}
+                    className="sm:h-[6.13rem] resize-none"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -337,7 +364,11 @@ function BasicInfoSection({ control, user }) {
                   <Input {...field} />
                   <RotateCcw
                     className="cursor-pointer"
-                    onClick={() => field.onChange(user?.pic)}
+                    onClick={() =>
+                      user.pic
+                        ? field.onChange(user.pic)
+                        : field.onChange("/images/default_user_pic.png")
+                    }
                   />
                 </div>
               </FormControl>
@@ -375,6 +406,26 @@ function BasicInfoSection({ control, user }) {
           )}
         />
       </div>
+    </div>
+  );
+}
+
+function AchievementsSection({ control }) {
+  return (
+    <div className="my-10">
+      <FormField
+        control={control}
+        name="achievements"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel className="text-2xl">Achievements</FormLabel>
+            <FormControl>
+              <Tiptap desc={field.value} onChange={field.onChange} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { getUserByEmail } from "@/action/user";
+import { getUserByEmail, getUserByUsername } from "@/action/user";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -6,10 +6,16 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
 import { profiles } from "@/constants";
+import Tiptap from "@/components/Tiptap";
+import NotFound from "@/app/not-found";
 
 export default async function UserPage({ params }) {
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
+  const paramsUser = await getUserByUsername(params.username);
+  
+  if (!paramsUser) return <NotFound />;
+
   return (
     <div className="flex flex-col justify-center items-center max-w-3xl mx-auto">
       {user?.username == params.username && (
@@ -20,46 +26,62 @@ export default async function UserPage({ params }) {
           </Link>
         </div>
       )}
-      {user && (
-        <div className="flex flex-col justify-center ">
-          <BasicInfoSection user={user} />
+      <div className="w-full flex flex-col justify-center">
+        <BasicInfoSection user={paramsUser} />
 
-          {Object.keys(user.profiles).length && (
-            <>
-              <Separator />
-              <ProfilesSection userProfiles={user.profiles} />
-            </>
-          )}
+        {paramsUser.achievements?.length ? (
+          <>
+            <Separator />
+            <AchievementsSection achievements={paramsUser.achievements} />
+          </>
+        ) : (
+          <></>
+        )}
 
-          {user.skills.length && (
-            <>
-              <Separator />
-              <SkillsSection skills={user.skills} />
-            </>
-          )}
+        {paramsUser.profiles && Object.keys(paramsUser.profiles).length ? (
+          <>
+            <Separator />
+            <ProfilesSection userProfiles={paramsUser.profiles} />
+          </>
+        ) : (
+          <></>
+        )}
 
-          {user.experience.length && (
-            <>
-              <Separator />
-              <ExperienceSection experience={user.experience} />
-            </>
-          )}
+        {paramsUser.skills.length ? (
+          <>
+            <Separator />
+            <SkillsSection skills={paramsUser.skills} />
+          </>
+        ) : (
+          <></>
+        )}
 
-          {user.projects.length && (
-            <>
-              <Separator />
-              <ProjectsSection projects={user.projects} />
-            </>
-          )}
+        {paramsUser.experience.length ? (
+          <>
+            <Separator />
+            <ExperienceSection experience={paramsUser.experience} />
+          </>
+        ) : (
+          <></>
+        )}
+        {paramsUser.projects.length ? (
+          <>
+            <Separator />
+            <ProjectsSection projects={paramsUser.projects} />
+          </>
+        ) : (
+          <></>
+        )}
 
-          {user.education.length && (
-            <>
-              <Separator />
-              <EducationSection education={user.education} />
-            </>
-          )}
-        </div>
-      )}
+        {paramsUser.education.length ? (
+          <>
+            <Separator />
+            <EducationSection education={paramsUser.education} />
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }
@@ -73,39 +95,52 @@ function BasicInfoSection({ user }) {
   return (
     <div className="my-10">
       <h2 className="text-2xl">Basic Info</h2>
-      <div className="flex flex-col-reverse sm:grid sm:grid-cols-2 gap-6 mt-6">
-        <div className="flex flex-col gap-y-6">
-          {(user.firstname || user.lastname) && (
+      <div className="flex flex-col">
+        <div className="flex flex-col-reverse sm:grid sm:grid-cols-2 gap-6 mt-6">
+          <div className="flex flex-col gap-y-6">
+            {(user.firstname || user.lastname) && (
+              <div>
+                <h4>Name</h4>
+                <span className="text-sm text-muted-foreground">{name}</span>
+              </div>
+            )}
             <div>
-              <h4>Name</h4>
-              <span className="text-sm text-muted-foreground">{name}</span>
+              <h4>Email</h4>
+              <span className="text-sm text-muted-foreground">
+                {user.email}
+              </span>
             </div>
-          )}
-          <div>
-            <h4>Email</h4>
-            <span className="text-sm text-muted-foreground">{user.email}</span>
+            <div>
+              <h4>Username</h4>
+              <span className="text-sm text-muted-foreground">
+                {user.username}
+              </span>
+            </div>
           </div>
-          <div>
-            <h4>Username</h4>
-            <span className="text-sm text-muted-foreground">
-              {user.username}
-            </span>
-          </div>
+          <Image
+            src={!user.pic ? "/images/default_user_pic.png" : user.pic}
+            alt="Profile Picture"
+            width={200}
+            height={200}
+            className="rounded-full"
+          />
         </div>
-        <Image
-          src={!user.pic ? "/images/default_user_pic.png" : user.pic}
-          alt="Profile Picture"
-          width={200}
-          height={200}
-          className="rounded-full mx-auto"
-        />
+        {user.about && (
+          <div className="mt-4">
+            <h4>About</h4>
+            <span className="text-sm text-muted-foreground">{user.about}</span>
+          </div>
+        )}
       </div>
-      {user.about && (
-        <div>
-          <h4>About</h4>
-          <span className="text-sm text-muted-foreground">user.about</span>
-        </div>
-      )}
+    </div>
+  );
+}
+
+function AchievementsSection({ achievements }) {
+  return (
+    <div className="my-10">
+      <h2 className="text-2xl">Achievements</h2>
+      <Tiptap desc={achievements} />
     </div>
   );
 }
@@ -114,7 +149,7 @@ function ProfilesSection({ userProfiles }) {
   return (
     <div className="my-10">
       <h2 className="text-2xl">Profiles</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-6 my-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 place-items-start gap-6 my-6">
         {Object.keys(userProfiles).map((profileName, index) => (
           <Link
             key={profileName}
@@ -143,10 +178,10 @@ function SkillsSection({ skills }) {
   return (
     <div className="my-10">
       <h2 className="text-2xl">Skills</h2>
-      <div className=" w-full py-4">
+      <div className=" w-full mt-2">
         <div className="w-full">
           {skills.map((skill) => (
-            <Badge key={skill} variant="secondary" className="my-2 mx-3">
+            <Badge key={skill} variant="secondary" className="mt-4 mr-6">
               {skill}
             </Badge>
           ))}

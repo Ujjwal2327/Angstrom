@@ -14,18 +14,19 @@ datasource db {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  username   String       @unique
-  email      String       @unique
-  firstname  String?
-  lastname   String?
-  pic        String?
-  about      String?
-  profiles   Json?
-  skills     String[]
-  projects   Project[]
-  education  Education[]
-  experience Experience[]
+  id           Int          @id @default(autoincrement())
+  username     String       @unique
+  email        String       @unique
+  firstname    String?
+  lastname     String?
+  pic          String?
+  about        String?
+  achievements String?
+  profiles     Json?
+  skills       String[]
+  projects     Project[]
+  education    Education[]
+  experience   Experience[]
 }
 
 model Project {
