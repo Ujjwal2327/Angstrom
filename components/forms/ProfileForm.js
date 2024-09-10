@@ -225,6 +225,14 @@ export default function ProfileForm({ user }) {
         />
         <Separator />
 
+        <ExperienceSection
+          experienceFields={experienceFields}
+          appendExperience={appendExperience}
+          removeExperience={removeExperience}
+          control={control}
+        />
+        <Separator />
+
         <ProjectsSection
           projectFields={projectFields}
           appendProject={appendProject}
@@ -238,14 +246,6 @@ export default function ProfileForm({ user }) {
           educationFields={educationFields}
           appendEducation={appendEducation}
           removeEducation={removeEducation}
-          control={control}
-        />
-        <Separator />
-
-        <ExperienceSection
-          experienceFields={experienceFields}
-          appendExperience={appendExperience}
-          removeExperience={removeExperience}
           control={control}
         />
         <Separator />
@@ -442,7 +442,7 @@ function SkillsSection({ skills, removeSkill, appendSkill, setValue }) {
     <div className="flex flex-col gap-6 my-10">
       <FormLabel className="text-2xl">Skills</FormLabel>
       <div className="grid md:grid-cols-2 gap-10">
-        <div className="md:h-[333px] min-w-[350px] w-full rounded-md border p-4 flex justify-center items-center overflow-auto">
+        <div className="md:h-[333px] sm:min-w-[350px] w-full rounded-md border p-4 flex justify-center items-center overflow-auto">
           <div className="w-full">
             {skills.sort().map((item, index) => (
               <Badge
@@ -461,13 +461,15 @@ function SkillsSection({ skills, removeSkill, appendSkill, setValue }) {
             )}
           </div>
         </div>
-        <ScrollArea className="h-[333px] min-w-[350px] rounded-md border p-4 opacity-80">
-          <Input
-            placeholder="Search a skill to add..."
-            value={skillSearchQuery}
-            onChange={(e) => setSkillSearchQuery(e.target.value)}
-            className="mb-4"
-          />
+        <ScrollArea className="h-[333px] sm:min-w-[350px] rounded-md border p-4 opacity-80 relative pt-[4.5rem]">
+          <div className="p-4 absolute top-0 left-0 bg-background z-10 w-full">
+            <Input
+              placeholder="Search a skill to add..."
+              value={skillSearchQuery}
+              onChange={(e) => setSkillSearchQuery(e.target.value)}
+              className="w-full"
+            />
+          </div>
           {Object.entries(categorizedSkills).map(
             ([category, { skills: skillSet, title }], index) => {
               const filteredSkills = Object.entries(skillSet).filter(
@@ -502,6 +504,122 @@ function SkillsSection({ skills, removeSkill, appendSkill, setValue }) {
   );
 }
 
+function ExperienceSection({
+  experienceFields,
+  appendExperience,
+  removeExperience,
+  control,
+}) {
+  return (
+    <div className="flex flex-col gap-6 my-10">
+      <FormLabel className="text-2xl">Experience</FormLabel>
+      {experienceFields.map((item, index) => (
+        <div
+          key={item.id}
+          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2"
+        >
+          <div className="flex justify-between sm:gap-10">
+            <div className="flex flex-col sm:flex-row gap-4 w-full">
+              <FormField
+                control={control}
+                name={`experience.${index}.company`}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Company Name"
+                        className="text-[17px] font-semibold"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name={`experience.${index}.position`}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Position"
+                        className="font-semibold"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <Button
+              type="button"
+              onClick={() => removeExperience(index)}
+              variant="ghost"
+            >
+              <Trash className="w-4 h-4" />
+            </Button>
+          </div>
+          <div className="flex gap-x-4">
+            <FormField
+              control={control}
+              name={`experience.${index}.start`}
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input {...field} placeholder="Start Date" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={control}
+              name={`experience.${index}.end`}
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input {...field} placeholder="End Date" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={control}
+            name={`experience.${index}.about`}
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Textarea {...field} placeholder="Description" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      ))}
+      <Button
+        type="button"
+        variant="secondary"
+        onClick={() =>
+          appendExperience({
+            company: "",
+            position: "",
+            start: "",
+            end: "",
+            about: "",
+          })
+        }
+      >
+        Add Experience
+      </Button>
+    </div>
+  );
+}
+
 function ProjectsSection({
   projectFields,
   appendProject,
@@ -513,7 +631,10 @@ function ProjectsSection({
     <div className="flex flex-col gap-6 my-10">
       <FormLabel className="text-2xl">Projects</FormLabel>
       {projectFields.map((item, index) => (
-        <div key={item.id} className="flex flex-col gap-4 my-3">
+        <div
+          key={item.id}
+          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2"
+        >
           <div className="flex justify-between">
             <FormField
               control={control}
@@ -539,7 +660,7 @@ function ProjectsSection({
               <Trash className="w-4 h-4" />
             </Button>
           </div>
-          <div className="flex gap-x-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <FormField
               control={control}
               name={`projects.${index}.code_url`}
@@ -635,7 +756,7 @@ function ProjectSkillsComponent({ skills, field }) {
 
   return (
     <div>
-      <div className="w-full border p-2">
+      <div className="w-full bg-background rounded-md py-2">
         {field.value.sort().map((item) => (
           <Badge
             key={item}
@@ -679,7 +800,10 @@ function EducationSection({
     <div className="flex flex-col gap-6 my-10">
       <FormLabel className="text-2xl">Education</FormLabel>
       {educationFields.map((item, index) => (
-        <div key={item.id} className="flex flex-col gap-4 my-3">
+        <div
+          key={item.id}
+          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2"
+        >
           <div className="flex justify-between gap-10">
             <FormField
               control={control}
@@ -705,7 +829,7 @@ function EducationSection({
               <Trash className="w-4 h-4" />
             </Button>
           </div>
-          <div className="flex gap-x-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <FormField
               control={control}
               name={`education.${index}.specialization`}
@@ -789,119 +913,6 @@ function EducationSection({
         }
       >
         Add Education
-      </Button>
-    </div>
-  );
-}
-
-function ExperienceSection({
-  experienceFields,
-  appendExperience,
-  removeExperience,
-  control,
-}) {
-  return (
-    <div className="flex flex-col gap-6 my-10">
-      <FormLabel className="text-2xl">Experience</FormLabel>
-      {experienceFields.map((item, index) => (
-        <div key={item.id} className="flex flex-col gap-4 my-3">
-          <div className="flex justify-between gap-10">
-            <div className="flex gap-x-4 w-full">
-              <FormField
-                control={control}
-                name={`experience.${index}.position`}
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Position"
-                        className="text-[17px] font-semibold"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={control}
-                name={`experience.${index}.company`}
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Company Name"
-                        className="font-semibold"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Button
-              type="button"
-              onClick={() => removeExperience(index)}
-              variant="ghost"
-            >
-              <Trash className="w-4 h-4" />
-            </Button>
-          </div>
-          <div className="flex gap-x-4">
-            <FormField
-              control={control}
-              name={`experience.${index}.start`}
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input {...field} placeholder="Start Date" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name={`experience.${index}.end`}
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <Input {...field} placeholder="End Date" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={control}
-            name={`experience.${index}.about`}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Textarea {...field} placeholder="Description" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-      ))}
-      <Button
-        type="button"
-        variant="secondary"
-        onClick={() =>
-          appendExperience({
-            company: "",
-            position: "",
-            start: "",
-            end: "",
-            about: "",
-          })
-        }
-      >
-        Add Experience
       </Button>
     </div>
   );
