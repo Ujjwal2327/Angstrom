@@ -55,7 +55,7 @@ export default function DataTable({ data }) {
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm hidden sm:block"
         />
         <Input
           placeholder="Filter Usernames..."
@@ -98,18 +98,23 @@ export default function DataTable({ data }) {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className={`${
+                      header.id !== "username" &&
+                      header.id !== "profile" &&
+                      "hidden sm:block"
+                    }`}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -121,7 +126,14 @@ export default function DataTable({ data }) {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      className={`${
+                        !cell.id.includes("username") &&
+                        !cell.id.includes("profile") &&
+                        "hidden sm:block"
+                      } ${cell.id.includes("username") && "truncate max-w-1"}`}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

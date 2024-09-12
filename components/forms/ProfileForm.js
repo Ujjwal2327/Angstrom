@@ -86,6 +86,7 @@ const formSchema = z.object({
   username: z
     .string()
     .min(2, { message: "Username must be at least 2 characters." })
+    .max(15, { message: "Username must be at most 15 characters." })
     .trim()
     .refine((username) => !/\s/.test(username), {
       message: "Username must not contain spaces.",
@@ -213,7 +214,7 @@ export default function ProfileForm({ user }) {
 
       if (data.user) {
         setUser(data.user);
-        router.push(`/users/${user.username}`);
+        router.push(`/users/${data.user.username}`);
         toast.success("User updated successfully");
       } else throw new Error(data.error);
     } catch (error) {
@@ -226,7 +227,10 @@ export default function ProfileForm({ user }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-3xl">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full max-w-3xl -mb-10"
+      >
         <BasicInfoSection control={control} user={user} />
         <Separator />
 
@@ -567,7 +571,7 @@ function ExperienceSection({
       {experienceFields.map((item, index) => (
         <div
           key={item.id}
-          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2"
+          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2 mb-2"
         >
           <div className="flex justify-between sm:gap-10">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -612,14 +616,17 @@ function ExperienceSection({
               <Trash className="w-4 h-4" />
             </Button>
           </div>
-          <div className="flex gap-x-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <FormField
               control={control}
               name={`experience.${index}.start`}
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input {...field} placeholder="Start Date" />
+                    <Input
+                      {...field}
+                      placeholder="Start Date (e.g., Nov 2024)"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -631,7 +638,7 @@ function ExperienceSection({
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input {...field} placeholder="End Date" />
+                    <Input {...field} placeholder="End Date (e.g., Jan 2025)" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -684,7 +691,7 @@ function ProjectsSection({
       {projectFields.map((item, index) => (
         <div
           key={item.id}
-          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2"
+          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2 mb-2"
         >
           <div className="flex justify-between">
             <FormField
@@ -757,7 +764,11 @@ function ProjectsSection({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Textarea {...field} placeholder="Project Description" />
+                  <Textarea
+                    {...field}
+                    placeholder="Project Description"
+                    className="min-h-28 sm:min-h-20"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -853,7 +864,7 @@ function EducationSection({
       {educationFields.map((item, index) => (
         <div
           key={item.id}
-          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2"
+          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2 mb-2"
         >
           <div className="flex justify-between gap-10">
             <FormField
@@ -922,14 +933,17 @@ function EducationSection({
               </FormItem>
             )}
           />
-          <div className="flex justify-between gap-x-4">
+          <div className="flex flex-col sm:flex-row justify-between gap-4">
             <FormField
               control={control}
               name={`education.${index}.start`}
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input {...field} placeholder="Start Date" />
+                    <Input
+                      {...field}
+                      placeholder="Start Date (e.g., Nov 2020)"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -941,7 +955,10 @@ function EducationSection({
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input {...field} placeholder="End Date" />
+                    <Input
+                      {...field}
+                      placeholder="Start Date (e.g., Aug 2024)"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

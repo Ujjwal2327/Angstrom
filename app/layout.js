@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Angstrom",
-  description: "The app for Engineers",
+  description: "The app for engineers",
 };
 
 export default async function RootLayout({ children }) {
@@ -26,7 +26,7 @@ export default async function RootLayout({ children }) {
             disableTransitionOnChange
           >
             <Navbar session={session} />
-            <div className="px-10">{children}</div>{" "}
+            <div className="p-10">{children}</div>
           </ThemeProvider>
           <Toaster />
         </HydrationOverlay>

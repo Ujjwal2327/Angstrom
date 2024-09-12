@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import useStore from "@/stores/useStore";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import { LogOut, UserPlus } from "lucide-react";
+import { LogOut, Menu, UserPlus } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import Link from "next/link";
 
@@ -37,9 +37,11 @@ export default function Navbar({ session }) {
     else if (!session) setUser(null);
   }, [session, router, user, setUser]);
   return (
-    <div>
+    <div className="fixed top-3 right-3">
       <Sheet>
-        <SheetTrigger>Open</SheetTrigger>
+        <SheetTrigger>
+          <Menu />
+        </SheetTrigger>
         <SheetContent side="left">
           <div className="grid place-items-center">
             <div className="flex justify-center items-center gap-x-3 mb-4">

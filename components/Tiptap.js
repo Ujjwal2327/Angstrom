@@ -61,7 +61,7 @@ export default function Tiptap({ desc, onChange }) {
     editorProps: {
       attributes: {
         class: `max-h-60 overflow-auto w-full rounded-md  text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none  focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
-          onChange && "p-4 my-4 min-h-32 border border-input bg-background"
+          onChange && "p-4 pb-0 my-4 min-h-32 border border-input bg-background"
         }`,
       },
     },
@@ -118,7 +118,7 @@ function Toolbar({ editor, desc, onChange }) {
 
   return (
     <div className="control-group">
-      <div className="button-group flex items-center gap-1">
+      <div className="button-group flex flex-wrap items-center gap-1">
         {/* heading */}
         <Toggle
           pressed={editor.isActive("heading", { level: 2 })}

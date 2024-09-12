@@ -1,6 +1,8 @@
 import { connectDB } from "@/lib/db";
 
 export async function getUserByEmail(email) {
+  if (!email || !email?.trim()) return null;
+
   const prisma = connectDB();
   let user;
   try {
@@ -17,6 +19,7 @@ export async function getUserByEmail(email) {
   } catch (error) {
     console.log(error);
   } finally {
+    await prisma.$disconnect();
     return user;
   }
 }
@@ -29,11 +32,14 @@ export async function getAllUsers() {
   } catch (error) {
     console.log(error);
   } finally {
+    await prisma.$disconnect();
     return users;
   }
 }
 
 export async function getUserByUsername(username) {
+  if (!username || !username?.trim()) return null;
+
   const prisma = connectDB();
   let user;
   try {
@@ -50,6 +56,7 @@ export async function getUserByUsername(username) {
   } catch (error) {
     console.log(error);
   } finally {
+    await prisma.$disconnect();
     return user;
   }
 }

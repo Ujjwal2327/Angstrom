@@ -6,10 +6,13 @@ import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
 
 export default async function UserEditPage({ params }) {
+  params.username = decodeURIComponent(params.username);
+
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
   if (params.username !== user?.username)
     permanentRedirect(`/users/${params.username}`);
+
   return (
     <>
       {params.username === user?.username && (

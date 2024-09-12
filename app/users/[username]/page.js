@@ -6,19 +6,23 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
 import { profiles } from "@/constants";
-import Tiptap from "@/components/Tiptap";
+import dynamic from "next/dynamic";
+const Tiptap = dynamic(() => import("@/components/Tiptap"), {
+  ssr: false,
+});
 import NotFound from "@/app/not-found";
 
 export default async function UserPage({ params }) {
+  params.username = decodeURIComponent(params.username);
+
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
   const paramsUser = await getUserByUsername(params.username);
-  
   if (!paramsUser) return <NotFound />;
 
   return (
-    <div className="flex flex-col justify-center items-center max-w-3xl mx-auto">
-      {user?.username == params.username && (
+    <div className="flex flex-col justify-center items-center max-w-3xl mx-auto -mb-10">
+      {params.username === user?.username && (
         <div className="bg-slate-900 rounded-md p-3 w-full flex flex-wrap justify-center items-center gap-3">
           Edit your profile
           <Link href={`/users/${user.username}/edit`}>
@@ -99,14 +103,16 @@ function BasicInfoSection({ user }) {
         <div className="flex flex-col-reverse sm:grid sm:grid-cols-2 gap-6 mt-6">
           <div className="flex flex-col gap-y-6">
             {(user.firstname || user.lastname) && (
-              <div>
+              <div className=" overflow-hidden">
                 <h4>Name</h4>
-                <span className="text-sm text-muted-foreground">{name}</span>
+                <span className="text-sm text-muted-foreground truncate max-w-full">
+                  {name}
+                </span>
               </div>
             )}
-            <div>
+            <div className=" overflow-hidden">
               <h4>Email</h4>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-muted-foreground truncate max-w-full">
                 {user.email}
               </span>
             </div>
@@ -149,26 +155,29 @@ function ProfilesSection({ userProfiles }) {
   return (
     <div className="my-10">
       <h2 className="text-2xl">Profiles</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 place-items-start gap-6 my-6">
-        {Object.keys(userProfiles).map((profileName, index) => (
-          <Link
-            key={profileName}
-            href={`${profiles[profileName].base_url}${userProfiles[profileName]}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex justify-center items-center gap-4"
-          >
-            <Image
-              src={`/icons/Social/${profileName}.svg`}
-              width={30}
-              height={30}
-              alt={`${profileName} logo`}
-            />
-            <span className="text-sm text-muted-foreground">
-              {userProfiles[profileName]}
-            </span>
-          </Link>
-        ))}
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 place-items-stretch gap-6 my-6">
+        {Object.keys(userProfiles)
+          .sort()
+          .map((profileName) => (
+            <div key={profileName} className="max-w-full overflow-hidden">
+              <Link
+                href={`${profiles[profileName].base_url}${userProfiles[profileName]}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 w-fit max-w-full"
+              >
+                <Image
+                  src={`/icons/Social/${profileName}.svg`}
+                  width={30}
+                  height={30}
+                  alt={`${profileName} logo`}
+                />
+                <span className="text-sm text-muted-foreground truncate max-w-full">
+                  {userProfiles[profileName]}
+                </span>
+              </Link>
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -201,28 +210,30 @@ function ExperienceSection({ experience }) {
           key={item.id}
           className="flex flex-col gap-x-4 gap-y-2 bg-slate-900 rounded-md p-4"
         >
-          <div className="grid sm:flex gap-x-4 gap-y-2 items-center">
-            <div className=" grid sm:flex sm:flex-wrap items-center gap-x-4 gap-y-2">
-              <h4 className="text-[17px] font-semibold my-2 sm:my-0">
+          <div className="grid sm:flex sm:flex-wrap gap-x-4 gap-y-2 items-center">
+            <div className=" grid sm:flex sm:flex-wrap items-center gap-x-4 gap-y-2 overflow-hidden">
+              <h4 className="text-[17px] font-semibold truncate max-w-full break-words my-2 sm:my-0">
                 {item.company}
               </h4>
-              <div className="flex gap-x-4 items-center">
+              <div className="flex gap-x-4 items-center overflow-hidden">
                 <span className="hidden sm:block">-</span>
-                <span>{item.position}</span>
+                <span className="truncate max-w-full">{item.position}</span>
               </div>
             </div>
-            <div className="flex gap-x-4 items-center">
+            <div className="flex gap-x-4 items-center overflow-hidden">
               <span className="hidden sm:block">|</span>
-              <span className="text-muted-foreground text-sm">
+              <span className="text-muted-foreground text-sm truncate max-w-36">
                 {item.start}
               </span>
               -
-              <span className="text-muted-foreground text-sm">
+              <span className="text-muted-foreground text-sm truncate max-w-36 ">
                 {item.end ? item.end : "Present"}
               </span>
             </div>
           </div>
-          <span className="text-muted-foreground">{item.about}</span>{" "}
+          <span className="text-muted-foreground break-words">
+            {item.about}
+          </span>
         </div>
       ))}
     </div>
@@ -239,11 +250,11 @@ function ProjectsSection({ projects }) {
           key={project.id}
           className="flex flex-col gap-x-4 gap-y-2 bg-slate-900 rounded-md p-4"
         >
-          <div className="sm:flex gap-x-4">
-            <h4 className="text-[17px] font-semibold my-2 sm:my-0">
+          <div className="sm:flex gap-x-4 overflow-hidden">
+            <h4 className="text-[17px] font-semibold truncate max-w-full break-words my-2 sm:my-0">
               {project.name}
             </h4>
-            <div className="flex items-center gap-x-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <span className="hidden sm:block">|</span>
               <Link
                 href={project.code_url}
@@ -266,7 +277,9 @@ function ProjectsSection({ projects }) {
               )}
             </div>
           </div>
-          <span className="text-sm text-muted-foreground">{project.about}</span>
+          <span className="text-sm text-muted-foreground break-words">
+            {project.about}
+          </span>
 
           <div className=" w-full">
             <div className="w-full flex flex-wrap gap-3">
@@ -294,24 +307,26 @@ function EducationSection({ education }) {
           className="flex flex-col gap-x-4 gap-y-2 bg-slate-900 rounded-md p-4"
         >
           <div className="grid lg:flex gap-x-4 gap-y-2">
-            <div className="sm:flex gap-x-4 gap-y-2">
-              <h4 className="text-[17px] font-semibold my-2 sm:my-0">
+            <div className="sm:flex gap-x-4 gap-y-2 overflow-hidden">
+              <h4 className="text-[17px] font-semibold truncate max-w-full break-words my-2 sm:my-0">
                 {item.degree}
               </h4>
               {item.specialization && (
-                <div className="flex gap-x-4">
+                <div className="flex gap-x-4 overflow-hidden">
                   <span className="hidden sm:block">-</span>
-                  <span>{item.specialization}</span>
+                  <span className="truncate max-w-full">
+                    {item.specialization}
+                  </span>
                 </div>
               )}
             </div>
-            <div className="flex items-center gap-x-4">
+            <div className="flex items-center gap-x-4 overflow-hidden">
               <span className="hidden lg:block">|</span>
-              <span className="text-muted-foreground text-sm">
+              <span className="text-muted-foreground text-sm truncate max-w-36">
                 {item.start}
               </span>
               -
-              <span className="text-muted-foreground text-sm">
+              <span className="text-muted-foreground text-sm truncate max-w-36">
                 {item.end ? item.end : "Present"}
               </span>
             </div>

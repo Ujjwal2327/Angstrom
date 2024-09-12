@@ -40,7 +40,7 @@ export const profiles = {
   },
   topcoder: { name: "Topcoder", base_url: "https://www.topcoder.com/members/" },
   twitter: { name: "Twitter", base_url: "https://twitter.com/" },
-  youtube: { name: "YouTube", base_url: "https://www.youtube.com/user/" },
+  youtube: { name: "YouTube", base_url: "https://www.youtube.com/@" },
 };
 
 export const categorizedSkills = {
