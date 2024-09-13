@@ -577,7 +577,9 @@ function SkillsSection({ skills, removeSkill, appendSkill, setValue }) {
             <Input
               placeholder="Search a skill to add..."
               value={skillSearchQuery}
-              onChange={(e) => setSkillSearchQuery(e.target.value)}
+              onChange={(e) =>
+                setSkillSearchQuery(e.target.value?.toLowerCase())
+              }
               className="w-full"
             />
           </div>

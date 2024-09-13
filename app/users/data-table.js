@@ -48,7 +48,7 @@ export default function DataTable({ data }) {
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap items-center py-4 gap-x-5">
+      <div className="flex flex-wrap items-center py-4 gap-x-5 gap-y-4">
         <Input
           placeholder="Filter Usernames..."
           value={table.getColumn("username")?.getFilterValue() ?? ""}
@@ -99,14 +99,7 @@ export default function DataTable({ data }) {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className={`${
-                      header.id !== "username" &&
-                      header.id !== "profile" &&
-                      "hidden sm:table-cell"
-                    }`}
-                  >
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -126,14 +119,7 @@ export default function DataTable({ data }) {
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className={`${
-                        !cell.id.includes("username") &&
-                        !cell.id.includes("profile") &&
-                        "hidden sm:block"
-                      } ${cell.id.includes("username") && "truncate max-w-1"}`}
-                    >
+                    <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

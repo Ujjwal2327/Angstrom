@@ -18,7 +18,7 @@ export const columns = [
       );
     },
     cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("username")}</div>
+      <div className="lowercase ml-4 truncate">{row.getValue("username")}</div>
     ),
   },
   {
@@ -28,13 +28,18 @@ export const columns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="hidden sm:flex"
         >
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => (
+      <div className="hidden sm:block lowercase ml-4 truncate">
+        {row.getValue("email")}
+      </div>
+    ),
   },
   {
     accessorKey: "profile",
