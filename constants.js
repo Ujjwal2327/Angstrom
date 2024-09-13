@@ -1,7 +1,7 @@
 export const menuItems = {
   top: [
     { name: "Home", path: "/" },
-    { name: "All Users", path: "/users" },
+    { name: "Users List", path: "/users" },
   ],
   bottom: [{ name: "My Details", path: "/users" }],
 };

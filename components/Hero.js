@@ -41,17 +41,20 @@ export default async function Hero() {
         <p className=" text-xl sm:text-2xl  font-bold text-neutral-300 text-center">
           The Ultimate Toolbox for Coders and Engineers
         </p>
-        <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4">
+        <div className="flex flex-col md:flex-row gap-4 gap-x-8">
           <Link href="/users">
-            <MagicButton title="All Users" />
+            <MagicButton title="Browse User Profiles" 
+            position="right"
+            icon={<Send size={20} />}
+            />
           </Link>
           {!session?.user?.email && (
             <Link href="/sign-in">
               <MagicButton
-                title="Sign in"
+                title="Sign in with Google"
                 position="right"
-                icon={<Send className="ml-2" size={17} />}
-                otherClasses="bg-secondary"
+                icon={<FaGoogle className="text-xl" />}
+                otherClasses="bg-secondary text-primary-foreground"
               />
             </Link>
           )}
