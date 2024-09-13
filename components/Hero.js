@@ -3,6 +3,7 @@ import { Spotlight } from "./ui/Spotlight";
 import Link from "next/link";
 import { MagicButton } from "./ui/MagicButton";
 import { FaGoogle } from "react-icons/fa";
+import { Send } from "lucide-react";
 
 export default async function Hero() {
   const session = await auth();
@@ -47,10 +48,10 @@ export default async function Hero() {
           {!session?.user?.email && (
             <Link href="/sign-in">
               <MagicButton
-                title="Sign in with Google"
+                title="Sign in"
                 position="right"
-                icon={<FaGoogle className="ml-2 text-xl" />}
-                invert
+                icon={<Send className="ml-2" size={17} />}
+                otherClasses="bg-secondary"
               />
             </Link>
           )}
