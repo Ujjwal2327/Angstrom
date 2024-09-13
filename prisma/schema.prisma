@@ -38,6 +38,8 @@ model Project {
   about    String
   userId   Int
   user     User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, name]) // Composite unique constraint
 }
 
 model Education {
@@ -50,6 +52,8 @@ model Education {
   end            String? @default("Present")
   userId         Int
   user           User    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, degree]) // Composite unique constraint
 }
 
 model Experience {
@@ -61,4 +65,6 @@ model Experience {
   about    String
   userId   Int
   user     User    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, company, position]) // Composite unique constraint
 }

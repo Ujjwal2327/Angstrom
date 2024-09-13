@@ -105,6 +105,11 @@ async function updateUser(data) {
       where: {
         email: data.email,
       },
+      include: {
+        experience: true,
+        projects: true,
+        education: true,
+      },
     });
 
     if (!user) throw new Error("User not found.");
@@ -118,6 +123,137 @@ async function updateUser(data) {
       if (sameUsernameUser) throw new Error("Username already exists.");
     }
 
+    // Handle experience updates or creates
+    const existingExperience = user.experience;
+    const newExperience = data.experience;
+
+    const experienceToDelete = existingExperience.filter(
+      (exp) =>
+        !newExperience.some(
+          (newExp) =>
+            newExp.company === exp.company && newExp.position === exp.position
+        )
+    );
+
+    for (const exp of experienceToDelete) {
+      await prisma.experience.delete({
+        where: {
+          id: exp.id,
+        },
+      });
+    }
+
+    for (const exp of newExperience) {
+      await prisma.experience.upsert({
+        where: {
+          userId_company_position: {
+            userId: user.id,
+            company: exp.company,
+            position: exp.position,
+          },
+        },
+        update: {
+          start: exp.start,
+          end: exp.end,
+          about: exp.about,
+        },
+        create: {
+          userId: user.id,
+          company: exp.company,
+          position: exp.position,
+          start: exp.start,
+          end: exp.end,
+          about: exp.about,
+        },
+      });
+    }
+
+    // Handle project updates or creates
+    const existingProjects = user.projects;
+    const newProjects = data.projects;
+
+    const projectsToDelete = existingProjects.filter(
+      (project) =>
+        !newProjects.some((newProject) => newProject.name === project.name)
+    );
+
+    for (const project of projectsToDelete) {
+      await prisma.project.delete({
+        where: {
+          id: project.id,
+        },
+      });
+    }
+
+    for (const project of newProjects) {
+      await prisma.project.upsert({
+        where: {
+          userId_name: {
+            userId: user.id,
+            name: project.name,
+          },
+        },
+        update: {
+          code_url: project.code_url,
+          live_url: project.live_url,
+          skills: { set: project.skills },
+          about: project.about,
+        },
+        create: {
+          userId: user.id,
+          name: project.name,
+          code_url: project.code_url,
+          live_url: project.live_url,
+          skills: { set: project.skills },
+          about: project.about,
+        },
+      });
+    }
+
+    // Handle education updates or creates
+    const existingEducation = user.education;
+    const newEducation = data.education;
+
+    const educationToDelete = existingEducation.filter(
+      (edu) => !newEducation.some((newEdu) => newEdu.degree === edu.degree)
+    );
+
+    for (const edu of educationToDelete) {
+      await prisma.education.delete({
+        where: {
+          id: edu.id,
+        },
+      });
+    }
+
+    for (const edu of newEducation) {
+      await prisma.education.upsert({
+        where: {
+          userId_degree: {
+            userId: user.id,
+            degree: edu.degree,
+          },
+        },
+        update: {
+          college: edu.college,
+          specialization: edu.specialization,
+          score: edu.score,
+          start: edu.start,
+          end: edu.end,
+        },
+        create: {
+          userId: user.id,
+          college: edu.college,
+          degree: edu.degree,
+          specialization: edu.specialization,
+          score: edu.score,
+          start: edu.start,
+          end: edu.end,
+        },
+      });
+    }
+
+    // Update other user details (like profiles, skills, etc.)
     const updatedUser = await prisma.user.update({
       where: {
         email: data.email,
@@ -131,37 +267,6 @@ async function updateUser(data) {
         achievements: data.achievements,
         profiles: data.profiles,
         skills: { set: data.skills },
-        experience: {
-          deleteMany: {},
-          create: data.experience.map((exp) => ({
-            company: exp.company,
-            position: exp.position,
-            start: exp.start,
-            end: exp.end,
-            about: exp.about,
-          })),
-        },
-        projects: {
-          deleteMany: {},
-          create: data.projects.map((project) => ({
-            name: project.name,
-            code_url: project.code_url,
-            live_url: project.live_url,
-            skills: { set: project.skills },
-            about: project.about,
-          })),
-        },
-        education: {
-          deleteMany: {},
-          create: data.education.map((edu) => ({
-            college: edu.college,
-            degree: edu.degree,
-            specialization: edu.specialization,
-            score: edu.score,
-            start: edu.start,
-            end: edu.end,
-          })),
-        },
       },
       include: {
         projects: true,
@@ -173,8 +278,7 @@ async function updateUser(data) {
     if (!updatedUser)
       throw new Error("Internal Server Error: Failed to update user.");
 
-    const finalUser = JSON.parse(JSON.stringify(updatedUser, null, 2)); // used JSON.stringify to view nested objects, use JSON.parse to send json in frontend - otherwise giving projects, education and esperience as "[Object]" and not giving actual values
-    return finalUser;
+    return updatedUser;
   } catch (error) {
     throw error;
   } finally {

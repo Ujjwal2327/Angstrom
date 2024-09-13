@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { profiles } from "@/constants";
 import dynamic from "next/dynamic";
-const Tiptap = dynamic(() => import("@/components/Tiptap"), {
+const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
 });
 import NotFound from "@/app/not-found";

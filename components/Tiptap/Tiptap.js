@@ -26,8 +26,8 @@ import {
   Undo,
   Redo,
 } from "lucide-react";
-import { Toggle } from "./ui/toggle";
-import { Button } from "./ui/button";
+import { Toggle } from "../ui/toggle";
+import { Button } from "../ui/button";
 
 const lowlight = createLowlight(all);
 export default function Tiptap({ desc, onChange }) {

@@ -26,7 +26,7 @@ import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 import Spinner from "../Spinner";
 import dynamic from "next/dynamic";
-const Tiptap = dynamic(() => import("@/components/Tiptap"), {
+const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
 });
 
@@ -82,6 +82,16 @@ const experienceSchema = z
     end: data.end || "Present",
   }));
 
+function uniqueValidator(items) {
+  const seen = new Set();
+  for (const item of items) {
+    if (item.trim() === "") continue;
+    if (seen.has(item)) return false;
+    seen.add(item);
+  }
+  return true;
+}
+
 const formSchema = z.object({
   username: z
     .string()
@@ -111,9 +121,33 @@ const formSchema = z.object({
         Object.entries(profiles).filter(([key, value]) => value !== "")
       );
     }),
-  projects: z.array(projectSchema),
-  education: z.array(educationSchema),
-  experience: z.array(experienceSchema),
+  projects: z.array(projectSchema).refine(
+    (projects) => {
+      const projectNames = projects.map((item) => item.name);
+      return uniqueValidator(projectNames);
+    },
+    { message: "Project names must be unique." }
+  ),
+  education: z.array(educationSchema).refine(
+    (education) => {
+      const degrees = education.map((item) => item.degree);
+      return uniqueValidator(degrees);
+    },
+    {
+      message: "Degrees must be unique.",
+    }
+  ),
+  experience: z.array(experienceSchema).refine(
+    (experience) => {
+      const combinations = experience.map(
+        (item) => `${item.company}|${item.position}`
+      );
+      return uniqueValidator(combinations);
+    },
+    {
+      message: "Company and Position combinations must be unique.",
+    }
+  ),
 });
 
 export default function ProfileForm({ user }) {
@@ -163,7 +197,7 @@ export default function ProfileForm({ user }) {
     },
   });
 
-  const { control, handleSubmit, watch, setValue } = form;
+  const { control, handleSubmit, watch, setValue, formState } = form;
   const {
     fields: skillsFields,
     append: appendSkill,
@@ -224,6 +258,22 @@ export default function ProfileForm({ user }) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Extract the error keys
+    const errorKeys = Object.keys(formState.errors);
+
+    // Iterate through error keys
+    for (const key of errorKeys) {
+      const error = formState.errors[key];
+
+      // Check if the error message exists
+      if (error?.root?.message) {
+        toast.error(error.root.message);
+        break; // Show only the first error and stop
+      }
+    }
+  }, [formState.errors]);
 
   return (
     <Form {...form}>
