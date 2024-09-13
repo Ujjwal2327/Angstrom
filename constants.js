@@ -21,7 +21,7 @@ export const profiles = {
   facebook: { name: "Facebook", base_url: "https://www.facebook.com/" },
   geeks_for_geeks: {
     name: "Geeks for Geeks",
-    base_url: "https://auth.geeksforgeeks.org/user/",
+    base_url: "https://geeksforgeeks.org/user/",
   },
   github: { name: "GitHub", base_url: "https://github.com/" },
   hackerearth: {
