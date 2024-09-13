@@ -38,14 +38,17 @@ export default async function Hero() {
             </div>
           </div>
         </h2>
-        <p className=" text-xl sm:text-2xl  font-bold text-neutral-300 text-center">
-          The Ultimate Toolbox for Coders and Engineers
+        <p className="text-xl sm:text-2xl font-bold text-neutral-300 text-center">
+          The Ultimate Toolbox for{" "}
+          <span className="block sm:inline">Coders and Engineers</span>
         </p>
+
         <div className="flex flex-col md:flex-row gap-4 gap-x-8">
           <Link href="/users">
-            <MagicButton title="Browse User Profiles" 
-            position="right"
-            icon={<Send size={20} />}
+            <MagicButton
+              title="Browse User Profiles"
+              position="right"
+              icon={<Send size={20} />}
             />
           </Link>
           {!session?.user?.email && (
