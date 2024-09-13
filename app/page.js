@@ -1,3 +1,9 @@
+import Hero from "@/components/Hero";
+
 export default async function Home() {
-  return <>Home page</>;
+  return (
+    <div className="-m-10">
+      <Hero />
+    </div>
+  );
 }

@@ -48,15 +48,7 @@ export default function DataTable({ data }) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-x-3">
-        <Input
-          placeholder="Filter emails..."
-          value={table.getColumn("email")?.getFilterValue() ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm hidden sm:block"
-        />
+      <div className="flex flex-wrap items-center py-4 gap-x-5">
         <Input
           placeholder="Filter Usernames..."
           value={table.getColumn("username")?.getFilterValue() ?? ""}
@@ -64,6 +56,14 @@ export default function DataTable({ data }) {
             table.getColumn("username")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
+        />
+        <Input
+          placeholder="Filter emails..."
+          value={table.getColumn("email")?.getFilterValue() ?? ""}
+          onChange={(event) =>
+            table.getColumn("email")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm hidden sm:block"
         />
         {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -104,7 +104,7 @@ export default function DataTable({ data }) {
                     className={`${
                       header.id !== "username" &&
                       header.id !== "profile" &&
-                      "hidden sm:block"
+                      "hidden sm:table-cell"
                     }`}
                   >
                     {header.isPlaceholder

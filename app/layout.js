@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Angstrom",
-  description: "The app for engineers",
+  description: "The Ultimate Toolbox for Coders and Engineers",
 };
 
 export default async function RootLayout({ children }) {

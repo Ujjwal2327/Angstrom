@@ -37,7 +37,7 @@ export default function Navbar({ session }) {
     else if (!session) setUser(null);
   }, [session, router, user, setUser]);
   return (
-    <div className="fixed top-3 right-3">
+    <div className="fixed top-3 right-3 z-50">
       <Sheet>
         <SheetTrigger>
           <Menu />
@@ -77,7 +77,7 @@ export default function Navbar({ session }) {
                 <SheetClose asChild>
                   <Link href="/sign-in" className="w-full">
                     <Button variant="ghost" className="w-full">
-                      Signin with Google
+                      Sign in with Google
                       <FaGoogle className="ml-2 text-xl" />
                     </Button>
                   </Link>

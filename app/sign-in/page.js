@@ -6,7 +6,7 @@ export default async function page() {
   const session = await auth();
   if (session) permanentRedirect("/");
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen -m-10">
       <GoogleSignIn />
     </div>
   );

@@ -11,7 +11,7 @@ export default function GoogleSignIn({ isFull }) {
       }}
     >
       <Button variant="outline" type="submit" className={isFull && "w-full"}>
-        Signin with Google
+        Sign in with Google
         <FaGoogle className="ml-2 text-xl" />
       </Button>
     </form>
