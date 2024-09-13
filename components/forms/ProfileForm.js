@@ -107,7 +107,13 @@ const formSchema = z.object({
   lastname: z.string().trim().optional(),
   pic: z.string().url().trim().optional(),
   about: z.string().trim().optional(),
-  achievements: z.string().trim().optional(),
+  achievements: z
+    .string()
+    .trim()
+    .optional()
+    .transform((val) => {
+      return val === "<p></p>" || val === "<h2></h2>" ? "" : val;
+    }),
   skills: z.array(
     z
       .string()
