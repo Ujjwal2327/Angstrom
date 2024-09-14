@@ -3,7 +3,7 @@ import { Spotlight } from "./ui/Spotlight";
 import Link from "next/link";
 import { MagicButton } from "./ui/MagicButton";
 import { FaGoogle } from "react-icons/fa";
-import { Send } from "lucide-react";
+// import { Send } from "lucide-react";
 
 export default async function Hero() {
   const session = await auth();
@@ -44,13 +44,13 @@ export default async function Hero() {
         </p>
 
         <div className="flex flex-col md:flex-row gap-4 gap-x-8">
-          <Link href="/users">
+          {/* <Link href="/users">
             <MagicButton
               title="Browse User Profiles"
               position="right"
               icon={<Send size={20} />}
             />
-          </Link>
+          </Link> */}
           {!session?.user?.email && (
             <Link href="/sign-in">
               <MagicButton
