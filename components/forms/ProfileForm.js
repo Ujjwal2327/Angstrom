@@ -335,6 +335,7 @@ export default function ProfileForm({ user }) {
           className={`w-full font-bold my-10 ${
             loading && "cursor-not-allowed"
           }`}
+          aria-label="submit your details"
         >
           {loading ? (
             <>
@@ -670,6 +671,7 @@ function ExperienceSection({
               type="button"
               onClick={() => removeExperience(index)}
               variant="ghost"
+              aria-label="remove experience"
             >
               <Trash className="w-4 h-4" />
             </Button>
@@ -729,6 +731,7 @@ function ExperienceSection({
             about: "",
           })
         }
+        aria-label="add experience"
       >
         Add Experience
       </Button>
@@ -772,6 +775,7 @@ function ProjectsSection({
               type="button"
               onClick={() => removeProject(index)}
               variant="ghost"
+              aria-label="remove project"
             >
               <Trash className="w-4 h-4" />
             </Button>
@@ -846,6 +850,7 @@ function ProjectsSection({
             about: "",
           })
         }
+        aria-label="add project"
       >
         Add Project
       </Button>
@@ -945,6 +950,7 @@ function EducationSection({
               type="button"
               onClick={() => removeEducation(index)}
               variant="ghost"
+              aria-label="remove education"
             >
               <Trash className="w-4 h-4" />
             </Button>
@@ -1037,6 +1043,7 @@ function EducationSection({
             end: "",
           })
         }
+        aria-label="add education"
       >
         Add Education
       </Button>

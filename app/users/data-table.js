@@ -67,7 +67,7 @@ export default function DataTable({ data }) {
         />
         {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="ml-auto" aria-label="open dropdown">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -152,6 +152,7 @@ export default function DataTable({ data }) {
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            aria-label="go to previous page"
           >
             Previous
           </Button>
@@ -160,6 +161,7 @@ export default function DataTable({ data }) {
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            aria-label="go to next page"
           >
             Next
           </Button>

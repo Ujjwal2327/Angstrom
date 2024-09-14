@@ -86,7 +86,12 @@ export default function InputForm({ session }) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={loading} className="w-full font-bold">
+        <Button
+          type="submit"
+          disabled={loading}
+          className="w-full font-bold"
+          aria-label="register username"
+        >
           {loading ? (
             <>
               Loading <Spinner className="size-4 ml-2" />

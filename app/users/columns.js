@@ -11,6 +11,7 @@ export const columns = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          aria-label="sort usernames"
         >
           Username
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -29,6 +30,7 @@ export const columns = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           className="hidden sm:flex"
+          aria-label="sort emails"
         >
           Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -47,7 +49,7 @@ export const columns = [
     cell: ({ row }) => {
       return (
         <Link href={`/users/${row.original.username}`} variant="outline">
-          <Button variant="outline">
+          <Button variant="outline" aria-label="watch profile">
             Profile
             <ChevronRight />
           </Button>

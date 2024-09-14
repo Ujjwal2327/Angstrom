@@ -1,15 +1,13 @@
 import { auth } from "@/auth";
 import { Spotlight } from "./ui/Spotlight";
-import Link from "next/link";
 import { MagicButton } from "./ui/MagicButton";
 import { FaGoogle } from "react-icons/fa";
 import { getUserByEmail } from "@/action/user";
 import { Send } from "lucide-react";
+import { Suspense } from "react";
+import { TextGenerateEffect } from "./ui/text-generate-effect";
 
 export default async function Hero() {
-  const session = await auth();
-  const user = await getUserByEmail(session?.user?.email);
-
   return (
     <div className="h-screen w-full bg-grid-large-white/[0.03] flex items-center justify-center bg-background antialiased relative overflow-hidden">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
@@ -30,51 +28,47 @@ export default async function Hero() {
       </div>
 
       <div className="flex flex-col gap-6 items-center justify-center px-10 w-full">
-        <h2 className="relative text-4xl sm:text-7xl font-bold text-center text-white font-sans tracking-tight">
-          <div className="relative mx-auto inline-block w-max [filter:drop-shadow(0px_1px_3px_rgba(27,_37,_80,_0.14))]">
-            <div className="absolute left-0 top-[1px] bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r pb-4 from-purple-500 via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
-              <span className="">Angstrom</span>
-            </div>
-            <div className="relative bg-clip-text text-transparent bg-no-repeat bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 pb-4">
-              <span className="">Angstrom</span>
-            </div>
+        <h2 className=" text-4xl sm:text-7xl font-bold text-center text-white font-sans tracking-tight">
+          <div className=" bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r pb-4 from-purple-500 via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
+            <span>Angstrom</span>
           </div>
         </h2>
-        <p className="text-xl sm:text-2xl font-bold text-neutral-300 text-center">
-          The Ultimate Toolbox for{" "}
-          <span className="block sm:inline">Coders and Engineers</span>
-        </p>
 
-        <div className="flex flex-col md:flex-row gap-4 gap-x-8">
-          {/* <Link href="/users">
-            <MagicButton
-              title="Browse User Profiles"
-              position="right"
-              icon={<Send size={20} />}
-              otherClasses="bg-secondary text-primary-foreground"
-            />
-          </Link> */}
-          {!session?.user?.email ? (
-            <Link href="/sign-in">
-              <MagicButton
-                title="Sign in with Google"
-                position="right"
-                icon={<FaGoogle className="text-xl" />}
-              />
-            </Link>
-          ) : user?.username ? (
-            <Link href={`/users/${user?.username}`}>
-              <MagicButton
-                title="View Your Profile"
-                position="right"
-                icon={<Send size={20} />}
-              />
-            </Link>
-          ) : (
-            <></>
-          )}
-        </div>
+        <TextGenerateEffect
+          words="The Ultimate Toolbox for Coders and Engineers"
+          className="text-xl sm:text-2xl font-extrabold text-center text-neutral-300 max-w-xs sm:max-w-full -mt-4 sm:mt-0"
+        />
+
+        <Suspense fallback={<MagicButton suspense />}>
+          <SuspenseComponent />
+        </Suspense>
       </div>
+    </div>
+  );
+}
+
+async function SuspenseComponent() {
+  const session = await auth();
+  const user = await getUserByEmail(session?.user?.email);
+  return (
+    <div className="flex flex-col md:flex-row gap-4 gap-x-8">
+      {!session?.user?.email ? (
+        <MagicButton
+          title="Sign in with Google"
+          position="right"
+          icon={<FaGoogle className="text-xl" />}
+          href="/sign-in"
+        />
+      ) : user?.username ? (
+        <MagicButton
+          title="View Your Profile"
+          position="right"
+          icon={<Send size={20} />}
+          href={`/users/${user?.username}`}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 }

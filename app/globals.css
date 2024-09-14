@@ -93,7 +93,7 @@
 }
 
 /* spinner class */
-.loader {
+.spinner {
   aspect-ratio: 1;
   display: grid;
   border-radius: 50%;
@@ -104,8 +104,8 @@
   animation: l23 1s infinite steps(12);
 }
 
-.loader::before,
-.loader::after {
+.spinner::before,
+.spinner::after {
   content: "";
   grid-area: 1/1;
   border-radius: 50%;
@@ -114,7 +114,7 @@
   transform: rotate(30deg);
 }
 
-.loader::after {
+.spinner::after {
   opacity: 0.83;
   transform: rotate(60deg);
 }
@@ -122,5 +122,25 @@
 @keyframes l23 {
   100% {
     transform: rotate(1turn)
+  }
+}
+
+/* loader class */
+.loader {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 20px;
+  clip-path: inset(0 3ch 0 0);
+  animation: l4 2s steps(4) infinite;
+}
+
+.loader:before {
+  content: "Loading..."
+}
+
+@keyframes l4 {
+  to {
+    clip-path: inset(0 -1ch 0 0)
   }
 }

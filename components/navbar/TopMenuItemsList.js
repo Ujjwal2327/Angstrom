@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { menuItems } from "@/constants.js";
@@ -17,6 +18,7 @@ export default function TopMenuItemsList() {
               className={`w-full mb-1.5 ${
                 pathname == item.path && "bg-slate-300 hover:bg-slate-300"
               }`}
+              aria-label={item.name}
             >
               {item.name}
             </Button>

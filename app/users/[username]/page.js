@@ -11,22 +11,35 @@ const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
 });
 import NotFound from "@/app/not-found";
+import { Suspense } from "react";
+import Loader from "@/components/Loader";
 
 export default async function UserPage({ params }) {
   params.username = decodeURIComponent(params.username);
 
+  return (
+    <div className="flex flex-col justify-center items-center max-w-3xl mx-auto -mb-10">
+      <Suspense fallback={<Loader />}>
+        <SuspenseComponent params={params} />
+      </Suspense>
+    </div>
+  );
+}
+
+async function SuspenseComponent({ params }) {
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
   const paramsUser = await getUserByUsername(params.username);
   if (!paramsUser) return <NotFound />;
-
   return (
-    <div className="flex flex-col justify-center items-center max-w-3xl mx-auto -mb-10">
+    <>
       {params.username === user?.username && (
         <div className="bg-slate-900 rounded-md p-3 w-full flex flex-wrap justify-center items-center gap-3">
           Edit your profile
           <Link href={`/users/${user.username}/edit`}>
-            <Button variant="outline">Here</Button>
+            <Button variant="outline" aria-label="edit your profile">
+              Here
+            </Button>
           </Link>
         </div>
       )}
@@ -86,7 +99,7 @@ export default async function UserPage({ params }) {
           <></>
         )}
       </div>
-    </div>
+    </>
   );
 }
 

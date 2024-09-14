@@ -10,7 +10,12 @@ export default function GoogleSignIn({ isFull }) {
         await signIn("google");
       }}
     >
-      <Button variant="outline" type="submit" className={isFull && "w-full"}>
+      <Button
+        variant="outline"
+        type="submit"
+        className={isFull && "w-full"}
+        aria-label="go to sign-in page"
+      >
         Sign in with Google
         <FaGoogle className="ml-2 text-xl" />
       </Button>

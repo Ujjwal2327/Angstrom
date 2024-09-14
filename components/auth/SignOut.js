@@ -10,7 +10,12 @@ export default function SignOut({ isFull }) {
         await signOut();
       }}
     >
-      <Button variant="outline" type="submit" className={isFull && "w-full"}>
+      <Button
+        variant="outline"
+        type="submit"
+        className={isFull && "w-full"}
+        aria-label="go to sign-out page"
+      >
         Sign Out <LogOut className="ml-2 text-xl" />
       </Button>
     </form>

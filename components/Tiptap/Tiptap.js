@@ -129,6 +129,7 @@ function Toolbar({ editor, desc, onChange }) {
           onClick={() =>
             editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
+          aria-label="toggle heading"
         >
           <HeadingIcon />
         </Toggle>
@@ -139,6 +140,7 @@ function Toolbar({ editor, desc, onChange }) {
           variant="outline"
           size="sm"
           onClick={() => editor.chain().focus().toggleBold().run()}
+          aria-label="toggle bold"
         >
           <BoldIcon />
         </Toggle>
@@ -149,6 +151,7 @@ function Toolbar({ editor, desc, onChange }) {
           variant="outline"
           size="sm"
           onClick={() => editor.chain().focus().toggleItalic().run()}
+          aria-label="toggle italic"
         >
           <ItalicIcon />
         </Toggle>
@@ -159,6 +162,7 @@ function Toolbar({ editor, desc, onChange }) {
           variant="outline"
           size="sm"
           onClick={setLink}
+          aria-label="toggle link"
         >
           <LinkIcon />
         </Toggle>
@@ -169,6 +173,7 @@ function Toolbar({ editor, desc, onChange }) {
           variant="outline"
           size="sm"
           onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+          aria-label="toggle code"
         >
           <Code />
         </Toggle>
@@ -179,6 +184,7 @@ function Toolbar({ editor, desc, onChange }) {
           variant="outline"
           size="sm"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
+          aria-label="toggle list"
         >
           <List />
         </Toggle>
@@ -189,6 +195,7 @@ function Toolbar({ editor, desc, onChange }) {
           variant="outline"
           size="sm"
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          aria-label="toggle blockquote"
         >
           <TextQuote />
         </Toggle>
@@ -199,6 +206,7 @@ function Toolbar({ editor, desc, onChange }) {
           variant="outline"
           size="sm"
           onClick={() => editor.chain().focus().undo().run()}
+          aria-label="undo"
         >
           <Undo />
         </Button>
@@ -209,6 +217,7 @@ function Toolbar({ editor, desc, onChange }) {
           variant="outline"
           size="sm"
           onClick={() => editor.chain().focus().redo().run()}
+          aria-label="redo"
         >
           <Redo />
         </Button>
