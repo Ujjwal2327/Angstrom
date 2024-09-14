@@ -3,10 +3,12 @@ import { Spotlight } from "./ui/Spotlight";
 import Link from "next/link";
 import { MagicButton } from "./ui/MagicButton";
 import { FaGoogle } from "react-icons/fa";
-// import { Send } from "lucide-react";
+import { getUserByEmail } from "@/action/user";
+import { Send } from "lucide-react";
 
 export default async function Hero() {
   const session = await auth();
+  const user = await getUserByEmail(session?.user?.email);
 
   return (
     <div className="h-screen w-full bg-grid-large-white/[0.03] flex items-center justify-center bg-background antialiased relative overflow-hidden">
@@ -49,17 +51,27 @@ export default async function Hero() {
               title="Browse User Profiles"
               position="right"
               icon={<Send size={20} />}
+              otherClasses="bg-secondary text-primary-foreground"
             />
           </Link> */}
-          {!session?.user?.email && (
+          {!session?.user?.email ? (
             <Link href="/sign-in">
               <MagicButton
                 title="Sign in with Google"
                 position="right"
                 icon={<FaGoogle className="text-xl" />}
-                otherClasses="bg-secondary text-primary-foreground"
               />
             </Link>
+          ) : user?.username ? (
+            <Link href={`/users/${user?.username}`}>
+              <MagicButton
+                title="View Your Profile"
+                position="right"
+                icon={<Send size={20} />}
+              />
+            </Link>
+          ) : (
+            <></>
           )}
         </div>
       </div>

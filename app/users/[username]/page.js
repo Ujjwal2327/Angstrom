@@ -26,7 +26,7 @@ export default async function UserPage({ params }) {
         <div className="bg-slate-900 rounded-md p-3 w-full flex flex-wrap justify-center items-center gap-3">
           Edit your profile
           <Link href={`/users/${user.username}/edit`}>
-            <Button variant="outline">here</Button>
+            <Button variant="outline">Here</Button>
           </Link>
         </div>
       )}
