@@ -507,30 +507,32 @@ function ProfilesSection({ control }) {
                     !field.value && "opacity-50"
                   }`}
                 >
-                  <FormLabel>
-                    <Link
-                      href={
-                        field.value
-                          ? `${profiles[profileName].base_url}${field.value}`
-                          : profiles[profileName].base_url
-                      }
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Image
-                        src={`/icons/Social/${profileName}.svg`}
-                        width={30}
-                        height={30}
-                        alt={`${profileName} logo`}
+                  <div className="flex items-center">
+                    <FormLabel>
+                      <Link
+                        href={
+                          field.value
+                            ? `${profiles[profileName].base_url}${field.value}`
+                            : profiles[profileName].base_url
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Image
+                          src={`/icons/Social/${profileName}.svg`}
+                          width={30}
+                          height={30}
+                          alt={`${profileName} logo`}
+                        />
+                      </Link>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder={`${profiles[profileName].name} Username`}
                       />
-                    </Link>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder={`${profiles[profileName].name} Username`}
-                    />
-                  </FormControl>
+                    </FormControl>
+                  </div>
                 </FormItem>
               )}
             />

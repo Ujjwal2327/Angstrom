@@ -1,14 +1,11 @@
 import { connectDB } from "@/lib/db";
+import { handleActionError, handleCaughtActionError } from "@/utils";
+
+// return is used with handleActionError to ensure that the function immediately exits after the error handling logic has been applied.
 
 export async function getUserByEmail(email, throwable = false) {
-  if (!email || !email.trim()) {
-    const errorMessage = "Invalid email provided.";
-    if (throwable) throw new Error(errorMessage);
-    else {
-      console.error(errorMessage);
-      return null;
-    }
-  }
+  if (!email || !email.trim())
+    return handleActionError("Invalid email provided.", throwable, null);
 
   const prisma = connectDB();
   try {
@@ -23,23 +20,16 @@ export async function getUserByEmail(email, throwable = false) {
       },
     });
 
-    if (!user) {
-      const errorMessage = "User not found.";
-      if (throwable) throw new Error(errorMessage);
-      else {
-        console.error(errorMessage);
-        return null;
-      }
-    }
+    if (!user) return handleActionError("User not found.", throwable, null);
 
     return user;
   } catch (error) {
-    const errorMessage = error.message
-      ? `Error in fetching user: ${error.message}`
-      : "Error in fetching user";
-    console.error(errorMessage);
-    if (throwable) throw new Error(errorMessage);
-    else return null;
+    handleCaughtActionError(
+      "Error in fetching user",
+      error.message,
+      throwable,
+      null
+    );
   } finally {
     await prisma.$disconnect();
   }
@@ -49,36 +39,25 @@ export async function getAllUsers(throwable = false) {
   const prisma = connectDB();
   try {
     const users = await prisma.user.findMany();
-    if (!users?.length) {
-      const errorMessage = "No user found.";
-      if (throwable) throw new Error(errorMessage);
-      else {
-        console.error(errorMessage);
-        return [];
-      }
-    }
+    if (!users?.length)
+      return handleActionError("No user found.", throwable, []);
+
     return users;
   } catch (error) {
-    const errorMessage = error.message
-      ? `Error in fetching users: ${error.message}`
-      : "Error in fetching users";
-    console.error(errorMessage);
-    if (throwable) throw new Error(errorMessage);
-    else return [];
+    handleCaughtActionError(
+      "Error in fetching users",
+      error.message,
+      throwable,
+      []
+    );
   } finally {
     await prisma.$disconnect();
   }
 }
 
 export async function getUserByUsername(username, throwable = false) {
-  if (!username || !username?.trim()) {
-    const errorMessage = "Invalid username provided.";
-    if (throwable) throw new Error(errorMessage);
-    else {
-      console.error(errorMessage);
-      return null;
-    }
-  }
+  if (!username || !username?.trim())
+    return handleActionError("Invalid username provided.", throwable, null);
 
   const prisma = connectDB();
   try {
@@ -93,23 +72,16 @@ export async function getUserByUsername(username, throwable = false) {
       },
     });
 
-    if (!user) {
-      const errorMessage = "User not found.";
-      if (throwable) throw new Error(errorMessage);
-      else {
-        console.error(errorMessage);
-        return null;
-      }
-    }
+    if (!user) return handleActionError("User not found.", throwable, null);
 
     return user;
   } catch (error) {
-    const errorMessage = error.message
-      ? `Error in fetching user: ${error.message}`
-      : "Error in fetching user";
-    console.error(errorMessage);
-    if (throwable) throw new Error(errorMessage);
-    else return null;
+    handleCaughtActionError(
+      "Error in fetching user",
+      error.message,
+      throwable,
+      null
+    );
   } finally {
     await prisma.$disconnect();
   }
@@ -124,15 +96,12 @@ export async function createUser(data, throwable = false) {
         username: data.username,
       },
     });
-    if (userExists) {
-      const errorMessage =
-        "Username already exists. Please choose a different username.";
-      if (throwable) throw new Error(errorMessage);
-      else {
-        console.error(errorMessage);
-        return null;
-      }
-    }
+    if (userExists)
+      return handleActionError(
+        "Username already exists. Please choose a different username.",
+        throwable,
+        null
+      );
 
     data.firstname = data.firstname || "";
     data.lastname = data.lastname || "";
@@ -140,22 +109,21 @@ export async function createUser(data, throwable = false) {
       data,
     });
 
-    if (!newUser) {
-      const errorMessage = "Failed to create user. Please try again later.";
-      if (throwable) throw new Error(errorMessage);
-      else {
-        console.error(errorMessage);
-        return null;
-      }
-    }
+    if (!newUser)
+      return handleActionError(
+        "Failed to create user. Please try again later.",
+        throwable,
+        null
+      );
+
     return newUser;
   } catch (error) {
-    const errorMessage = error.message
-      ? `Error in creating user: ${error.message}`
-      : "Error in creating user";
-    console.error(errorMessage);
-    if (throwable) throw new Error(errorMessage);
-    else return null;
+    handleCaughtActionError(
+      "Error in creating user",
+      error.message,
+      throwable,
+      null
+    );
   } finally {
     await prisma.$disconnect();
   }
@@ -176,14 +144,7 @@ export async function updateUser(data, throwable = false) {
       },
     });
 
-    if (!user) {
-      const errorMessage = "User not found.";
-      if (throwable) throw new Error(errorMessage);
-      else {
-        console.error(errorMessage);
-        return null;
-      }
-    }
+    if (!user) return handleActionError("User not found.", throwable, null);
 
     if (user.username !== data.username) {
       const sameUsernameUser = await prisma.user.findUnique({
@@ -191,14 +152,8 @@ export async function updateUser(data, throwable = false) {
           username: data.username,
         },
       });
-      if (sameUsernameUser) {
-        const errorMessage = "Username already exists.";
-        if (throwable) throw new Error(errorMessage);
-        else {
-          console.error(errorMessage);
-          return null;
-        }
-      }
+      if (sameUsernameUser)
+        return handleActionError("Username already exists.", throwable, null);
     }
 
     // Handle experience updates or creates
@@ -353,23 +308,17 @@ export async function updateUser(data, throwable = false) {
       },
     });
 
-    if (!updatedUser) {
-      const errorMessage = "Failed to update user.";
-      if (throwable) throw new Error(errorMessage);
-      else {
-        console.error(errorMessage);
-        return null;
-      }
-    }
+    if (!updatedUser)
+      return handleActionError("Failed to update user.", throwable, null);
 
     return updatedUser;
   } catch (error) {
-    const errorMessage = error.message
-      ? `Error in updating user: ${error.message}`
-      : "Error in updating user";
-    console.error(errorMessage);
-    if (throwable) throw new Error(errorMessage);
-    else return null;
+    handleCaughtActionError(
+      "Error in updating user",
+      error.message,
+      throwable,
+      null
+    );
   } finally {
     await prisma.$disconnect();
   }
