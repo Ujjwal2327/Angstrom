@@ -55,7 +55,7 @@ async function SuspenseComponent({ params }) {
           <></>
         )}
 
-        {paramsUser.profiles && Object.keys(paramsUser.profiles).length ? (
+        {paramsUser.profiles && Object.keys(paramsUser.profiles)?.length ? (
           <>
             <Separator />
             <ProfilesSection userProfiles={paramsUser.profiles} />
@@ -64,7 +64,7 @@ async function SuspenseComponent({ params }) {
           <></>
         )}
 
-        {paramsUser.skills.length ? (
+        {paramsUser.skills?.length ? (
           <>
             <Separator />
             <SkillsSection skills={paramsUser.skills} />
@@ -73,7 +73,7 @@ async function SuspenseComponent({ params }) {
           <></>
         )}
 
-        {paramsUser.experience.length ? (
+        {paramsUser.experience?.length ? (
           <>
             <Separator />
             <ExperienceSection experience={paramsUser.experience} />
@@ -81,7 +81,7 @@ async function SuspenseComponent({ params }) {
         ) : (
           <></>
         )}
-        {paramsUser.projects.length ? (
+        {paramsUser.projects?.length ? (
           <>
             <Separator />
             <ProjectsSection projects={paramsUser.projects} />
@@ -90,7 +90,7 @@ async function SuspenseComponent({ params }) {
           <></>
         )}
 
-        {paramsUser.education.length ? (
+        {paramsUser.education?.length ? (
           <>
             <Separator />
             <EducationSection education={paramsUser.education} />

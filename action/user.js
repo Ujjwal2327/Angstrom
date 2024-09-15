@@ -1,4 +1,5 @@
 import { connectDB } from "@/lib/db";
+import { handleRedisOperation } from "@/lib/redis";
 import { handleActionError, handleCaughtActionError } from "@/utils";
 
 // return is used with handleActionError to ensure that the function immediately exits after the error handling logic has been applied.
@@ -9,6 +10,9 @@ export async function getUserByEmail(email, throwable = false) {
 
   const prisma = connectDB();
   try {
+    const cacheUser = await handleRedisOperation("get", `email:${email}`);
+    if (cacheUser) return JSON.parse(cacheUser);
+
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -20,7 +24,14 @@ export async function getUserByEmail(email, throwable = false) {
       },
     });
 
-    if (!user) return handleActionError("User not found.", throwable, null);
+    if (!user) return null;
+
+    await handleRedisOperation("set", `username:${user.username}`, user.email);
+    await handleRedisOperation(
+      "set",
+      `email:${user.email}`,
+      JSON.stringify(user)
+    );
 
     return user;
   } catch (error) {
@@ -39,9 +50,6 @@ export async function getAllUsers(throwable = false) {
   const prisma = connectDB();
   try {
     const users = await prisma.user.findMany();
-    if (!users?.length)
-      return handleActionError("No user found.", throwable, []);
-
     return users;
   } catch (error) {
     handleCaughtActionError(
@@ -61,6 +69,17 @@ export async function getUserByUsername(username, throwable = false) {
 
   const prisma = connectDB();
   try {
+    const cacheEmail = await handleRedisOperation(
+      "get",
+      `username:${username}`
+    );
+
+    const cacheUser = cacheEmail
+      ? await handleRedisOperation("get", `email:${cacheEmail}`)
+      : null;
+
+    if (cacheUser) return JSON.parse(cacheUser);
+
     const user = await prisma.user.findUnique({
       where: {
         username,
@@ -72,7 +91,14 @@ export async function getUserByUsername(username, throwable = false) {
       },
     });
 
-    if (!user) return handleActionError("User not found.", throwable, null);
+    if (!user) return null;
+
+    await handleRedisOperation("set", `username:${user.username}`, user.email);
+    await handleRedisOperation(
+      "set",
+      `email:${user.email}`,
+      JSON.stringify(user)
+    );
 
     return user;
   } catch (error) {
@@ -91,11 +117,19 @@ export async function createUser(data, throwable = false) {
   const prisma = connectDB();
 
   try {
-    const userExists = await prisma.user.findUnique({
-      where: {
-        username: data.username,
-      },
-    });
+    const cacheEmail = await handleRedisOperation(
+      "get",
+      `username:${data.username}`
+    );
+
+    const userExists = cacheEmail
+      ? true
+      : await prisma.user.findUnique({
+          where: {
+            username: data.username,
+          },
+        });
+
     if (userExists)
       return handleActionError(
         "Username already exists. Please choose a different username.",
@@ -116,6 +150,17 @@ export async function createUser(data, throwable = false) {
         null
       );
 
+    await handleRedisOperation(
+      "set",
+      `username:${newUser.username}`,
+      newUser.email
+    );
+    await handleRedisOperation(
+      "set",
+      `email:${newUser.email}`,
+      JSON.stringify(newUser)
+    );
+
     return newUser;
   } catch (error) {
     handleCaughtActionError(
@@ -133,26 +178,41 @@ export async function updateUser(data, throwable = false) {
   const prisma = connectDB();
 
   try {
-    const user = await prisma.user.findUnique({
-      where: {
-        email: data.email,
-      },
-      include: {
-        experience: true,
-        projects: true,
-        education: true,
-      },
-    });
+    const cacheUser = await handleRedisOperation("get", `email:${data.email}`);
+
+    const user = cacheUser
+      ? JSON.parse(cacheUser)
+      : await prisma.user.findUnique({
+          where: {
+            email: data.email,
+          },
+          include: {
+            experience: true,
+            projects: true,
+            education: true,
+          },
+        });
 
     if (!user) return handleActionError("User not found.", throwable, null);
 
     if (user.username !== data.username) {
-      const sameUsernameUser = await prisma.user.findUnique({
-        where: {
-          username: data.username,
-        },
-      });
-      if (sameUsernameUser)
+      const cacheOtherEmail = await handleRedisOperation(
+        "get",
+        `username:${data.username}`
+      );
+      const cacheOtherUser = cacheOtherEmail
+        ? await handleRedisOperation("get", `email:${cacheOtherEmail}`)
+        : null;
+
+      const sameUsernameExists =
+        cacheOtherUser ||
+        (await prisma.user.findUnique({
+          where: {
+            username: data.username,
+          },
+        }));
+
+      if (sameUsernameExists)
         return handleActionError("Username already exists.", throwable, null);
     }
 
@@ -310,6 +370,18 @@ export async function updateUser(data, throwable = false) {
 
     if (!updatedUser)
       return handleActionError("Failed to update user.", throwable, null);
+
+    await handleRedisOperation("del", `username:${user.username}`);
+    await handleRedisOperation(
+      "set",
+      `username:${updatedUser.username}`,
+      updatedUser.email
+    );
+    await handleRedisOperation(
+      "set",
+      `email:${updatedUser.email}`,
+      JSON.stringify(updatedUser)
+    );
 
     return updatedUser;
   } catch (error) {
