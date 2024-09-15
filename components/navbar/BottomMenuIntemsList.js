@@ -10,7 +10,7 @@ import useStore from "@/stores/useStore";
 import { toast } from "sonner";
 import { extractFirstLetters } from "@/utils";
 import { SheetClose } from "../ui/sheet";
-import { LogOut, UserPlus } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 
 export default function BottomMenuItemsList({ session }) {
@@ -24,7 +24,7 @@ export default function BottomMenuItemsList({ session }) {
         if (data.user) setUser(data.user);
         else if (data.error) throw new Error(data.error);
       } catch (error) {
-        console.log("Error in fetching user:", error.message);
+        console.log(error.message);
         toast.error(error.message);
       }
     };
@@ -70,13 +70,7 @@ export default function BottomMenuItemsList({ session }) {
               </SheetClose>
             ))
           ) : (
-            <SheetClose asChild>
-              <Link href="/register" className="w-full">
-                <Button className="w-full" aria-label="register">
-                  Register <UserPlus className="ml-2 text-xl" />
-                </Button>
-              </Link>
-            </SheetClose>
+            <></>
           )}
           <SheetClose asChild>
             <Link href="/sign-out" className="w-full">

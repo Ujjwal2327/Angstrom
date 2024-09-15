@@ -58,7 +58,7 @@ export default function InputForm({ session }) {
       if (data.user) {
         router.push("/");
         toast.success("User created successfully");
-      } else throw new Error(data.error);
+      } else if (data.error) throw new Error(data.error);
     } catch (error) {
       console.log("Error submitting form:", error.message);
       toast.error(error.message);

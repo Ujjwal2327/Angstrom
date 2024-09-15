@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 
 // Function to fetch user data from the database (if necessary)
-async function fetchUserIfNeeded(session, baseUrl) {
+async function fetchUser(session, baseUrl) {
   try {
     const response = await fetch(
       `${baseUrl}/api/user?email=${encodeURIComponent(session.user.email)}`,
@@ -13,13 +13,13 @@ async function fetchUserIfNeeded(session, baseUrl) {
       }
     );
     if (!response.ok) {
-      throw new Error(`Failed to fetch user: ${response.statusText}`);
+      throw new Error(response.statusText);
     }
     const data = await response.json();
     if (data.error) throw new Error(data.error);
     return data.user || null;
   } catch (error) {
-    console.log("Error fetching user:", error.message);
+    console.log("Error in fetching user in middleware:", error.message);
     throw new Error("Internal Server Error");
   }
 }
@@ -60,7 +60,7 @@ export async function middleware(request) {
     } else {
       // User is authenticated
       if (!userPresent) {
-        const currentUser = await fetchUserIfNeeded(session, origin);
+        const currentUser = await fetchUser(session, origin);
         if (currentUser) {
           // console.log("adding cookie");
           response.cookies.set("user_present", "true", {
