@@ -7,7 +7,7 @@ import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
 
-export default async function UserEditPage({ params }) {
+export default function UserEditPage({ params }) {
   params.username = decodeURIComponent(params.username);
 
   return (

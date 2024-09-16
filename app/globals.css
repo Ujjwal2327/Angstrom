@@ -76,6 +76,12 @@
   }
 }
 
+@layer utilities {
+  .text-wrap-balance {
+    text-wrap: balance;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;

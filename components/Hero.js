@@ -7,7 +7,7 @@ import { Send } from "lucide-react";
 import { Suspense } from "react";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
 
-export default async function Hero() {
+export default function Hero() {
   return (
     <div className="h-screen w-full bg-grid-large-white/[0.03] flex items-center justify-center bg-background antialiased relative overflow-hidden">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-background [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]" />
@@ -36,7 +36,7 @@ export default async function Hero() {
 
         <TextGenerateEffect
           words="The Ultimate Toolbox for Coders and Engineers"
-          className="text-xl sm:text-2xl font-extrabold text-center text-neutral-300 max-w-xs sm:max-w-full -mt-4 sm:mt-0"
+          className="text-xl sm:text-2xl font-extrabold text-center text-neutral-300 -mt-4 sm:mt-0 text-wrap-balance"
         />
 
         <Suspense fallback={<MagicButton suspense />}>

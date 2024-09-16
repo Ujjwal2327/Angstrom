@@ -14,7 +14,7 @@ import NotFound from "@/app/not-found";
 import { Suspense } from "react";
 import Loader from "@/components/Loader";
 
-export default async function UserPage({ params }) {
+export default function UserPage({ params }) {
   params.username = decodeURIComponent(params.username);
 
   return (
@@ -110,7 +110,7 @@ function BasicInfoSection({ user }) {
   else name = user.firstname + " " + user.lastname;
 
   return (
-    <div className="my-10">
+    <div className="mb-10">
       <h2 className="text-2xl">Basic Info</h2>
       <div className="flex flex-col">
         <div className="flex flex-col-reverse sm:grid sm:grid-cols-2 gap-6 mt-6">
@@ -168,7 +168,7 @@ function ProfilesSection({ userProfiles }) {
   return (
     <div className="my-10">
       <h2 className="text-2xl">Profiles</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 place-items-stretch gap-6 my-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 place-items-stretch gap-6 mt-6">
         {Object.keys(userProfiles)
           .sort()
           .map((profileName) => (
@@ -344,7 +344,7 @@ function EducationSection({ education }) {
               </span>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2">
             <span className="text-muted-foreground">{item.college}</span>
             {item.score && (
               <>
