@@ -34,7 +34,7 @@ async function SuspenseComponent({ params }) {
   return (
     <>
       {params.username === user?.username && (
-        <div className="bg-slate-900 rounded-md p-3 w-full flex flex-wrap justify-center items-center gap-3">
+        <div className="bg-slate-900 rounded-md p-3 mb-6 w-full flex flex-wrap justify-center items-center gap-3">
           Edit your profile
           <Link href={`/users/${user.username}/edit`}>
             <Button variant="outline" aria-label="edit your profile">
