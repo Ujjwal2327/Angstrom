@@ -11,7 +11,7 @@ export default async function Navbar() {
   return (
     <div className="fixed top-3 right-3 z-50">
       <Sheet>
-        <SheetTrigger>
+        <SheetTrigger aria-label="toggle menu">
           <Menu />
         </SheetTrigger>
         <SheetContent side="left">

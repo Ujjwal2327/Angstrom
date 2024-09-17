@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/db";
-import { handleRedisOperation } from "@/lib/redis";
+import { handleRedisOperation, updateUserCache } from "@/lib/redis";
 import { handleActionError, handleCaughtActionError } from "@/utils";
 
 // return is used with handleActionError to ensure that the function immediately exits after the error handling logic has been applied.
@@ -26,12 +26,7 @@ export async function getUserByEmail(email, throwable = false) {
 
     if (!user) return null;
 
-    await handleRedisOperation("set", `username:${user.username}`, user.email);
-    await handleRedisOperation(
-      "set",
-      `email:${user.email}`,
-      JSON.stringify(user)
-    );
+    await updateUserCache(user);
 
     return user;
   } catch (error) {
@@ -93,12 +88,7 @@ export async function getUserByUsername(username, throwable = false) {
 
     if (!user) return null;
 
-    await handleRedisOperation("set", `username:${user.username}`, user.email);
-    await handleRedisOperation(
-      "set",
-      `email:${user.email}`,
-      JSON.stringify(user)
-    );
+    await updateUserCache(user);
 
     return user;
   } catch (error) {
@@ -131,18 +121,7 @@ export async function createUser(data, throwable = false) {
         });
 
     if (userExists) {
-      if (!cacheEmail) {
-        await handleRedisOperation(
-          "set",
-          `username:${userExists.username}`,
-          userExists.email
-        );
-        await handleRedisOperation(
-          "set",
-          `email:${userExists.email}`,
-          JSON.stringify(userExists)
-        );
-      }
+      if (!cacheEmail) await updateUserCache(userExists);
       return handleActionError(
         "Username already exists. Please choose a different username.",
         throwable,
@@ -161,16 +140,7 @@ export async function createUser(data, throwable = false) {
         null
       );
 
-    await handleRedisOperation(
-      "set",
-      `username:${newUser.username}`,
-      newUser.email
-    );
-    await handleRedisOperation(
-      "set",
-      `email:${newUser.email}`,
-      JSON.stringify(newUser)
-    );
+    await updateUserCache(newUser);
 
     return newUser;
   } catch (error) {
@@ -211,12 +181,9 @@ export async function updateUser(data, throwable = false) {
         "get",
         `username:${data.username}`
       );
-      const cacheOtherUser = cacheOtherEmail
-        ? await handleRedisOperation("get", `email:${cacheOtherEmail}`)
-        : null;
 
       const sameUsernameExists =
-        cacheOtherUser ||
+        cacheOtherEmail ||
         (await prisma.user.findUnique({
           where: {
             username: data.username,
@@ -224,188 +191,110 @@ export async function updateUser(data, throwable = false) {
         }));
 
       if (sameUsernameExists) {
-        if (!cacheOtherUser) {
-          await handleRedisOperation(
-            "set",
-            `username:${sameUsernameExists.username}`,
-            sameUsernameExists.email
-          );
-          await handleRedisOperation(
-            "set",
-            `email:${sameUsernameExists.email}`,
-            JSON.stringify(sameUsernameExists)
-          );
-        }
+        if (!cacheOtherEmail) await updateUserCache(sameUsernameExists);
         return handleActionError("Username already exists.", throwable, null);
       }
     }
 
-    // Handle experience updates or creates
-    const newExperience = data.experience;
+    // Perform the update within a single transaction
+    const updatedUser = await prisma.$transaction(
+      async (tx) => {
+        // Prepare sets and operations
+        const newExperienceSet = new Set(
+          data.experience.map((exp) => `${exp.company}-${exp.position}`)
+        );
+        const newProjectsSet = new Set(data.projects.map((proj) => proj.name));
+        const newEducationSet = new Set(
+          data.education.map((edu) => edu.degree)
+        );
 
-    const experienceToDelete =
-      user.experience?.filter(
-        (exp) =>
-          !newExperience.some(
-            (newExp) =>
-              newExp.company === exp.company && newExp.position === exp.position
-          )
-      ) || [];
+        // Handle experience updates or creates
+        const experienceToDelete = user.experience.filter(
+          (exp) => !newExperienceSet.has(`${exp.company}-${exp.position}`)
+        );
+        const deleteExperiencePromises = experienceToDelete.map((exp) =>
+          tx.experience.delete({ where: { id: exp.id } })
+        );
+        const upsertExperiencePromises = data.experience.map((exp) =>
+          tx.experience.upsert({
+            where: {
+              userId_company_position: {
+                userId: user.id,
+                company: exp.company,
+                position: exp.position,
+              },
+            },
+            update: exp,
+            create: { ...exp, userId: user.id },
+          })
+        );
 
-    for (const exp of experienceToDelete) {
-      await prisma.experience.delete({
-        where: {
-          id: exp.id,
-        },
-      });
-    }
+        // Handle project updates or creates
+        const projectsToDelete = user.projects.filter(
+          (project) => !newProjectsSet.has(project.name)
+        );
+        const deleteProjectPromises = projectsToDelete.map((project) =>
+          tx.project.delete({ where: { id: project.id } })
+        );
+        const upsertProjectPromises = data.projects.map((project) =>
+          tx.project.upsert({
+            where: { userId_name: { userId: user.id, name: project.name } },
+            update: project,
+            create: { ...project, userId: user.id },
+          })
+        );
 
-    for (const exp of newExperience) {
-      await prisma.experience.upsert({
-        where: {
-          userId_company_position: {
-            userId: user.id,
-            company: exp.company,
-            position: exp.position,
+        // Handle education updates or creates
+        const educationToDelete = user.education.filter(
+          (edu) => !newEducationSet.has(edu.degree)
+        );
+        const deleteEducationPromises = educationToDelete.map((edu) =>
+          tx.education.delete({ where: { id: edu.id } })
+        );
+        const upsertEducationPromises = data.education.map((edu) =>
+          tx.education.upsert({
+            where: { userId_degree: { userId: user.id, degree: edu.degree } },
+            update: edu,
+            create: { ...edu, userId: user.id },
+          })
+        );
+
+        // Perform all deletions and upserts in parallel
+        await Promise.all([
+          ...deleteExperiencePromises,
+          ...upsertExperiencePromises,
+          ...deleteProjectPromises,
+          ...upsertProjectPromises,
+          ...deleteEducationPromises,
+          ...upsertEducationPromises,
+        ]);
+
+        // Update the user record
+        return tx.user.update({
+          where: { email: data.email },
+          data: {
+            username: data.username,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            pic: data.pic,
+            about: data.about,
+            achievements: data.achievements,
+            profiles: data.profiles,
+            skills: { set: data.skills },
           },
-        },
-        update: {
-          start: exp.start,
-          end: exp.end,
-          about: exp.about,
-        },
-        create: {
-          userId: user.id,
-          company: exp.company,
-          position: exp.position,
-          start: exp.start,
-          end: exp.end,
-          about: exp.about,
-        },
-      });
-    }
-
-    // Handle project updates or creates
-    const newProjects = data.projects;
-
-    const projectsToDelete =
-      user.projects?.filter(
-        (project) =>
-          !newProjects.some((newProject) => newProject.name === project.name)
-      ) || [];
-
-    for (const project of projectsToDelete) {
-      await prisma.project.delete({
-        where: {
-          id: project.id,
-        },
-      });
-    }
-
-    for (const project of newProjects) {
-      await prisma.project.upsert({
-        where: {
-          userId_name: {
-            userId: user.id,
-            name: project.name,
-          },
-        },
-        update: {
-          code_url: project.code_url,
-          live_url: project.live_url,
-          skills: { set: project.skills },
-          about: project.about,
-        },
-        create: {
-          userId: user.id,
-          name: project.name,
-          code_url: project.code_url,
-          live_url: project.live_url,
-          skills: { set: project.skills },
-          about: project.about,
-        },
-      });
-    }
-
-    // Handle education updates or creates
-    const newEducation = data.education;
-
-    const educationToDelete =
-      user.education?.filter(
-        (edu) => !newEducation.some((newEdu) => newEdu.degree === edu.degree)
-      ) || [];
-
-    for (const edu of educationToDelete) {
-      await prisma.education.delete({
-        where: {
-          id: edu.id,
-        },
-      });
-    }
-
-    for (const edu of newEducation) {
-      await prisma.education.upsert({
-        where: {
-          userId_degree: {
-            userId: user.id,
-            degree: edu.degree,
-          },
-        },
-        update: {
-          institution: edu.institution,
-          specialization: edu.specialization,
-          score: edu.score,
-          start: edu.start,
-          end: edu.end,
-        },
-        create: {
-          userId: user.id,
-          institution: edu.institution,
-          degree: edu.degree,
-          specialization: edu.specialization,
-          score: edu.score,
-          start: edu.start,
-          end: edu.end,
-        },
-      });
-    }
-
-    // Update other user details (like profiles, skills, etc.)
-    const updatedUser = await prisma.user.update({
-      where: {
-        email: data.email,
+          include: { projects: true, education: true, experience: true },
+        });
       },
-      data: {
-        username: data.username,
-        firstname: data.firstname,
-        lastname: data.lastname,
-        pic: data.pic,
-        about: data.about,
-        achievements: data.achievements,
-        profiles: data.profiles,
-        skills: { set: data.skills },
-      },
-      include: {
-        projects: true,
-        education: true,
-        experience: true,
-      },
-    });
+      {
+        maxWait: 5000, // Wait up to 5 seconds for a connection
+        timeout: 20000, // Abort the transaction if it takes more than 20 seconds
+      }
+    );
 
     if (!updatedUser)
       return handleActionError("Failed to update user.", throwable, null);
 
-    await handleRedisOperation("del", `username:${user.username}`);
-    await handleRedisOperation(
-      "set",
-      `username:${updatedUser.username}`,
-      updatedUser.email
-    );
-    await handleRedisOperation(
-      "set",
-      `email:${updatedUser.email}`,
-      JSON.stringify(updatedUser)
-    );
+    await updateUserCache(updatedUser, user.username);
 
     return updatedUser;
   } catch (error) {

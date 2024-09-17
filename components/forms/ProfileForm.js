@@ -26,7 +26,7 @@ import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 import Spinner from "../Spinner";
 import dynamic from "next/dynamic";
-import { resolveUrl } from "@/utils";
+import { isSameObject, resolveUrl } from "@/utils";
 const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
 });
@@ -242,6 +242,9 @@ export default function ProfileForm({ user }) {
 
   const onSubmit = async (formdata) => {
     // Handle form submission
+    if (isSameObject(formdata, form.control._defaultValues))
+      return toast.info("No changes detected. Nothing to update.");
+
     try {
       setLoading(true);
       const response = await fetch("/api/user", {
