@@ -130,15 +130,26 @@ export async function createUser(data, throwable = false) {
           },
         });
 
-    if (userExists)
+    if (userExists) {
+      if (!cacheEmail) {
+        await handleRedisOperation(
+          "set",
+          `username:${userExists.username}`,
+          userExists.email
+        );
+        await handleRedisOperation(
+          "set",
+          `email:${userExists.email}`,
+          JSON.stringify(userExists)
+        );
+      }
       return handleActionError(
         "Username already exists. Please choose a different username.",
         throwable,
         null
       );
+    }
 
-    data.firstname = data.firstname || "";
-    data.lastname = data.lastname || "";
     const newUser = await prisma.user.create({
       data,
     });
@@ -212,21 +223,34 @@ export async function updateUser(data, throwable = false) {
           },
         }));
 
-      if (sameUsernameExists)
+      if (sameUsernameExists) {
+        if (!cacheOtherUser) {
+          await handleRedisOperation(
+            "set",
+            `username:${sameUsernameExists.username}`,
+            sameUsernameExists.email
+          );
+          await handleRedisOperation(
+            "set",
+            `email:${sameUsernameExists.email}`,
+            JSON.stringify(sameUsernameExists)
+          );
+        }
         return handleActionError("Username already exists.", throwable, null);
+      }
     }
 
     // Handle experience updates or creates
-    const existingExperience = user.experience;
     const newExperience = data.experience;
 
-    const experienceToDelete = existingExperience.filter(
-      (exp) =>
-        !newExperience.some(
-          (newExp) =>
-            newExp.company === exp.company && newExp.position === exp.position
-        )
-    );
+    const experienceToDelete =
+      user.experience?.filter(
+        (exp) =>
+          !newExperience.some(
+            (newExp) =>
+              newExp.company === exp.company && newExp.position === exp.position
+          )
+      ) || [];
 
     for (const exp of experienceToDelete) {
       await prisma.experience.delete({
@@ -262,13 +286,13 @@ export async function updateUser(data, throwable = false) {
     }
 
     // Handle project updates or creates
-    const existingProjects = user.projects;
     const newProjects = data.projects;
 
-    const projectsToDelete = existingProjects.filter(
-      (project) =>
-        !newProjects.some((newProject) => newProject.name === project.name)
-    );
+    const projectsToDelete =
+      user.projects?.filter(
+        (project) =>
+          !newProjects.some((newProject) => newProject.name === project.name)
+      ) || [];
 
     for (const project of projectsToDelete) {
       await prisma.project.delete({
@@ -304,12 +328,12 @@ export async function updateUser(data, throwable = false) {
     }
 
     // Handle education updates or creates
-    const existingEducation = user.education;
     const newEducation = data.education;
 
-    const educationToDelete = existingEducation.filter(
-      (edu) => !newEducation.some((newEdu) => newEdu.degree === edu.degree)
-    );
+    const educationToDelete =
+      user.education?.filter(
+        (edu) => !newEducation.some((newEdu) => newEdu.degree === edu.degree)
+      ) || [];
 
     for (const edu of educationToDelete) {
       await prisma.education.delete({
@@ -328,7 +352,7 @@ export async function updateUser(data, throwable = false) {
           },
         },
         update: {
-          college: edu.college,
+          institution: edu.institution,
           specialization: edu.specialization,
           score: edu.score,
           start: edu.start,
@@ -336,7 +360,7 @@ export async function updateUser(data, throwable = false) {
         },
         create: {
           userId: user.id,
-          college: edu.college,
+          institution: edu.institution,
           degree: edu.degree,
           specialization: edu.specialization,
           score: edu.score,

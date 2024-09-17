@@ -722,6 +722,8 @@ export const categorizedSkills = {
   },
 };
 
+export const default_user_pic = "/images/default_user_pic.png";
+
 /*
 // TO SORt OBJECT
 const sortedCategories = Object.keys(categorizedSkills).sort();

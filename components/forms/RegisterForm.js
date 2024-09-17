@@ -21,9 +21,9 @@ import Spinner from "../Spinner";
 const FormSchema = z.object({
   username: z
     .string()
+    .trim()
     .min(2, { message: "Username must be at least 2 characters." })
     .max(15, { message: "Username must be at most 15 characters." })
-    .trim()
     .refine((username) => !/\s/.test(username), {
       message: "Username must not contain spaces.",
     })
@@ -73,7 +73,9 @@ export default function InputForm({ session }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-2/3 p-5 rounded-md space-y-6 bg-primary-foreground flex flex-col max-w-96"
+        className={`w-2/3 p-5 rounded-md space-y-6 bg-primary-foreground flex flex-col max-w-96 ${
+          loading && "loading opacity-50"
+        }`}
       >
         <FormField
           control={form.control}
@@ -91,7 +93,7 @@ export default function InputForm({ session }) {
         <Button
           type="submit"
           disabled={loading}
-          className="w-full font-bold"
+          className={`w-full font-bold ${loading && "loading"}`}
           aria-label="register username"
         >
           {loading ? (

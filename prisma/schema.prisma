@@ -44,7 +44,7 @@ model Project {
 
 model Education {
   id             Int     @id @default(autoincrement())
-  college        String
+  institution    String
   degree         String
   specialization String?
   score          String?
@@ -62,7 +62,7 @@ model Experience {
   position String
   start    String
   end      String? @default("Present")
-  about    String
+  about    String?
   userId   Int
   user     User    @relation(fields: [userId], references: [id])
 

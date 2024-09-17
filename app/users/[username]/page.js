@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
-import { profiles } from "@/constants";
+import { default_user_pic, profiles } from "@/constants";
 import dynamic from "next/dynamic";
 const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
@@ -13,6 +13,7 @@ const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
 import NotFound from "@/app/not-found";
 import { Suspense } from "react";
 import Loader from "@/components/Loader";
+import { resolveUrl } from "@/utils";
 
 export default function UserPage({ params }) {
   params.username = decodeURIComponent(params.username);
@@ -137,7 +138,7 @@ function BasicInfoSection({ user }) {
             </div>
           </div>
           <Image
-            src={!user.pic ? "/images/default_user_pic.png" : user.pic}
+            src={resolveUrl(user.pic, default_user_pic)}
             alt="Profile Picture"
             width={200}
             height={200}
@@ -345,7 +346,7 @@ function EducationSection({ education }) {
             </div>
           </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-2">
-            <span className="text-muted-foreground">{item.college}</span>
+            <span className="text-muted-foreground">{item.institution}</span>
             {item.score && (
               <>
                 <span className="hidden sm:block">|</span>

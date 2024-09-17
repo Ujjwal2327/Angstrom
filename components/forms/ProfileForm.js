@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import Image from "next/image";
-import { profiles, categorizedSkills } from "@/constants";
+import { profiles, categorizedSkills, default_user_pic } from "@/constants";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RotateCcw, Trash } from "lucide-react";
@@ -26,6 +26,7 @@ import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 import Spinner from "../Spinner";
 import dynamic from "next/dynamic";
+import { resolveUrl } from "@/utils";
 const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
 });
@@ -33,18 +34,16 @@ const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
 // Define form schema
 const projectSchema = z
   .object({
-    name: z.string().min(1, { message: "Project name is required" }).trim(),
-    code_url: z.string().url({ message: "Invalid URL" }).trim(),
+    name: z.string().trim().min(1, { message: "Project name is required" }),
+    code_url: z.string().trim().url({ message: "Invalid URL" }),
     live_url: z.string().trim().optional(),
     skills: z
       .array(z.string().trim())
-      .refine(
-        (skills) => skills.filter((skill) => skill.trim() !== "").length > 0,
-        {
-          message: "At least one non-empty skill is required",
-        }
-      ),
-    about: z.string().min(1, { message: "Project description is required" }),
+      .min(1, { message: "At least one skill is required for the project" }),
+    about: z
+      .string()
+      .trim()
+      .min(1, { message: "Project description is required" }),
   })
   .transform((data) => {
     const filteredSkills = data.skills.filter((skill) => skill.trim() !== "");
@@ -57,11 +56,14 @@ const projectSchema = z
 
 const educationSchema = z
   .object({
-    college: z.string().min(1, { message: "College name is required" }).trim(),
-    degree: z.string().min(1, { message: "Degree is required" }).trim(),
+    institution: z
+      .string()
+      .trim()
+      .min(1, { message: "Institution name is required" }),
+    degree: z.string().trim().min(1, { message: "Degree is required" }),
     specialization: z.string().trim().optional(),
     score: z.string().trim().optional(),
-    start: z.string().min(1, { message: "Start date is required" }).trim(),
+    start: z.string().trim().min(1, { message: "Start date is required" }),
     end: z.string().trim().optional(),
   })
   .transform((data) => ({
@@ -71,11 +73,11 @@ const educationSchema = z
 
 const experienceSchema = z
   .object({
-    company: z.string().min(1, { message: "Company name is required" }).trim(),
-    position: z.string().min(1, { message: "Position is required" }).trim(),
-    start: z.string().min(1, { message: "Start date is required" }).trim(),
+    company: z.string().trim().min(1, { message: "Company name is required" }),
+    position: z.string().trim().min(1, { message: "Position is required" }),
+    start: z.string().trim().min(1, { message: "Start date is required" }),
     end: z.string().trim().optional(),
-    about: z.string().min(1, { message: "Description is required" }).trim(),
+    about: z.string().trim().optional(),
   })
   .transform((data) => ({
     ...data,
@@ -93,20 +95,24 @@ function uniqueValidator(items) {
 }
 
 const formSchema = z.object({
+  email: z.string().trim().email({ message: "Invalid email" }),
   username: z
     .string()
+    .trim()
     .min(2, { message: "Username must be at least 2 characters." })
     .max(15, { message: "Username must be at most 15 characters." })
-    .trim()
     .refine((username) => !/\s/.test(username), {
       message: "Username must not contain spaces.",
     })
     .transform((username) => username.toLowerCase()),
-  email: z.string().email({ message: "Invalid email" }).trim(),
+  about: z.string().trim().optional(),
+  pic: z
+    .string()
+    .trim()
+    .optional()
+    .transform((val) => resolveUrl(val, default_user_pic)),
   firstname: z.string().trim().optional(),
   lastname: z.string().trim().optional(),
-  pic: z.string().url().trim().optional(),
-  about: z.string().trim().optional(),
   achievements: z
     .string()
     .trim()
@@ -114,12 +120,6 @@ const formSchema = z.object({
     .transform((val) => {
       return val === "<p></p>" || val === "<h2></h2>" ? "" : val;
     }),
-  skills: z.array(
-    z
-      .string()
-      .min(1, { message: "Project must have at least one skill" })
-      .trim()
-  ),
   profiles: z
     .record(z.string().trim(), z.string().trim().optional())
     .transform((profiles) => {
@@ -127,6 +127,18 @@ const formSchema = z.object({
         Object.entries(profiles).filter(([key, value]) => value !== "")
       );
     }),
+  skills: z.array(z.string().trim()).default([]),
+  experience: z.array(experienceSchema).refine(
+    (experience) => {
+      const combinations = experience.map(
+        (item) => `${item.company}|${item.position}`
+      );
+      return uniqueValidator(combinations);
+    },
+    {
+      message: "Company and Position combinations must be unique.",
+    }
+  ),
   projects: z.array(projectSchema).refine(
     (projects) => {
       const projectNames = projects.map((item) => item.name);
@@ -141,17 +153,6 @@ const formSchema = z.object({
     },
     {
       message: "Degrees must be unique.",
-    }
-  ),
-  experience: z.array(experienceSchema).refine(
-    (experience) => {
-      const combinations = experience.map(
-        (item) => `${item.company}|${item.position}`
-      );
-      return uniqueValidator(combinations);
-    },
-    {
-      message: "Company and Position combinations must be unique.",
     }
   ),
 });
@@ -185,7 +186,7 @@ export default function ProfileForm({ user }) {
         })) || [],
       education:
         user.education?.map((edu) => ({
-          college: edu.college,
+          institution: edu.institution,
           degree: edu.degree,
           score: edu.score || "",
           specialization: edu.specialization || "",
@@ -265,27 +266,35 @@ export default function ProfileForm({ user }) {
     }
   };
 
-  useEffect(() => {
-    // Extract the error keys
-    const errorKeys = Object.keys(formState.errors);
-
-    // Iterate through error keys
-    for (const key of errorKeys) {
-      const error = formState.errors[key];
-
-      // Check if the error message exists
-      if (error?.root?.message) {
-        toast.error(error.root.message);
-        break; // Show only the first error and stop
+  function handleErrors(errors) {
+    // unique identifier error in experience, projects, education
+    for (const key of Object.keys(errors)) {
+      if (errors[key]?.root?.message) {
+        toast.error(errors[key].root.message);
+        return;
       }
     }
+
+    // at least 1 skill error in project
+    if (!errors.projects || !errors.projects?.length) return;
+
+    for (const key of errors.projects) {
+      if (key?.skills?.message) {
+        toast.error(key.skills.message);
+        return;
+      }
+    }
+  }
+
+  useEffect(() => {
+    handleErrors(formState.errors);
   }, [formState.errors]);
 
   return (
     <Form {...form}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-3xl -mb-10"
+        className={`w-full max-w-3xl -mb-10 ${loading && "loading opacity-50"}`}
       >
         <BasicInfoSection control={control} user={user} />
         <Separator />
@@ -328,13 +337,10 @@ export default function ProfileForm({ user }) {
           control={control}
         />
         <Separator />
-
         <Button
           type="submit"
           disabled={loading}
-          className={`w-full font-bold my-10 ${
-            loading && "cursor-not-allowed"
-          }`}
+          className={`w-full font-bold my-10 ${loading && "loading"}`}
           aria-label="submit your details"
         >
           {loading ? (
@@ -354,14 +360,14 @@ function BasicInfoSection({ control, user }) {
   return (
     <div>
       <FormLabel className="text-2xl">Basic Info</FormLabel>
-      <div className="flex flex-col-reverse sm:grid sm:grid-cols-2 gap-6 my-6">
+      <div className="flex flex-col-reverse sm:grid sm:grid-cols-2 gap-6 my-6 w-3xl">
         <div className="flex flex-col gap-6">
           <FormField
             control={control}
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Email *</FormLabel>
                 <FormControl>
                   <Input type="email" {...field} disabled />
                 </FormControl>
@@ -374,7 +380,7 @@ function BasicInfoSection({ control, user }) {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Username *</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -410,9 +416,7 @@ function BasicInfoSection({ control, user }) {
             <FormItem>
               <div>
                 <Image
-                  src={
-                    !field.value ? "/images/default_user_pic.png" : field.value
-                  }
+                  src={resolveUrl(field.value, default_user_pic)}
                   alt="Profile Picture"
                   width={250}
                   height={250}
@@ -428,7 +432,7 @@ function BasicInfoSection({ control, user }) {
                     onClick={() =>
                       user.pic
                         ? field.onChange(user.pic)
-                        : field.onChange("/images/default_user_pic.png")
+                        : field.onChange(default_user_pic)
                     }
                   />
                 </div>
@@ -495,7 +499,7 @@ function ProfilesSection({ control }) {
   return (
     <div className="flex flex-col gap-6 my-10">
       <FormLabel className="text-2xl">Profiles</FormLabel>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 place-items-center gap-5">
         {Object.keys(profiles).map((profileName, index) => (
           <div key={profileName} className="flex items-center">
             <FormField
@@ -504,7 +508,7 @@ function ProfilesSection({ control }) {
               render={({ field }) => (
                 <FormItem
                   className={`flex justify-center items-center ${
-                    !field.value && "opacity-50"
+                    !field.value?.trim() && "opacity-50"
                   }`}
                 >
                   <div className="flex items-center">
@@ -644,7 +648,7 @@ function ExperienceSection({
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Company Name"
+                        placeholder="Company Name *"
                         className="text-[17px] font-semibold"
                       />
                     </FormControl>
@@ -660,7 +664,7 @@ function ExperienceSection({
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Position"
+                        placeholder="Position *"
                         className="font-semibold"
                       />
                     </FormControl>
@@ -687,7 +691,7 @@ function ExperienceSection({
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Start Date (e.g., Nov 2024)"
+                      placeholder="Start Date * (e.g., Nov 2024)"
                     />
                   </FormControl>
                   <FormMessage />
@@ -713,7 +717,7 @@ function ExperienceSection({
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Textarea {...field} placeholder="Description" />
+                  <Textarea {...field} placeholder="Work Description" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -765,7 +769,7 @@ function ProjectsSection({
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Project Name"
+                      placeholder="Project Name *"
                       className="text-[17px] font-semibold"
                     />
                   </FormControl>
@@ -789,7 +793,7 @@ function ProjectsSection({
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <Input {...field} placeholder="Github Link" />
+                    <Input {...field} placeholder="Github Link *" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -830,7 +834,7 @@ function ProjectsSection({
                 <FormControl>
                   <Textarea
                     {...field}
-                    placeholder="Project Description"
+                    placeholder="Project Description *"
                     className="min-h-28 sm:min-h-20"
                   />
                 </FormControl>
@@ -907,8 +911,8 @@ function ProjectSkillsComponent({ skills, field }) {
               {item}
             </Badge>
           ))}
-        {!skills.length && (
-          <div className="w-full text-center opacity-50">
+        {!field.value.length && (
+          <div className="w-full text-center text-red-400">
             No Skills Selected
           </div>
         )}
@@ -940,7 +944,7 @@ function EducationSection({
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Degree"
+                      placeholder="Degree *"
                       className="text-[17px] font-semibold"
                     />
                   </FormControl>
@@ -989,11 +993,11 @@ function EducationSection({
           </div>
           <FormField
             control={control}
-            name={`education.${index}.college`}
+            name={`education.${index}.institution`}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input {...field} placeholder="College Name" />
+                  <Input {...field} placeholder="Institution Name *" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -1008,7 +1012,7 @@ function EducationSection({
                   <FormControl>
                     <Input
                       {...field}
-                      placeholder="Start Date (e.g., Nov 2020)"
+                      placeholder="Start Date * (e.g., Nov 2020)"
                     />
                   </FormControl>
                   <FormMessage />
@@ -1038,7 +1042,7 @@ function EducationSection({
         variant="secondary"
         onClick={() =>
           appendEducation({
-            college: "",
+            institution: "",
             degree: "",
             specialization: "",
             start: "",

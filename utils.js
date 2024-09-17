@@ -25,3 +25,13 @@ export function handleCaughtActionError(
   if (throwable) throw new Error(errorMessage);
   else return returnValue;
 }
+
+export function resolveUrl(url, defaultUrl) {
+  const trimmedUrl = url.trim();
+  try {
+    new URL(trimmedUrl);
+    return trimmedUrl;
+  } catch {
+    return defaultUrl;
+  }
+}
