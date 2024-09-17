@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { HydrationOverlay } from "@builder.io/react-hydration-overlay";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang={metadata.lang}>
-      <head>
+      <Head>
         <meta name="description" content={metadata.description} />
         <meta name="keywords" content={metadata.keywords} />
         <meta name="robots" content={metadata.robots} />
@@ -31,7 +32,7 @@ export default async function RootLayout({ children }) {
         <meta name="publisher" content={metadata.publisher} />
         <link rel="canonical" href={metadata.canonical} />
         <title>{metadata.title}</title>
-      </head>
+      </Head>
       <body className={inter.className}>
         <HydrationOverlay>
           <ThemeProvider
