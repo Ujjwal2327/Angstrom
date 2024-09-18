@@ -30,7 +30,7 @@ const FormSchema = z.object({
     .transform((username) => username.toLowerCase()),
 });
 
-export default function InputForm({ session }) {
+export default function RegisterForm({ session }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 

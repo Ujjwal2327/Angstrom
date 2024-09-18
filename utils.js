@@ -68,3 +68,7 @@ export function isSameObject(obj1, obj2) {
 
   return true;
 }
+
+export function capitalizeString(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}

@@ -10,10 +10,18 @@ import dynamic from "next/dynamic";
 const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
 });
-import NotFound from "@/app/not-found";
 import { Suspense } from "react";
 import Loader from "@/components/Loader";
-import { resolveUrl } from "@/utils";
+import { capitalizeString, resolveUrl } from "@/utils";
+import { permanentRedirect } from "next/navigation";
+
+export function generateMetadata({ params }) {
+  const username = decodeURIComponent(params.username);
+  return {
+    title: `${capitalizeString(username)}'s Profile | Angstrom`,
+    description: `View the career profile of ${capitalizeString(username)}.`,
+  };
+}
 
 export default function UserPage({ params }) {
   params.username = decodeURIComponent(params.username);
@@ -31,7 +39,7 @@ async function SuspenseComponent({ params }) {
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
   const paramsUser = await getUserByUsername(params.username);
-  if (!paramsUser) return <NotFound />;
+  if (!paramsUser) permanentRedirect("/not-found");
   return (
     <>
       {params.username === user?.username && (

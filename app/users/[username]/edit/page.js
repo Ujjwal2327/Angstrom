@@ -7,6 +7,13 @@ import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
 import { Suspense } from "react";
 
+export function generateMetadata({ params }) {
+  return {
+    title: `Edit Profile | Angstrom`,
+    description: `Update your Angstrom profile with new information. Modify your personal details, career achievements, and more.`,
+  };
+}
+
 export default function UserEditPage({ params }) {
   params.username = decodeURIComponent(params.username);
 

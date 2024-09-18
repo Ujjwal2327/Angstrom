@@ -4,7 +4,6 @@ import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { HydrationOverlay } from "@builder.io/react-hydration-overlay";
-import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,23 +15,14 @@ export const metadata = {
   url: "https://angstrom.vercel.app/",
   canonical: "https://angstrom.vercel.app/",
   robots: "index, follow",
-  author: "Angstrom Team",
-  publisher: "Angstrom Technologies",
+  author: "Ujjwal",
+  publisher: "Ujjwal",
   lang: "en",
 };
 
-export default async function RootLayout({ children }) {
+export default function RootLayout({ children }) {
   return (
     <html lang={metadata.lang}>
-      <Head>
-        <meta name="description" content={metadata.description} />
-        <meta name="keywords" content={metadata.keywords} />
-        <meta name="robots" content={metadata.robots} />
-        <meta name="author" content={metadata.author} />
-        <meta name="publisher" content={metadata.publisher} />
-        <link rel="canonical" href={metadata.canonical} />
-        <title>{metadata.title}</title>
-      </Head>
       <body className={inter.className}>
         <HydrationOverlay>
           <ThemeProvider
