@@ -1,4 +1,4 @@
-import { connectDB } from "@/lib/db";
+import prisma from "@/lib/db";
 import { handleRedisOperation, updateUserCache } from "@/lib/redis";
 import { handleActionError, handleCaughtActionError } from "@/utils";
 
@@ -8,7 +8,6 @@ export async function getUserByEmail(email, throwable = false) {
   if (!email || !email.trim())
     return handleActionError("Invalid email provided.", throwable, null);
 
-  const prisma = connectDB();
   try {
     const cacheUser = await handleRedisOperation("get", `email:${email}`);
     if (cacheUser) return JSON.parse(cacheUser);
@@ -36,13 +35,10 @@ export async function getUserByEmail(email, throwable = false) {
       throwable,
       null
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 export async function getAllUsers(throwable = false) {
-  const prisma = connectDB();
   try {
     const users = await prisma.user.findMany();
     return users;
@@ -53,8 +49,6 @@ export async function getAllUsers(throwable = false) {
       throwable,
       []
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
@@ -62,7 +56,6 @@ export async function getUserByUsername(username, throwable = false) {
   if (!username || !username?.trim())
     return handleActionError("Invalid username provided.", throwable, null);
 
-  const prisma = connectDB();
   try {
     const cacheEmail = await handleRedisOperation(
       "get",
@@ -98,14 +91,10 @@ export async function getUserByUsername(username, throwable = false) {
       throwable,
       null
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 export async function createUser(data, throwable = false) {
-  const prisma = connectDB();
-
   try {
     const cacheEmail = await handleRedisOperation(
       "get",
@@ -150,14 +139,10 @@ export async function createUser(data, throwable = false) {
       throwable,
       null
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
 
 export async function updateUser(data, throwable = false) {
-  const prisma = connectDB();
-
   try {
     const cacheUser = await handleRedisOperation("get", `email:${data.email}`);
 
@@ -304,7 +289,5 @@ export async function updateUser(data, throwable = false) {
       throwable,
       null
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }

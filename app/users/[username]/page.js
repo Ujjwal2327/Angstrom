@@ -150,7 +150,8 @@ function BasicInfoSection({ user }) {
             alt="Profile Picture"
             width={200}
             height={200}
-            className="rounded-full"
+            className="rounded-full mx-auto"
+            loading="lazy"
           />
         </div>
         {user.about && (
@@ -193,6 +194,7 @@ function ProfilesSection({ userProfiles }) {
                   width={30}
                   height={30}
                   alt={`${profileName} logo`}
+                  loading="lazy"
                 />
                 <span className="text-sm text-muted-foreground truncate max-w-full">
                   {userProfiles[profileName]}
