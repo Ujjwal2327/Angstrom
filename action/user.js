@@ -5,8 +5,7 @@ import { handleActionError, handleCaughtActionError } from "@/utils";
 // return is used with handleActionError to ensure that the function immediately exits after the error handling logic has been applied.
 
 export async function getUserByEmail(email, throwable = false) {
-  if (!email || !email.trim())
-    return handleActionError("Invalid email provided.", throwable, null);
+  if (!email || !email.trim()) return null;
 
   try {
     const cacheUser = await handleRedisOperation("get", `email:${email}`);
@@ -53,8 +52,7 @@ export async function getAllUsers(throwable = false) {
 }
 
 export async function getUserByUsername(username, throwable = false) {
-  if (!username || !username?.trim())
-    return handleActionError("Invalid username provided.", throwable, null);
+  if (!username || !username?.trim()) return null;
 
   try {
     const cacheEmail = await handleRedisOperation(

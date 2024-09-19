@@ -1,3 +1,5 @@
+import { withHydrationOverlay } from "@builder.io/react-hydration-overlay/next";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -14,4 +16,7 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+// Apply the hydration overlay with the given configuration
+export default withHydrationOverlay({
+  appRootSelector: "main",
+})(nextConfig);
