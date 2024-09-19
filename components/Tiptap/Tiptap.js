@@ -123,6 +123,7 @@ function Toolbar({ editor, desc, onChange }) {
       <div className="button-group flex flex-wrap items-center gap-1">
         {/* heading */}
         <Toggle
+          type="button"
           pressed={editor.isActive("heading", { level: 2 })}
           variant="outline"
           size="sm"
@@ -136,6 +137,7 @@ function Toolbar({ editor, desc, onChange }) {
 
         {/* bold */}
         <Toggle
+          type="button"
           pressed={editor.isActive("bold")}
           variant="outline"
           size="sm"
@@ -147,6 +149,7 @@ function Toolbar({ editor, desc, onChange }) {
 
         {/* italic */}
         <Toggle
+          type="button"
           pressed={editor.isActive("italic")}
           variant="outline"
           size="sm"
@@ -158,6 +161,7 @@ function Toolbar({ editor, desc, onChange }) {
 
         {/* link */}
         <Toggle
+          type="button"
           pressed={editor.isActive("link")}
           variant="outline"
           size="sm"
@@ -169,6 +173,7 @@ function Toolbar({ editor, desc, onChange }) {
 
         {/* code */}
         <Toggle
+          type="button"
           pressed={editor.isActive("codeBlock")}
           variant="outline"
           size="sm"
@@ -180,6 +185,7 @@ function Toolbar({ editor, desc, onChange }) {
 
         {/* unordered list */}
         <Toggle
+          type="button"
           pressed={editor.isActive("bulletList")}
           variant="outline"
           size="sm"
@@ -191,6 +197,7 @@ function Toolbar({ editor, desc, onChange }) {
 
         {/* blockquote */}
         <Toggle
+          type="button"
           pressed={editor.isActive("blockquote")}
           variant="outline"
           size="sm"
@@ -202,6 +209,7 @@ function Toolbar({ editor, desc, onChange }) {
 
         {/* undo */}
         <Button
+          type="button"
           disabled={!editor.can().undo()}
           variant="outline"
           size="sm"
@@ -213,6 +221,7 @@ function Toolbar({ editor, desc, onChange }) {
 
         {/* blockquote */}
         <Button
+          type="button"
           disabled={!editor.can().redo()}
           variant="outline"
           size="sm"

@@ -38,7 +38,13 @@ const projectSchema = z
     code_url: z.string().trim().url({ message: "Invalid URL" }),
     live_url: z.string().trim().optional(),
     skills: z
-      .array(z.string().trim())
+      .array(
+        z
+          .string()
+          .trim()
+          .min(1, "Skill must be at least 1 character")
+          .max(30, "Skill cannot exceed 30 characters")
+      )
       .min(1, { message: "At least one skill is required for the project" }),
     about: z
       .string()
@@ -127,7 +133,15 @@ const formSchema = z.object({
         Object.entries(profiles).filter(([key, value]) => value !== "")
       );
     }),
-  skills: z.array(z.string().trim()).default([]),
+  skills: z
+    .array(
+      z
+        .string()
+        .trim()
+        .min(1, "Skill must be at least 1 character")
+        .max(30, "Skill cannot exceed 30 characters")
+    )
+    .default([]),
   experience: z.array(experienceSchema).refine(
     (experience) => {
       const combinations = experience.map(
@@ -168,7 +182,7 @@ export default function ProfileForm({ user }) {
       email: user.email,
       firstname: user.firstname || "",
       lastname: user.lastname || "",
-      pic: user.pic || "",
+      pic: resolveUrl(user.pic, default_user_pic),
       about: user.about || "",
       achievements: user.achievements || "",
       skills: user.skills || [],
@@ -287,10 +301,21 @@ export default function ProfileForm({ user }) {
       }
     }
   }
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && e.target.closest("form")) e.preventDefault();
+  };
 
   useEffect(() => {
     handleErrors(formState.errors);
   }, [formState.errors]);
+
+  // Prevents form submission when the Enter key is pressed in any input field within a form.
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <Form {...form}>
@@ -431,12 +456,12 @@ function BasicInfoSection({ control, user }) {
                 <div className="flex gap-x-2 items-center">
                   <Input {...field} />
                   <RotateCcw
+                    type="button"
                     className="cursor-pointer"
                     onClick={() =>
-                      user.pic
-                        ? field.onChange(user.pic)
-                        : field.onChange(default_user_pic)
+                      field.onChange(resolveUrl(user.pic, default_user_pic))
                     }
+                    aria-label="reset image src"
                   />
                 </div>
               </FormControl>
@@ -551,13 +576,22 @@ function ProfilesSection({ control }) {
   );
 }
 
+function isSkillPresent(querySkill) {
+  if (!querySkill || !querySkill.trim()) return false;
+  for (const category of Object.keys(categorizedSkills)) {
+    if (categorizedSkills[category][querySkill]) return true;
+  }
+  return false;
+}
+
 function SkillsSection({ skills, removeSkill, appendSkill, setValue }) {
   const [skillSearchQuery, setSkillSearchQuery] = useState("");
 
   const handleAddSkill = (skill) => {
     if (!skills.includes(skill)) {
       appendSkill(skill);
-      setValue("skills", [...skills, skill]); // Update skills array
+      setValue("skills", [...skills, skill].sort()); // Update skills array
+      setSkillSearchQuery("");
     }
   };
   return (
@@ -566,12 +600,14 @@ function SkillsSection({ skills, removeSkill, appendSkill, setValue }) {
       <div className="grid md:grid-cols-2 gap-10">
         <div className="md:h-[333px] sm:min-w-[350px] w-full rounded-md border p-4 flex justify-center items-center overflow-auto">
           <div className="w-full">
-            {skills.sort().map((item, index) => (
+            {skills.map((item, index) => (
               <Badge
                 key={item}
+                type="button"
                 variant="secondary"
                 onClick={() => removeSkill(index)}
                 className="cursor-pointer my-2 mx-3"
+                aria-label={`remove skill ${item}`}
               >
                 {item}
               </Badge>
@@ -584,15 +620,30 @@ function SkillsSection({ skills, removeSkill, appendSkill, setValue }) {
           </div>
         </div>
         <ScrollArea className="h-[333px] sm:min-w-[350px] rounded-md border p-4 opacity-80 relative pt-[4.5rem]">
-          <div className="p-4 absolute top-0 left-0 bg-background z-10 w-full">
+          <div className="p-4 absolute top-0 left-0 bg-background z-10 w-full flex justify-between gap-2">
             <Input
               placeholder="Search a skill to add..."
               value={skillSearchQuery}
-              onChange={(e) =>
-                setSkillSearchQuery(e.target.value?.toLowerCase())
-              }
+              onChange={(e) => {
+                const skillToSave = e.target.value?.toLowerCase()?.trim();
+                if (skillToSave.length <= 30) setSkillSearchQuery(skillToSave);
+              }}
               className="w-full"
             />
+            {skillSearchQuery.length && !isSkillPresent(skillSearchQuery) ? (
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => {
+                  handleAddSkill(skillSearchQuery);
+                }}
+                aria-label={`add skill ${skillSearchQuery}`}
+              >
+                Add
+              </Button>
+            ) : (
+              <></>
+            )}
           </div>
           {Object.entries(categorizedSkills).map(
             ([category, { skills: skillSet, title }], index) => {
@@ -607,10 +658,12 @@ function SkillsSection({ skills, removeSkill, appendSkill, setValue }) {
                     {filteredSkills.map(([skill, { icon, url }]) => (
                       <div
                         key={skill}
+                        type="button"
                         className="text-sm px-2 ml-2 py-1.5 rounded-sm opacity-70 hover:bg-secondary flex gap-x-4 items-center cursor-pointer"
                         onClick={() => {
                           handleAddSkill(skill);
                         }}
+                        aria-label={`add skill ${skill}`}
                       >
                         <span>{skill}</span>
                       </div>
@@ -856,7 +909,7 @@ function ProjectsSection({
             name: "",
             live_url: "",
             code_url: "",
-            skills: [""],
+            skills: [],
             about: "",
           })
         }
@@ -869,22 +922,12 @@ function ProjectsSection({
 }
 
 function ProjectSkillsComponent({ skills, field }) {
-  useEffect(() => {
-    const initialSkills = field.value.filter((skill) => skill.trim()) || [];
-    if (
-      initialSkills.length !== field.value.length ||
-      !initialSkills.every((value, idx) => value === field.value[idx])
-    ) {
-      field.onChange(initialSkills);
-    }
-  }, [field]);
-
-  const handleSkillClick = (item) => {
+  const toggleSkillSelection = (item) => {
     let updatedSkills;
     if (field.value.includes(item)) {
       updatedSkills = field.value.filter((skill) => skill !== item);
     } else {
-      updatedSkills = [...field.value, item];
+      updatedSkills = [...field.value, item].sort();
     }
     field.onChange(updatedSkills);
   };
@@ -892,25 +935,28 @@ function ProjectSkillsComponent({ skills, field }) {
   return (
     <div>
       <div className="w-full bg-background rounded-md py-2">
-        {field.value.sort().map((item) => (
+        {field.value.map((item) => (
           <Badge
             key={item}
+            type="button"
             variant={field.value.includes(item) ? "secondary" : "ghost"}
-            onClick={() => handleSkillClick(item)}
+            onClick={() => toggleSkillSelection(item)}
             className="cursor-pointer my-2 mx-3"
+            aria-label={`remove skill ${item}`}
           >
             {item}
           </Badge>
         ))}
         {skills
-          .sort()
           .filter((item) => !field.value.includes(item))
           .map((item) => (
             <Badge
               key={item}
+              type="button"
               variant="ghost"
-              onClick={() => handleSkillClick(item)}
+              onClick={() => toggleSkillSelection(item)}
               className="cursor-pointer my-2 mx-3"
+              aria-label={`add skill ${item}`}
             >
               {item}
             </Badge>
