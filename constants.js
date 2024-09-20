@@ -7,10 +7,11 @@ export const menuItems = {
 };
 
 // only use for outside sites
-export const profileIconBaseUrl =
-  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/acef712eb9fb929d1a973719541190d98ab9abaa/public/icons/profiles/"
-export const skillIconBaseUrl =
-  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/acef712eb9fb929d1a973719541190d98ab9abaa/public/icons/categorizedSkills/"
+const iconBaseUrl =
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/889d140895e3d72c6c2c135b3a7d0319b9e4bfa8/public/icons/";
+
+export const profileIconBaseUrl = `${iconBaseUrl}profiles/`;
+export const skillIconBaseUrl = `${iconBaseUrl}categorizedSkills/`;
 
 export const profiles = {
   behance: {
@@ -134,27 +135,27 @@ export const categorizedSkills = {
   ai: {
     skills: {
       opencv: {
-        icon: "https://www.vectorlogo.zone/logos/opencv/opencv-icon.svg",
+        icon: `${skillIconBaseUrl}ai/opencv.svg`,
         url: "https://opencv.org/",
       },
       pandas: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/2ae2a900d2f041da66e950e4d48052658d850630/icons/pandas/pandas-original.svg",
+        icon: `${skillIconBaseUrl}ai/pandas.svg`,
         url: "https://pandas.pydata.org/",
       },
       pytorch: {
-        icon: "https://www.vectorlogo.zone/logos/pytorch/pytorch-icon.svg",
+        icon: `${skillIconBaseUrl}ai/pytorch.svg`,
         url: "https://pytorch.org/",
       },
       scikit_learn: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/0/05/Scikit_learn_logo_small.svg",
+        icon: `${skillIconBaseUrl}ai/scikit_learn.svg`,
         url: "https://scikit-learn.org/",
       },
       seaborn: {
-        icon: "https://seaborn.pydata.org/_images/logo-mark-lightbg.svg",
+        icon: `${skillIconBaseUrl}ai/seaborn.svg`,
         url: "https://seaborn.pydata.org/",
       },
       tensorflow: {
-        icon: "https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg",
+        icon: `${skillIconBaseUrl}ai/tensorflow.svg`,
         url: "https://www.tensorflow.org",
       },
     },
@@ -163,11 +164,11 @@ export const categorizedSkills = {
   automation: {
     skills: {
       ifttt: {
-        icon: "https://www.vectorlogo.zone/logos/ifttt/ifttt-ar21.svg",
+        icon: `${skillIconBaseUrl}automation/ifttt.svg`,
         url: "https://ifttt.com/",
       },
       zapier: {
-        icon: "https://www.vectorlogo.zone/logos/zapier/zapier-icon.svg",
+        icon: `${skillIconBaseUrl}automation/zapier.svg`,
         url: "https://zapier.com",
       },
     },
@@ -176,19 +177,19 @@ export const categorizedSkills = {
   baas: {
     skills: {
       amplify: {
-        icon: "https://docs.amplify.aws/assets/logo-dark.svg",
+        icon: `${skillIconBaseUrl}baas/amplify.svg`,
         url: "https://aws.amazon.com/amplify/",
       },
       appwrite: {
-        icon: "https://www.vectorlogo.zone/logos/appwriteio/appwriteio-icon.svg",
+        icon: `${skillIconBaseUrl}baas/appwrite.svg`,
         url: "https://appwrite.io",
       },
       firebase: {
-        icon: "https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg",
+        icon: `${skillIconBaseUrl}baas/firebase.svg`,
         url: "https://firebase.google.com/",
       },
       heroku: {
-        icon: "https://www.vectorlogo.zone/logos/heroku/heroku-icon.svg",
+        icon: `${skillIconBaseUrl}baas/heroku.svg`,
         url: "https://heroku.com",
       },
     },
@@ -197,47 +198,47 @@ export const categorizedSkills = {
   backend_dev: {
     skills: {
       express: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}backend_dev/express.svg`,
         url: "https://expressjs.com",
       },
       graphql: {
-        icon: "https://www.vectorlogo.zone/logos/graphql/graphql-icon.svg",
+        icon: `${skillIconBaseUrl}backend_dev/graphql.svg`,
         url: "https://graphql.org",
       },
       hadoop: {
-        icon: "https://www.vectorlogo.zone/logos/apache_hadoop/apache_hadoop-icon.svg",
+        icon: `${skillIconBaseUrl}backend_dev/hadoop.svg`,
         url: "https://hadoop.apache.org/",
       },
       kafka: {
-        icon: "https://www.vectorlogo.zone/logos/apache_kafka/apache_kafka-icon.svg",
+        icon: `${skillIconBaseUrl}backend_dev/kafka.svg`,
         url: "https://kafka.apache.org/",
       },
       nestjs: {
-        icon: "https://www.vectorlogo.zone/logos/nestjs/nestjs-icon.svg",
+        icon: `${skillIconBaseUrl}backend_dev/nestjs.svg`,
         url: "https://nestjs.com/",
       },
       nginx: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nginx/nginx-original.svg",
+        icon: `${skillIconBaseUrl}backend_dev/nginx.svg`,
         url: "https://www.nginx.com",
       },
       nodejs: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}backend_dev/nodejs.svg`,
         url: "https://nodejs.org",
       },
       openresty: {
-        icon: "https://openresty.org/images/logo.png",
+        icon: `${skillIconBaseUrl}backend_dev/openresty.svg`,
         url: "https://openresty.org/",
       },
       rabbitMQ: {
-        icon: "https://www.vectorlogo.zone/logos/rabbitmq/rabbitmq-icon.svg",
+        icon: `${skillIconBaseUrl}backend_dev/rabbitMQ.svg`,
         url: "https://www.rabbitmq.com",
       },
       solr: {
-        icon: "https://www.vectorlogo.zone/logos/apache_solr/apache_solr-icon.svg",
+        icon: `${skillIconBaseUrl}backend_dev/solr.svg`,
         url: "https://lucene.apache.org/solr/",
       },
       spring: {
-        icon: "https://www.vectorlogo.zone/logos/springio/springio-icon.svg",
+        icon: `${skillIconBaseUrl}backend_dev/spring.svg`,
         url: "https://spring.io/",
       },
     },
@@ -246,23 +247,23 @@ export const categorizedSkills = {
   data_visualization: {
     skills: {
       canvasjs: {
-        icon: "https://raw.githubusercontent.com/Hardik0307/Hardik0307/master/assets/canvasjs-charts.svg",
+        icon: `${skillIconBaseUrl}data_visualization/canvasjs.svg`,
         url: "https://canvasjs.com",
       },
       chartjs: {
-        icon: "https://www.chartjs.org/media/logo-title.svg",
+        icon: `${skillIconBaseUrl}data_visualization/chartjs.svg`,
         url: "https://www.chartjs.org",
       },
       d3js: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/d3js/d3js-original.svg",
+        icon: `${skillIconBaseUrl}data_visualization/d3js.svg`,
         url: "https://d3js.org/",
       },
       grafana: {
-        icon: "https://www.vectorlogo.zone/logos/grafana/grafana-icon.svg",
+        icon: `${skillIconBaseUrl}data_visualization/grafana.svg`,
         url: "https://grafana.com",
       },
       kibana: {
-        icon: "https://www.vectorlogo.zone/logos/elasticco_kibana/elasticco_kibana-icon.svg",
+        icon: `${skillIconBaseUrl}data_visualization/kibana.svg`,
         url: "https://www.elastic.co/kibana",
       },
     },
@@ -271,59 +272,59 @@ export const categorizedSkills = {
   database: {
     skills: {
       cassandra: {
-        icon: "https://www.vectorlogo.zone/logos/apache_cassandra/apache_cassandra-icon.svg",
+        icon: `${skillIconBaseUrl}database/cassandra.svg`,
         url: "https://cassandra.apache.org/",
       },
       cockroachdb: {
-        icon: "https://cdn.worldvectorlogo.com/logos/cockroachdb.svg",
+        icon: `${skillIconBaseUrl}database/cockroachdb.svg`,
         url: "https://www.cockroachlabs.com/product/cockroachdb/",
       },
       couchdb: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/0d6c64dbbf311879f7d563bfc3ccf559f9ed111c/icons/couchdb/couchdb-original.svg",
+        icon: `${skillIconBaseUrl}database/couchdb.svg`,
         url: "https://couchdb.apache.org/",
       },
       elasticsearch: {
-        icon: "https://www.vectorlogo.zone/logos/elastic/elastic-icon.svg",
+        icon: `${skillIconBaseUrl}database/elasticsearch.svg`,
         url: "https://www.elastic.co",
       },
       hive: {
-        icon: "https://www.vectorlogo.zone/logos/apache_hive/apache_hive-icon.svg",
+        icon: `${skillIconBaseUrl}database/hive.svg`,
         url: "https://hive.apache.org/",
       },
       mariadb: {
-        icon: "https://www.vectorlogo.zone/logos/mariadb/mariadb-icon.svg",
+        icon: `${skillIconBaseUrl}database/mariadb.svg`,
         url: "https://mariadb.org/",
       },
       mongodb: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}database/mongodb.svg`,
         url: "https://www.mongodb.com/",
       },
       mssql: {
-        icon: "https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg",
+        icon: `${skillIconBaseUrl}database/mssql.svg`,
         url: "https://www.microsoft.com/en-us/sql-server",
       },
       mysql: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}database/mysql.svg`,
         url: "https://www.mysql.com/",
       },
       oracle: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/oracle/oracle-original.svg",
+        icon: `${skillIconBaseUrl}database/oracle.svg`,
         url: "https://www.oracle.com/",
       },
       postgresql: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}database/postgresql.svg`,
         url: "https://www.postgresql.org",
       },
       realm: {
-        icon: "https://raw.githubusercontent.com/bestofjs/bestofjs-webui/8665e8c267a0215f3159df28b33c365198101df5/public/logos/realm.svg",
+        icon: `${skillIconBaseUrl}database/realm.svg`,
         url: "https://realm.io/",
       },
       redis: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}database/redis.svg`,
         url: "https://redis.io",
       },
       sqlite: {
-        icon: "https://www.vectorlogo.zone/logos/sqlite/sqlite-icon.svg",
+        icon: `${skillIconBaseUrl}database/sqlite.svg`,
         url: "https://www.sqlite.org/",
       },
     },
@@ -332,43 +333,43 @@ export const categorizedSkills = {
   devops: {
     skills: {
       aws: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/amazonwebservices/amazonwebservices-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}devops/aws.svg`,
         url: "https://aws.amazon.com",
       },
       azure: {
-        icon: "https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-icon.svg",
+        icon: `${skillIconBaseUrl}devops/azure.svg`,
         url: "https://azure.microsoft.com/en-in/",
       },
       bash: {
-        icon: "https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg",
+        icon: `${skillIconBaseUrl}devops/bash.svg`,
         url: "https://www.gnu.org/software/bash/",
       },
       circleci: {
-        icon: "https://www.vectorlogo.zone/logos/circleci/circleci-icon.svg",
+        icon: `${skillIconBaseUrl}devops/circleci.svg`,
         url: "https://circleci.com",
       },
       docker: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}devops/docker.svg`,
         url: "https://www.docker.com/",
       },
       gcp: {
-        icon: "https://www.vectorlogo.zone/logos/google_cloud/google_cloud-icon.svg",
+        icon: `${skillIconBaseUrl}devops/gcp.svg`,
         url: "https://cloud.google.com",
       },
       jenkins: {
-        icon: "https://www.vectorlogo.zone/logos/jenkins/jenkins-icon.svg",
+        icon: `${skillIconBaseUrl}devops/jenkins.svg`,
         url: "https://www.jenkins.io",
       },
       kubernetes: {
-        icon: "https://www.vectorlogo.zone/logos/kubernetes/kubernetes-icon.svg",
+        icon: `${skillIconBaseUrl}devops/kubernetes.svg`,
         url: "https://kubernetes.io",
       },
       travisci: {
-        icon: "https://www.vectorlogo.zone/logos/travis-ci/travis-ci-icon.svg",
+        icon: `${skillIconBaseUrl}devops/travisci.svg`,
         url: "https://travis-ci.org",
       },
       vagrant: {
-        icon: "https://www.vectorlogo.zone/logos/vagrantup/vagrantup-icon.svg",
+        icon: `${skillIconBaseUrl}devops/vagrant.svg`,
         url: "https://www.vagrantup.com/",
       },
     },
@@ -377,39 +378,39 @@ export const categorizedSkills = {
   framework: {
     skills: {
       codeigniter: {
-        icon: "https://cdn.worldvectorlogo.com/logos/codeigniter.svg",
+        icon: `${skillIconBaseUrl}framework/codeigniter.svg`,
         url: "https://codeigniter.com",
       },
       django: {
-        icon: "https://cdn.worldvectorlogo.com/logos/django.svg",
+        icon: `${skillIconBaseUrl}framework/django.svg`,
         url: "https://www.djangoproject.com/",
       },
       dotnet: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/dot-net/dot-net-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}framework/dotnet.svg`,
         url: "https://dotnet.microsoft.com/",
       },
       electron: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/electron/electron-original.svg",
+        icon: `${skillIconBaseUrl}framework/electron.svg`,
         url: "https://www.electronjs.org",
       },
       flask: {
-        icon: "https://www.vectorlogo.zone/logos/pocoo_flask/pocoo_flask-icon.svg",
+        icon: `${skillIconBaseUrl}framework/flask.svg`,
         url: "https://flask.palletsprojects.com/",
       },
       laravel: {
-        icon: "https://cdn.worldvectorlogo.com/logos/laravel-2.svg",
+        icon: `${skillIconBaseUrl}framework/laravel.svg`,
         url: "https://laravel.com/",
       },
       quasar: {
-        icon: "https://cdn.quasar.dev/logo/svg/quasar-logo.svg",
+        icon: `${skillIconBaseUrl}framework/quasar.svg`,
         url: "https://quasar.dev/",
       },
       rails: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/rails/rails-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}framework/rails.svg`,
         url: "https://rubyonrails.org",
       },
       symfony: {
-        icon: "https://symfony.com/logos/symfony_black_03.svg",
+        icon: `${skillIconBaseUrl}framework/symfony.svg`,
         url: "https://symfony.com",
       },
     },
@@ -418,95 +419,95 @@ export const categorizedSkills = {
   frontend_dev: {
     skills: {
       angular: {
-        icon: "https://angular.io/assets/images/logos/angular/angular.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/angular.svg`,
         url: "https://angular.io",
       },
       babel: {
-        icon: "https://www.vectorlogo.zone/logos/babeljs/babeljs-icon.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/babel.svg`,
         url: "https://babeljs.io/",
       },
       backbonejs: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/backbonejs/backbonejs-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/backbonejs.svg`,
         url: "https://backbonejs.org",
       },
       bootstrap: {
-        icon: "https://cdn.worldvectorlogo.com/logos/bootstrap-5-1.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/bootstrap.svg`,
         url: "https://getbootstrap.com",
       },
       bulma: {
-        icon: "https://raw.githubusercontent.com/gilbarbara/logos/804dc257b59e144eaca5bc6ffd16949752c6f789/logos/bulma.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/bulma.svg`,
         url: "https://bulma.io/",
       },
       css: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/css.svg`,
         url: "https://www.w3schools.com/css/",
       },
       ember: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/ember/ember-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/ember.svg`,
         url: "https://emberjs.com/",
       },
       gtk: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/7/71/GTK_logo.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/gtk.svg`,
         url: "https://www.gtk.org/",
       },
       gulp: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/gulp/gulp-plain.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/gulp.svg`,
         url: "https://gulpjs.com",
       },
       html: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/html.svg`,
         url: "https://www.w3.org/html/",
       },
       materialize: {
-        icon: "https://raw.githubusercontent.com/prplx/svg-logos/5585531d45d294869c4eaab4d7cf2e9c167710a9/svg/materialize.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/materialize.svg`,
         url: "https://materializecss.com/",
       },
       meteor: {
-        icon: "https://raw.githubusercontent.com/prplx/svg-logos/5585531d45d294869c4eaab4d7cf2e9c167710a9/svg/meteor.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/meteor.svg`,
         url: "https://www.meteor.com/",
       },
       pug: {
-        icon: "https://cdn.worldvectorlogo.com/logos/pug.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/pug.svg`,
         url: "https://pugjs.org",
       },
       qt: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Qt_logo_2016.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/qt.svg`,
         url: "https://www.qt.io/",
       },
       react: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/react.svg`,
         url: "https://react.dev",
       },
       redux: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/redux.svg`,
         url: "https://redux.js.org",
       },
       sass: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/sass/sass-original.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/sass.svg`,
         url: "https://sass-lang.com",
       },
       svelte: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/1/1b/Svelte_Logo.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/svelte.svg`,
         url: "https://svelte.dev",
       },
       tailwind: {
-        icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/tailwind.svg`,
         url: "https://tailwindcss.com/",
       },
       vuejs: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/vuejs/vuejs-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/vuejs.svg`,
         url: "https://vuejs.org/",
       },
       vuetify: {
-        icon: "https://bestofjs.org/logos/vuetify.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/vuetify.svg`,
         url: "https://vuetifyjs.com/en/",
       },
       webpack: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/d00d0969292a6569d45b06d3f350f463a0107b0d/icons/webpack/webpack-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/webpack.svg`,
         url: "https://webpack.js.org",
       },
       wxwidgets: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/b/bb/WxWidgets.svg",
+        icon: `${skillIconBaseUrl}frontend_dev/wxwidgets.svg`,
         url: "https://www.wxwidgets.org/",
       },
     },
@@ -515,11 +516,11 @@ export const categorizedSkills = {
   game_engines: {
     skills: {
       unity: {
-        icon: "https://www.vectorlogo.zone/logos/unity3d/unity3d-icon.svg",
+        icon: `${skillIconBaseUrl}game_engines/unity.svg`,
         url: "https://unity.com/",
       },
       unreal: {
-        icon: "https://raw.githubusercontent.com/kenangundogan/fontisto/036b7eca71aab1bef8e6a0518f7329f13ed62f6b/icons/svg/brand/unreal-engine.svg",
+        icon: `${skillIconBaseUrl}game_engines/unreal.svg`,
         url: "https://unrealengine.com/",
       },
     },
@@ -528,87 +529,87 @@ export const categorizedSkills = {
   language: {
     skills: {
       c: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg",
+        icon: `${skillIconBaseUrl}language/c.svg`,
         url: "https://www.cprogramming.com/",
       },
       "c++": {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
+        icon: `${skillIconBaseUrl}language/c++.svg`,
         url: "https://www.w3schools.com/cpp/",
       },
       clojure: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Clojure_logo.svg",
+        icon: `${skillIconBaseUrl}language/clojure.svg`,
         url: "https://clojure.org/",
       },
       coffeescript: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/coffeescript/coffeescript-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}language/coffeescript.svg`,
         url: "https://coffeescript.org",
       },
       csharp: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg",
+        icon: `${skillIconBaseUrl}language/csharp.svg`,
         url: "https://www.w3schools.com/cs/",
       },
       elixir: {
-        icon: "https://www.vectorlogo.zone/logos/elixir-lang/elixir-lang-icon.svg",
+        icon: `${skillIconBaseUrl}language/elixir.svg`,
         url: "https://elixir-lang.org",
       },
       erlang: {
-        icon: "https://www.vectorlogo.zone/logos/erlang/erlang-official.svg",
+        icon: `${skillIconBaseUrl}language/erlang.svg`,
         url: "https://www.erlang.org/",
       },
       go: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original.svg",
+        icon: `${skillIconBaseUrl}language/go.svg`,
         url: "https://go.dev/",
       },
       haskell: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Haskell-Logo.svg",
+        icon: `${skillIconBaseUrl}language/haskell.svg`,
         url: "https://www.haskell.org/",
       },
       java: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg",
+        icon: `${skillIconBaseUrl}language/java.svg`,
         url: "https://www.java.com",
       },
       javascript: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg",
+        icon: `${skillIconBaseUrl}language/javascript.svg`,
         url: "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
       },
       nim: {
-        icon: "https://www.vectorlogo.zone/logos/nim-lang/nim-lang-icon.svg",
+        icon: `${skillIconBaseUrl}language/nim.svg`,
         url: "https://nim-lang.org/",
       },
       objectivec: {
-        icon: "https://www.vectorlogo.zone/logos/apple_objectivec/apple_objectivec-icon.svg",
+        icon: `${skillIconBaseUrl}language/objectivec.svg`,
         url: "https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html",
       },
       perl: {
-        icon: "https://api.iconify.design/logos-perl.svg",
+        icon: `${skillIconBaseUrl}language/perl.svg`,
         url: "https://www.perl.org/",
       },
       php: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg",
+        icon: `${skillIconBaseUrl}language/php.svg`,
         url: "https://www.php.net",
       },
       python: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg",
+        icon: `${skillIconBaseUrl}language/python.svg`,
         url: "https://www.python.org",
       },
       ruby: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/ruby/ruby-original.svg",
+        icon: `${skillIconBaseUrl}language/ruby.svg`,
         url: "https://www.ruby-lang.org/en/",
       },
       rust: {
-        icon: "https://www.rust-lang.org/static/images/rust-logo-blk.svg",
+        icon: `${skillIconBaseUrl}language/rust.svg`,
         url: "https://www.rust-lang.org",
       },
       scala: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/scala/scala-original.svg",
+        icon: `${skillIconBaseUrl}language/scala.svg`,
         url: "https://www.scala-lang.org",
       },
       swift: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/swift/swift-original.svg",
+        icon: `${skillIconBaseUrl}language/swift.svg`,
         url: "https://developer.apple.com/swift/",
       },
       typescript: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg",
+        icon: `${skillIconBaseUrl}language/typescript.svg`,
         url: "https://www.typescriptlang.org/",
       },
     },
@@ -617,39 +618,39 @@ export const categorizedSkills = {
   mobile_dev: {
     skills: {
       android: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/android/android-original-wordmark.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/android.svg`,
         url: "https://developer.android.com",
       },
       apachecordova: {
-        icon: "https://www.vectorlogo.zone/logos/apache_cordova/apache_cordova-icon.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/apachecordova.svg`,
         url: "https://cordova.apache.org/",
       },
       dart: {
-        icon: "https://www.vectorlogo.zone/logos/dartlang/dartlang-icon.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/dart.svg`,
         url: "https://dart.dev",
       },
       flutter: {
-        icon: "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/flutter.svg`,
         url: "https://flutter.dev",
       },
       ionic: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Ionic_Logo.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/ionic.svg`,
         url: "https://ionicframework.com",
       },
       kotlin: {
-        icon: "https://www.vectorlogo.zone/logos/kotlinlang/kotlinlang-icon.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/kotlin.svg`,
         url: "https://kotlinlang.org",
       },
       nativescript: {
-        icon: "https://raw.githubusercontent.com/detain/svg-logos/780f25886640cef088af994181646db2f6b1a3f8/svg/nativescript.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/nativescript.svg`,
         url: "https://nativescript.org/",
       },
       reactnative: {
-        icon: "https://reactnative.dev/img/header_logo.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/reactnative.svg`,
         url: "https://reactnative.dev/",
       },
       xamarin: {
-        icon: "https://raw.githubusercontent.com/detain/svg-logos/780f25886640cef088af994181646db2f6b1a3f8/svg/xamarin.svg",
+        icon: `${skillIconBaseUrl}mobile_dev/xamarin.svg`,
         url: "https://dotnet.microsoft.com/apps/xamarin",
       },
     },
@@ -658,15 +659,15 @@ export const categorizedSkills = {
   other: {
     skills: {
       arduino: {
-        icon: "https://cdn.worldvectorlogo.com/logos/arduino-1.svg",
+        icon: `${skillIconBaseUrl}other/arduino.svg`,
         url: "https://www.arduino.cc/",
       },
       git: {
-        icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
+        icon: `${skillIconBaseUrl}other/git.svg`,
         url: "https://git-scm.com/",
       },
       linux: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/linux/linux-original.svg",
+        icon: `${skillIconBaseUrl}other/linux.svg`,
         url: "https://www.linux.org/",
       },
     },
@@ -675,43 +676,43 @@ export const categorizedSkills = {
   software: {
     skills: {
       blender: {
-        icon: "https://download.blender.org/branding/community/blender_community_badge_white.svg",
+        icon: `${skillIconBaseUrl}software/blender.svg`,
         url: "https://www.blender.org/",
       },
       figma: {
-        icon: "https://www.vectorlogo.zone/logos/figma/figma-icon.svg",
+        icon: `${skillIconBaseUrl}software/figma.svg`,
         url: "https://www.figma.com/",
       },
       framer: {
-        icon: "https://www.vectorlogo.zone/logos/framer/framer-icon.svg",
+        icon: `${skillIconBaseUrl}software/framer.svg`,
         url: "https://www.framer.com/",
       },
       illustrator: {
-        icon: "https://www.vectorlogo.zone/logos/adobe_illustrator/adobe_illustrator-icon.svg",
+        icon: `${skillIconBaseUrl}software/illustrator.svg`,
         url: "https://www.adobe.com/in/products/illustrator.html",
       },
       invision: {
-        icon: "https://www.vectorlogo.zone/logos/invisionapp/invisionapp-icon.svg",
+        icon: `${skillIconBaseUrl}software/invision.svg`,
         url: "https://www.invisionapp.com/",
       },
       matlab: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/2/21/Matlab_Logo.png",
+        icon: `${skillIconBaseUrl}software/matlab.svg`,
         url: "https://www.mathworks.com/",
       },
       photoshop: {
-        icon: "https://www.adobe.com/cc-shared/assets/img/product-icons/svg/photoshop-40.svg",
+        icon: `${skillIconBaseUrl}software/photoshop.svg`,
         url: "https://www.photoshop.com/en",
       },
       postman: {
-        icon: "https://www.vectorlogo.zone/logos/getpostman/getpostman-icon.svg",
+        icon: `${skillIconBaseUrl}software/postman.svg`,
         url: "https://postman.com",
       },
       sketch: {
-        icon: "https://www.vectorlogo.zone/logos/sketchapp/sketchapp-icon.svg",
+        icon: `${skillIconBaseUrl}software/sketch.svg`,
         url: "https://www.sketch.com/",
       },
       xd: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/c/c2/Adobe_XD_CC_icon.svg",
+        icon: `${skillIconBaseUrl}software/xd.svg`,
         url: "https://adobexdplatform.com/",
       },
     },
@@ -720,55 +721,55 @@ export const categorizedSkills = {
   static_site_generator: {
     skills: {
       "11ty": {
-        icon: "https://gist.githubusercontent.com/vivek32ta/c7f7bf583c1fb1c58d89301ea40f37fd/raw/f4c85cce5790758286b8f155ef9a177710b995df/11ty.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/11ty.svg`,
         url: "https://www.11ty.dev/",
       },
       gatsby: {
-        icon: "https://www.vectorlogo.zone/logos/gatsbyjs/gatsbyjs-icon.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/gatsby.svg`,
         url: "https://www.gatsbyjs.com/",
       },
       gridsome: {
-        icon: "https://www.vectorlogo.zone/logos/gridsome/gridsome-icon.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/gridsome.svg`,
         url: "https://gridsome.org/",
       },
       hexo: {
-        icon: "https://www.vectorlogo.zone/logos/hexoio/hexoio-icon.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/hexo.svg`,
         url: "hexo.io/",
       },
       hugo: {
-        icon: "https://api.iconify.design/logos-hugo.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/hugo.svg`,
         url: "https://gohugo.io/",
       },
       jekyll: {
-        icon: "https://www.vectorlogo.zone/logos/jekyllrb/jekyllrb-icon.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/jekyll.svg`,
         url: "https://jekyllrb.com/",
       },
       middleman: {
-        icon: "https://raw.githubusercontent.com/leungwensen/svg-icon/b84b3f3a3da329b7c1d02346865f8e98beb05413/dist/svg/logos/middleman.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/middleman.svg`,
         url: "https://middlemanapp.com/",
       },
       nextjs: {
-        icon: "https://www.vectorlogo.zone/logos/nextjs/nextjs-icon.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/nextjs.svg`,
         url: "https://nextjs.org/",
       },
       nuxtjs: {
-        icon: "https://www.vectorlogo.zone/logos/nuxtjs/nuxtjs-icon.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/nuxtjs.svg`,
         url: "https://nuxtjs.org/",
       },
       sapper: {
-        icon: "https://raw.githubusercontent.com/sveltejs/sapper/45ccb4dbbf31ba7ad8a7a634b1f01a0bb8e7260f/site/static/sapper-logo.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/sapper.svg`,
         url: "https://sapper.svelte.dev/",
       },
       scully: {
-        icon: "https://raw.githubusercontent.com/scullyio/scully/main/assets/logos/SVG/scullyio-icon.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/scully.svg`,
         url: "https://scully.io/",
       },
       sculpin: {
-        icon: "https://gist.githubusercontent.com/vivek32ta/c7f7bf583c1fb1c58d89301ea40f37fd/raw/1782aef8672484698c0dd407f900c4a329ed5bc4/sculpin.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/sculpin.svg`,
         url: "https://sculpin.io/",
       },
       vuepress: {
-        icon: "https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg",
+        icon: `${skillIconBaseUrl}static_site_generator/vuepress.svg`,
         url: "https://vuepress.vuejs.org/",
       },
     },
@@ -777,31 +778,31 @@ export const categorizedSkills = {
   testing: {
     skills: {
       cypress: {
-        icon: "https://www.svgrepo.com/show/353630/cypress.svg",
+        icon: `${skillIconBaseUrl}testing/cypress.svg`,
         url: "https://www.cypress.io",
       },
       jasmine: {
-        icon: "https://www.vectorlogo.zone/logos/jasmine/jasmine-icon.svg",
+        icon: `${skillIconBaseUrl}testing/jasmine.svg`,
         url: "https://jasmine.github.io/",
       },
       jest: {
-        icon: "https://www.vectorlogo.zone/logos/jestjsio/jestjsio-icon.svg",
+        icon: `${skillIconBaseUrl}testing/jest.svg`,
         url: "https://jestjs.io",
       },
       karma: {
-        icon: "https://raw.githubusercontent.com/detain/svg-logos/780f25886640cef088af994181646db2f6b1a3f8/svg/karma.svg",
+        icon: `${skillIconBaseUrl}testing/karma.svg`,
         url: "https://karma-runner.github.io/latest/index.html",
       },
       mocha: {
-        icon: "https://www.vectorlogo.zone/logos/mochajs/mochajs-icon.svg",
+        icon: `${skillIconBaseUrl}testing/mocha.svg`,
         url: "https://mochajs.org",
       },
       puppeteer: {
-        icon: "https://www.vectorlogo.zone/logos/pptrdev/pptrdev-official.svg",
+        icon: `${skillIconBaseUrl}testing/puppeteer.svg`,
         url: "https://github.com/puppeteer/puppeteer",
       },
       selenium: {
-        icon: "https://raw.githubusercontent.com/detain/svg-logos/780f25886640cef088af994181646db2f6b1a3f8/svg/selenium-logo.svg",
+        icon: `${skillIconBaseUrl}testing/selenium.svg`,
         url: "https://www.selenium.dev",
       },
     },
