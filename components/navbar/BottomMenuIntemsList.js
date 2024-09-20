@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import useStore from "@/stores/useStore";
 import { toast } from "sonner";
-import { extractFirstLetters } from "@/utils";
+import { extractFirstLetters, resolveUrl } from "@/utils";
 import { SheetClose } from "../ui/sheet";
 import { LogOut } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
@@ -59,7 +59,7 @@ export default function BottomMenuItemsList({ session }) {
                     {item.name}
                     {item.name === "My Details" && (
                       <Avatar className="ml-3 size-7 text-foreground">
-                        <AvatarImage src={user?.pic} />
+                        <AvatarImage src={resolveUrl(user.pic, default_user_pic)} />
                         <AvatarFallback>
                           {extractFirstLetters(user)}
                         </AvatarFallback>

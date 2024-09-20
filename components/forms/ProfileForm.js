@@ -302,7 +302,9 @@ export default function ProfileForm({ user }) {
     }
   }
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && e.target.closest("form")) e.preventDefault();
+    const isInsideTiptap = e.target.closest(".tiptap");
+    if (e.key === "Enter" && e.target.closest("form") && !isInsideTiptap)
+      e.preventDefault();
   };
 
   useEffect(() => {

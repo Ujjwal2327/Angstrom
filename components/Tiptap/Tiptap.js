@@ -30,6 +30,7 @@ import { Toggle } from "../ui/toggle";
 import { Button } from "../ui/button";
 
 const lowlight = createLowlight(all);
+
 export default function Tiptap({ desc, onChange }) {
   const editor = useEditor({
     extensions: [
@@ -77,13 +78,13 @@ export default function Tiptap({ desc, onChange }) {
 
   return (
     <div className="pt-3">
-      {onChange && <Toolbar editor={editor} desc={desc} onChange={onChange} />}
-      <EditorContent editor={editor} />
+      {onChange && <Toolbar editor={editor} />}
+      <EditorContent editor={editor} className="tiptap" />
     </div>
   );
 }
 
-function Toolbar({ editor, desc, onChange }) {
+function Toolbar({ editor }) {
   const setLink = () => {
     const previousUrl = editor.getAttributes("link").href;
     const url = window.prompt("URL", previousUrl);
@@ -105,7 +106,7 @@ function Toolbar({ editor, desc, onChange }) {
 
     // Validate URL and ensure it doesn't start with the current window's URL
     try {
-      new URL(normalizedUrl); // Check if it's a valid URL
+      new URL(normalizedUrl);
       editor
         .chain()
         .focus()
@@ -219,7 +220,7 @@ function Toolbar({ editor, desc, onChange }) {
           <Undo />
         </Button>
 
-        {/* blockquote */}
+        {/* redo */}
         <Button
           type="button"
           disabled={!editor.can().redo()}
