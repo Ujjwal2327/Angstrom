@@ -6,98 +6,125 @@ export const menuItems = {
   bottom: [{ name: "My Details", path: "/users" }],
 };
 
+// only use for outside sites
+export const profileIconBaseUrl =
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/31cbbaf0196e49e1c967bb051af60aae46ddc3a4/public/icons/profiles/";
+
 export const profiles = {
   behance: {
     name: "Behance",
     base_url: "https://www.behance.net/",
+    icon: `${profileIconBaseUrl}behance.svg`,
   },
   codechef: {
     name: "CodeChef",
     base_url: "https://www.codechef.com/users/",
+    icon: `${profileIconBaseUrl}codechef.svg`,
   },
   codeforces: {
     name: "Codeforces",
     base_url: "https://codeforces.com/profile/",
+    icon: `${profileIconBaseUrl}codeforces.svg`,
   },
   codepen: {
     name: "CodePen",
     base_url: "https://codepen.io/",
+    icon: `${profileIconBaseUrl}codepen.svg`,
   },
   codesandbox: {
     name: "CodeSandbox",
     base_url: "https://codesandbox.io/u/",
+    icon: `${profileIconBaseUrl}codesandbox.svg`,
   },
   dev: {
     name: "Dev",
     base_url: "https://dev.to/",
+    icon: `${profileIconBaseUrl}dev.svg`,
   },
   discord: {
     name: "Discord",
     base_url: "https://discordapp.com/users/",
+    icon: `${profileIconBaseUrl}discord.svg`,
   },
   dribbble: {
     name: "Dribbble",
     base_url: "https://dribbble.com/",
+    icon: `${profileIconBaseUrl}dribbble.svg`,
   },
   facebook: {
     name: "Facebook",
     base_url: "https://www.facebook.com/",
+    icon: `${profileIconBaseUrl}facebook.svg`,
   },
-  geeks_for_geeks: {
+  geeksforgeeks: {
     name: "Geeks for Geeks",
     base_url: "https://geeksforgeeks.org/user/",
+    icon: `${profileIconBaseUrl}geeksforgeeks.svg`,
   },
   github: {
     name: "GitHub",
     base_url: "https://github.com/",
+    icon: `${profileIconBaseUrl}github.svg`,
   },
   hackerearth: {
     name: "HackerEarth",
     base_url: "https://www.hackerearth.com/@",
+    icon: `${profileIconBaseUrl}hackerearth.svg`,
   },
   hackerrank: {
     name: "HackerRank",
     base_url: "https://www.hackerrank.com/",
+    icon: `${profileIconBaseUrl}hackerrank.svg`,
   },
   hashnode: {
     name: "Hashnode",
     base_url: "https://hashnode.com/@",
+    icon: `${profileIconBaseUrl}hashnode.svg`,
   },
   instagram: {
     name: "Instagram",
     base_url: "https://www.instagram.com/",
+    icon: `${profileIconBaseUrl}instagram.svg`,
   },
   kaggle: {
     name: "Kaggle",
     base_url: "https://www.kaggle.com/",
+    icon: `${profileIconBaseUrl}kaggle.svg`,
   },
   leetcode: {
     name: "LeetCode",
     base_url: "https://leetcode.com/",
+    icon: `${profileIconBaseUrl}leetcode.svg`,
   },
   linkedin: {
     name: "LinkedIn",
     base_url: "https://www.linkedin.com/in/",
+    icon: `${profileIconBaseUrl}linkedin.svg`,
   },
   medium: {
     name: "Medium",
     base_url: "https://medium.com/@",
+    icon: `${profileIconBaseUrl}medium.svg`,
   },
   stackoverflow: {
     name: "Stack Overflow",
     base_url: "https://stackoverflow.com/users/",
+    icon: `${profileIconBaseUrl}stackoverflow.svg`,
   },
   topcoder: {
     name: "Topcoder",
     base_url: "https://www.topcoder.com/members/",
+    icon: `${profileIconBaseUrl}topcoder.svg`,
   },
   twitter: {
     name: "Twitter",
     base_url: "https://twitter.com/",
+    icon: `${profileIconBaseUrl}twitter.svg`,
   },
   youtube: {
     name: "YouTube",
     base_url: "https://www.youtube.com/@",
+    icon: `${profileIconBaseUrl}youtube.svg`,
   },
 };
 
