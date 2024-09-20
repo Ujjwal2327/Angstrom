@@ -7,40 +7,98 @@ export const menuItems = {
 };
 
 export const profiles = {
-  behance: { name: "Behance", base_url: "https://www.behance.net/" },
-  codechef: { name: "CodeChef", base_url: "https://www.codechef.com/users/" },
+  behance: {
+    name: "Behance",
+    base_url: "https://www.behance.net/",
+  },
+  codechef: {
+    name: "CodeChef",
+    base_url: "https://www.codechef.com/users/",
+  },
   codeforces: {
     name: "Codeforces",
     base_url: "https://codeforces.com/profile/",
   },
-  codepen: { name: "CodePen", base_url: "https://codepen.io/" },
-  codesandbox: { name: "CodeSandbox", base_url: "https://codesandbox.io/u/" },
-  dev: { name: "Dev", base_url: "https://dev.to/" },
-  discord: { name: "Discord", base_url: "https://discordapp.com/users/" },
-  dribbble: { name: "Dribbble", base_url: "https://dribbble.com/" },
-  facebook: { name: "Facebook", base_url: "https://www.facebook.com/" },
+  codepen: {
+    name: "CodePen",
+    base_url: "https://codepen.io/",
+  },
+  codesandbox: {
+    name: "CodeSandbox",
+    base_url: "https://codesandbox.io/u/",
+  },
+  dev: {
+    name: "Dev",
+    base_url: "https://dev.to/",
+  },
+  discord: {
+    name: "Discord",
+    base_url: "https://discordapp.com/users/",
+  },
+  dribbble: {
+    name: "Dribbble",
+    base_url: "https://dribbble.com/",
+  },
+  facebook: {
+    name: "Facebook",
+    base_url: "https://www.facebook.com/",
+  },
   geeks_for_geeks: {
     name: "Geeks for Geeks",
     base_url: "https://geeksforgeeks.org/user/",
   },
-  github: { name: "GitHub", base_url: "https://github.com/" },
+  github: {
+    name: "GitHub",
+    base_url: "https://github.com/",
+  },
   hackerearth: {
     name: "HackerEarth",
     base_url: "https://www.hackerearth.com/@",
   },
-  hackerrank: { name: "HackerRank", base_url: "https://www.hackerrank.com/" },
-  instagram: { name: "Instagram", base_url: "https://www.instagram.com/" },
-  kaggle: { name: "Kaggle", base_url: "https://www.kaggle.com/" },
-  leetcode: { name: "LeetCode", base_url: "https://leetcode.com/" },
-  linkedin: { name: "LinkedIn", base_url: "https://www.linkedin.com/in/" },
-  medium: { name: "Medium", base_url: "https://medium.com/@" },
+  hackerrank: {
+    name: "HackerRank",
+    base_url: "https://www.hackerrank.com/",
+  },
+  hashnode: {
+    name: "Hashnode",
+    base_url: "https://hashnode.com/@",
+  },
+  instagram: {
+    name: "Instagram",
+    base_url: "https://www.instagram.com/",
+  },
+  kaggle: {
+    name: "Kaggle",
+    base_url: "https://www.kaggle.com/",
+  },
+  leetcode: {
+    name: "LeetCode",
+    base_url: "https://leetcode.com/",
+  },
+  linkedin: {
+    name: "LinkedIn",
+    base_url: "https://www.linkedin.com/in/",
+  },
+  medium: {
+    name: "Medium",
+    base_url: "https://medium.com/@",
+  },
   stackoverflow: {
     name: "Stack Overflow",
     base_url: "https://stackoverflow.com/users/",
   },
-  topcoder: { name: "Topcoder", base_url: "https://www.topcoder.com/members/" },
-  twitter: { name: "Twitter", base_url: "https://twitter.com/" },
-  youtube: { name: "YouTube", base_url: "https://www.youtube.com/@" },
+  topcoder: {
+    name: "Topcoder",
+    base_url: "https://www.topcoder.com/members/",
+  },
+  twitter: {
+    name: "Twitter",
+    base_url: "https://twitter.com/",
+  },
+  youtube: {
+    name: "YouTube",
+    base_url: "https://www.youtube.com/@",
+  },
 };
 
 export const categorizedSkills = {
@@ -105,7 +163,7 @@ export const categorizedSkills = {
         url: "https://heroku.com",
       },
     },
-    title: "Backend as a Service(BaaS)",
+    title: "Backend as a Service (BaaS)",
   },
   backend_dev: {
     skills: {
@@ -126,7 +184,7 @@ export const categorizedSkills = {
         url: "https://kafka.apache.org/",
       },
       nestjs: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/nestjs/nestjs-plain.svg",
+        icon: "https://www.vectorlogo.zone/logos/nestjs/nestjs-icon.svg",
         url: "https://nestjs.com/",
       },
       nginx: {
@@ -310,7 +368,7 @@ export const categorizedSkills = {
         url: "https://flask.palletsprojects.com/",
       },
       laravel: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/laravel/laravel-plain-wordmark.svg",
+        icon: "https://cdn.worldvectorlogo.com/logos/laravel-2.svg",
         url: "https://laravel.com/",
       },
       quasar: {
@@ -334,10 +392,6 @@ export const categorizedSkills = {
         icon: "https://angular.io/assets/images/logos/angular/angular.svg",
         url: "https://angular.io",
       },
-      angularjs: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/angularjs/angularjs-original-wordmark.svg",
-        url: "https://angular.io",
-      },
       babel: {
         icon: "https://www.vectorlogo.zone/logos/babeljs/babeljs-icon.svg",
         url: "https://babeljs.io/",
@@ -347,7 +401,7 @@ export const categorizedSkills = {
         url: "https://backbonejs.org",
       },
       bootstrap: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain-wordmark.svg",
+        icon: "https://cdn.worldvectorlogo.com/logos/bootstrap-5-1.svg",
         url: "https://getbootstrap.com",
       },
       bulma: {
@@ -509,7 +563,7 @@ export const categorizedSkills = {
         url: "https://www.ruby-lang.org/en/",
       },
       rust: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/rust/rust-plain.svg",
+        icon: "https://www.rust-lang.org/static/images/rust-logo-blk.svg",
         url: "https://www.rust-lang.org",
       },
       scala: {
@@ -612,7 +666,7 @@ export const categorizedSkills = {
         url: "https://www.mathworks.com/",
       },
       photoshop: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/photoshop/photoshop-line.svg",
+        icon: "https://www.adobe.com/cc-shared/assets/img/product-icons/svg/photoshop-40.svg",
         url: "https://www.photoshop.com/en",
       },
       postman: {
@@ -624,8 +678,8 @@ export const categorizedSkills = {
         url: "https://www.sketch.com/",
       },
       xd: {
-        icon: "https://cdn.worldvectorlogo.com/logos/adobe-xd.svg",
-        url: "https://www.adobe.com/products/xd.html",
+        icon: "https://upload.wikimedia.org/wikipedia/commons/c/c2/Adobe_XD_CC_icon.svg",
+        url: "https://adobexdplatform.com/",
       },
     },
     title: "Software",
@@ -661,7 +715,7 @@ export const categorizedSkills = {
         url: "https://middlemanapp.com/",
       },
       nextjs: {
-        icon: "https://cdn.worldvectorlogo.com/logos/nextjs-2.svg",
+        icon: "https://www.vectorlogo.zone/logos/nextjs/nextjs-icon.svg",
         url: "https://nextjs.org/",
       },
       nuxtjs: {
@@ -669,7 +723,7 @@ export const categorizedSkills = {
         url: "https://nuxtjs.org/",
       },
       sapper: {
-        icon: "https://raw.githubusercontent.com/bestofjs/bestofjs-webui/master/public/logos/sapper.svg",
+        icon: "https://raw.githubusercontent.com/sveltejs/sapper/45ccb4dbbf31ba7ad8a7a634b1f01a0bb8e7260f/site/static/sapper-logo.svg",
         url: "https://sapper.svelte.dev/",
       },
       scully: {
@@ -681,7 +735,7 @@ export const categorizedSkills = {
         url: "https://sculpin.io/",
       },
       vuepress: {
-        icon: "https://raw.githubusercontent.com/AliasIO/wappalyzer/master/src/drivers/webextension/images/icons/VuePress.svg",
+        icon: "https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg",
         url: "https://vuepress.vuejs.org/",
       },
     },
@@ -690,7 +744,7 @@ export const categorizedSkills = {
   testing: {
     skills: {
       cypress: {
-        icon: "https://raw.githubusercontent.com/simple-icons/simple-icons/6e46ec1fc23b60c8fd0d2f2ff46db82e16dbd75f/icons/cypress.svg",
+        icon: "https://www.svgrepo.com/show/353630/cypress.svg",
         url: "https://www.cypress.io",
       },
       jasmine: {
@@ -723,20 +777,3 @@ export const categorizedSkills = {
 };
 
 export const default_user_pic = "/images/default_user_pic.png";
-
-/*
-// TO SORt OBJECT
-const sortedCategories = Object.keys(categorizedSkills).sort();
-
-// Create a new object with sorted categories and sorted skills within each category
-const sortedCategorizedSkills = sortedCategories.reduce((acc, category) => {
-  // Sort skills within each category by key
-  const sortedSkills = Object.keys(categorizedSkills[category]).sort().reduce((skillAcc, skillKey) => {
-    skillAcc[skillKey] = categorizedSkills[category][skillKey];
-    return skillAcc;
-  }, {});
-
-  acc[category] = sortedSkills;
-  return acc;
-}, {});
-*/

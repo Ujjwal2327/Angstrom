@@ -553,7 +553,7 @@ function ProfilesSection({ control }) {
                         rel="noopener noreferrer"
                       >
                         <Image
-                          src={`/icons/Social/${profileName}.svg`}
+                          src={`/icons/profiles/${profileName}.svg`}
                           width={30}
                           height={30}
                           alt={`${profileName} logo`}

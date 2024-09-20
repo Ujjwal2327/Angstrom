@@ -190,7 +190,7 @@ function ProfilesSection({ userProfiles }) {
                 className="flex items-center gap-4 w-fit max-w-full"
               >
                 <Image
-                  src={`/icons/Social/${profileName}.svg`}
+                  src={`/icons/profiles/${profileName}.svg`}
                   width={30}
                   height={30}
                   alt={`${profileName} logo`}
