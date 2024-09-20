@@ -8,10 +8,9 @@ export const menuItems = {
 
 // only use for outside sites
 export const profileIconBaseUrl =
-  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/ac0394b2ea799f3c8facacf539551ff974da96d4/public/icons/profiles/";
-
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/acef712eb9fb929d1a973719541190d98ab9abaa/public/icons/profiles/"
 export const skillIconBaseUrl =
-  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/ac0394b2ea799f3c8facacf539551ff974da96d4/public/icons/categorizedSkills/automation/zapier.svg";
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/acef712eb9fb929d1a973719541190d98ab9abaa/public/icons/categorizedSkills/"
 
 export const profiles = {
   behance: {
