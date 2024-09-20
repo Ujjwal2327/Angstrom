@@ -435,7 +435,7 @@ export const categorizedSkills = {
         icon: "https://raw.githubusercontent.com/gilbarbara/logos/804dc257b59e144eaca5bc6ffd16949752c6f789/logos/bulma.svg",
         url: "https://bulma.io/",
       },
-      css3: {
+      css: {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg",
         url: "https://www.w3schools.com/css/",
       },
@@ -451,13 +451,17 @@ export const categorizedSkills = {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/gulp/gulp-plain.svg",
         url: "https://gulpjs.com",
       },
-      html5: {
+      html: {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg",
         url: "https://www.w3.org/html/",
       },
       materialize: {
         icon: "https://raw.githubusercontent.com/prplx/svg-logos/5585531d45d294869c4eaab4d7cf2e9c167710a9/svg/materialize.svg",
         url: "https://materializecss.com/",
+      },
+      meteor: {
+        icon: "https://raw.githubusercontent.com/prplx/svg-logos/5585531d45d294869c4eaab4d7cf2e9c167710a9/svg/meteor.svg",
+        url: "https://www.meteor.com/",
       },
       pug: {
         icon: "https://cdn.worldvectorlogo.com/logos/pug.svg",
@@ -469,7 +473,7 @@ export const categorizedSkills = {
       },
       react: {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg",
-        url: "https://reactjs.org/",
+        url: "https://react.dev",
       },
       redux: {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/redux/redux-original.svg",
@@ -499,7 +503,7 @@ export const categorizedSkills = {
         icon: "https://raw.githubusercontent.com/devicons/devicon/d00d0969292a6569d45b06d3f350f463a0107b0d/icons/webpack/webpack-original-wordmark.svg",
         url: "https://webpack.js.org",
       },
-      wx_widgets: {
+      wxwidgets: {
         icon: "https://upload.wikimedia.org/wikipedia/commons/b/bb/WxWidgets.svg",
         url: "https://www.wxwidgets.org/",
       },
@@ -525,17 +529,17 @@ export const categorizedSkills = {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg",
         url: "https://www.cprogramming.com/",
       },
+      "c++": {
+        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
+        url: "https://www.w3schools.com/cpp/",
+      },
       clojure: {
         icon: "https://upload.wikimedia.org/wikipedia/commons/5/5d/Clojure_logo.svg",
         url: "https://clojure.org/",
       },
       coffeescript: {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/coffeescript/coffeescript-original-wordmark.svg",
-        url: "https://offeescript.org",
-      },
-      cplusplus: {
-        icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg",
-        url: "https://www.w3schools.com/cpp/",
+        url: "https://coffeescript.org",
       },
       csharp: {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg",
@@ -551,7 +555,7 @@ export const categorizedSkills = {
       },
       go: {
         icon: "https://raw.githubusercontent.com/devicons/devicon/master/icons/go/go-original.svg",
-        url: "https://golang.org",
+        url: "https://go.dev/",
       },
       haskell: {
         icon: "https://upload.wikimedia.org/wikipedia/commons/1/1c/Haskell-Logo.svg",
