@@ -8,7 +8,10 @@ export const menuItems = {
 
 // only use for outside sites
 export const profileIconBaseUrl =
-  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/31cbbaf0196e49e1c967bb051af60aae46ddc3a4/public/icons/profiles/";
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/ac0394b2ea799f3c8facacf539551ff974da96d4/public/icons/profiles/";
+
+export const skillIconBaseUrl =
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/ac0394b2ea799f3c8facacf539551ff974da96d4/public/icons/categorizedSkills/automation/zapier.svg";
 
 export const profiles = {
   behance: {
