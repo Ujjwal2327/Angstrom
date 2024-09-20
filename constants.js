@@ -132,30 +132,30 @@ export const profiles = {
 };
 
 export const categorizedSkills = {
-  ai: {
+  ai_ml: {
     skills: {
       opencv: {
-        icon: `${skillIconBaseUrl}ai/opencv.svg`,
+        icon: `${skillIconBaseUrl}ai_ml/opencv.svg`,
         url: "https://opencv.org/",
       },
       pandas: {
-        icon: `${skillIconBaseUrl}ai/pandas.svg`,
+        icon: `${skillIconBaseUrl}ai_ml/pandas.svg`,
         url: "https://pandas.pydata.org/",
       },
       pytorch: {
-        icon: `${skillIconBaseUrl}ai/pytorch.svg`,
+        icon: `${skillIconBaseUrl}ai_ml/pytorch.svg`,
         url: "https://pytorch.org/",
       },
       scikit_learn: {
-        icon: `${skillIconBaseUrl}ai/scikit_learn.svg`,
+        icon: `${skillIconBaseUrl}ai_ml/scikit_learn.svg`,
         url: "https://scikit-learn.org/",
       },
       seaborn: {
-        icon: `${skillIconBaseUrl}ai/seaborn.svg`,
+        icon: `${skillIconBaseUrl}ai_ml/seaborn.svg`,
         url: "https://seaborn.pydata.org/",
       },
       tensorflow: {
-        icon: `${skillIconBaseUrl}ai/tensorflow.svg`,
+        icon: `${skillIconBaseUrl}ai_ml/tensorflow.svg`,
         url: "https://www.tensorflow.org",
       },
     },
