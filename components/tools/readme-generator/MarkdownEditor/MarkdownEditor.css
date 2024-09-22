@@ -1,0 +1,74 @@
+body .w-md-editor-text-pre>code,
+body .w-md-editor-text-input {
+  font-size: 0.9rem !important;
+  line-height: 1.5rem !important;
+}
+
+.w-md-editor-toolbar {
+  gap: 0.5rem !important;
+}
+
+.MDEditor .w-md-editor-toolbar li button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.MDEditor .w-md-editor-toolbar li button {
+  height: auto;
+  /* margin: 4 !important; */
+}
+
+.MDEditor {
+  height: auto !important;
+  display: flex !important;
+  height: calc(100vh - 5rem) !important;
+}
+
+.w-md-editor-content {
+  display: flex !important;
+  flex-direction: column !important;
+  position: static !important;
+  flex: 1 !important;
+  height: auto !important;
+  border: 0 !important;
+}
+
+.w-md-editor-input,
+.w-md-editor-preview {
+  position: static !important;
+  flex: 1 !important;
+  height: auto !important;
+  min-height: auto !important;
+  max-height: auto !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  width: 100% !important;
+  overflow: auto !important;
+}
+
+.w-md-editor-preview {
+  border-top: 3px solid #30363D !important;
+}
+
+@media (min-width: 768px) {
+  .w-md-editor-content {
+    flex-direction: row !important;
+  }
+
+  .w-md-editor-input,
+  .w-md-editor-preview {
+    width: 50% !important;
+    flex: auto !important;
+  }
+
+  .w-md-editor-preview {
+    border: 0 !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .MDEditor .w-md-editor-toolbar li button svg {
+    width: 17px;
+    height: 17px;
+  }
+}

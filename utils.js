@@ -1,3 +1,5 @@
+import { categorizedSkills } from "./constants";
+
 export function extractFirstLetters(user) {
   return `${user.firstname?.[0] || ""}${
     user.lastname ? " " + user.lastname[0] : ""
@@ -72,3 +74,14 @@ export function isSameObject(obj1, obj2) {
 export function capitalizeString(word) {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
+
+export const mergeSkills = () => {
+  const mergedSkills = {};
+
+  for (const category in categorizedSkills) {
+    const skills = categorizedSkills[category].skills;
+    for (const skill in skills) mergedSkills[skill] = skills[skill];
+  }
+
+  return mergedSkills;
+};

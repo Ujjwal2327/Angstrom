@@ -1,3 +1,7 @@
 export default function Loader({ className }) {
-  return <div className={`loader ${className}`}></div>;
+  return (
+    <div className="flex justify-center">
+      <div className={`loader ${className}`}></div>
+    </div>
+  );
 }

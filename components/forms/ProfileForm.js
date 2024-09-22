@@ -25,10 +25,12 @@ import { RotateCcw, Trash } from "lucide-react";
 import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 import Spinner from "../Spinner";
-import dynamic from "next/dynamic";
 import { isSameObject, resolveUrl } from "@/utils";
+import Loader from "../Loader";
+import dynamic from "next/dynamic";
 const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
+  loading: () => <Loader />,
 });
 
 // Define form schema

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { menuItems } from "@/constants.js";
+import { default_user_pic, menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import useStore from "@/stores/useStore";
@@ -59,7 +59,9 @@ export default function BottomMenuItemsList({ session }) {
                     {item.name}
                     {item.name === "My Details" && (
                       <Avatar className="ml-3 size-7 text-foreground">
-                        <AvatarImage src={resolveUrl(user.pic, default_user_pic)} />
+                        <AvatarImage
+                          src={resolveUrl(user.pic, default_user_pic)}
+                        />
                         <AvatarFallback>
                           {extractFirstLetters(user)}
                         </AvatarFallback>

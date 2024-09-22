@@ -229,7 +229,7 @@ export const categorizedSkills = {
         icon: `${skillIconBaseUrl}backend_dev/openresty.svg`,
         url: "https://openresty.org/",
       },
-      rabbitMQ: {
+      rabbitmq: {
         icon: `${skillIconBaseUrl}backend_dev/rabbitMQ.svg`,
         url: "https://www.rabbitmq.com",
       },

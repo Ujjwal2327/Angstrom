@@ -6,14 +6,15 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
 import { default_user_pic, profiles } from "@/constants";
+import { Suspense } from "react";
+import { capitalizeString, resolveUrl } from "@/utils";
+import { permanentRedirect } from "next/navigation";
+import Loader from "@/components/Loader";
 import dynamic from "next/dynamic";
 const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,
+  loading: () => <Loader />,
 });
-import { Suspense } from "react";
-import Loader from "@/components/Loader";
-import { capitalizeString, resolveUrl } from "@/utils";
-import { permanentRedirect } from "next/navigation";
 
 export function generateMetadata({ params }) {
   const username = decodeURIComponent(params.username);
