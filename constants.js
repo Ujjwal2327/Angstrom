@@ -8,8 +8,7 @@ export const menuItems = {
 
 // only use for outside sites
 const iconBaseUrl =
-  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/889d140895e3d72c6c2c135b3a7d0319b9e4bfa8/public/icons/";
-
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/6141c7f43227475c4bef0cba0a264020f5e0c610/public/icons/";
 export const profileIconBaseUrl = `${iconBaseUrl}profiles/`;
 export const skillIconBaseUrl = `${iconBaseUrl}categorizedSkills/`;
 
@@ -230,7 +229,7 @@ export const categorizedSkills = {
         url: "https://openresty.org/",
       },
       rabbitmq: {
-        icon: `${skillIconBaseUrl}backend_dev/rabbitMQ.svg`,
+        icon: `${skillIconBaseUrl}backend_dev/rabbitmq.svg`,
         url: "https://www.rabbitmq.com",
       },
       solr: {
