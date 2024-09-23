@@ -8,7 +8,7 @@ import {
   useCallback,
   useMemo,
 } from "react";
-import { Copy, Moon, Send, Sun, WandSparkles } from "lucide-react";
+import { Copy, Moon, RotateCcw, Send, Sun, WandSparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import "./MarkdownEditor.css";
@@ -35,7 +35,9 @@ const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
   loading: () => <Loader />,
 });
 
-const defaultMarkdownValue = `# Markdown Editor
+const defaultMarkdownValue = `<!-- Project Readme Templates: https://www.readme-templates.com/-->
+
+# Markdown Editor
 Welcome to the Markdown Editor! This example showcases various Markdown features.
 
 ## Headers
@@ -352,6 +354,11 @@ export default function MarkdownEditor({ user }) {
     return () => window.removeEventListener("resize", handleResize);
   }, [handleResize]);
 
+  const handleReset = useCallback(() => {
+    if (value === defaultMarkdownValue) setValue("");
+    else setValue(defaultMarkdownValue);
+  }, [value]);
+
   const themeToggleCommand = useMemo(
     () => ({
       name: "theme-toggle",
@@ -380,6 +387,34 @@ export default function MarkdownEditor({ user }) {
       },
     }),
     [value]
+  );
+
+  const resetCommand = useMemo(
+    () => ({
+      name: "reset",
+      keyCommand: "reset",
+      buttonProps: {
+        "aria-label": "Reset editor content",
+        title: "Reset editor content",
+      },
+      icon: <RotateCcw className="w-4 h-4" />,
+      execute: handleReset,
+    }),
+    [handleReset]
+  );
+
+  const divider = useMemo(
+    () => ({
+      name: "divider",
+      keyCommand: "divider",
+      buttonProps: {
+        "aria-label": "divider",
+        title: "divider",
+      },
+      icon: <div className="w-[1pc] h-[14px] bg-[rgb(2, 8, 23)]" />,
+      execute: () => {},
+    }),
+    []
   );
 
   const MermaidRenderer = ({ code, id }) => {
@@ -450,6 +485,22 @@ export default function MarkdownEditor({ user }) {
 
     return <code className={className}>{children}</code>;
   };
+
+  const memoizedCommands = useMemo(
+    () => [...getCommands(), copyCommand],
+    [copyCommand]
+  );
+
+  const memoizedExtraCommands = useMemo(
+    () => [
+      resetCommand,
+      divider,
+      ...getExtraCommands(),
+      divider,
+      themeToggleCommand,
+    ],
+    [resetCommand, divider, themeToggleCommand]
+  );
 
   const memoizedComponents = useMemo(
     () => ({
@@ -531,11 +582,8 @@ export default function MarkdownEditor({ user }) {
         onChange={setValue}
         textareaProps={{ placeholder: "Please enter Markdown text..." }}
         preview={previewMode}
-        commands={useMemo(() => [...getCommands(), copyCommand], [copyCommand])}
-        extraCommands={useMemo(
-          () => [...getExtraCommands(), themeToggleCommand],
-          [themeToggleCommand]
-        )}
+        commands={memoizedCommands}
+        extraCommands={memoizedExtraCommands}
         components={memoizedComponents}
         visibleDragbar={false}
         previewOptions={{ components: { code: Code } }}
