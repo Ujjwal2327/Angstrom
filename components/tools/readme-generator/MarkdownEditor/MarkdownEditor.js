@@ -275,7 +275,7 @@ function generateGitHubReadme(user) {
   - &rank_icon=github / percentile (choose rank icon style)
   - &hide=contribs,prs,issues (hide specific stats, comma-separated)
   - &show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage (show specific stats)
-  -->\n\n`;
+-->\n\n`;
   readme += `<div align="center">\n\n`;
   statOptions.forEach((option) => {
     readme += `![${fullname}'s GitHub stats](${baseStatsUrl}${option})\n\n`;
@@ -298,7 +298,7 @@ function generateGitHubReadme(user) {
   - &hide_progress=true (hide progress bars)
   - &layout=compact / donut / donut-vertical / pie (choose layout style)
   - &langs_count=1 to 20 (number of languages to display)
-  -->\n\n`;
+-->\n\n`;
   readme += `<div align="center">\n\n`;
   langOptions.forEach((option) => {
     readme += `![Top Langs](${topLangsBaseUrl}${option})\n\n`;
@@ -311,10 +311,19 @@ function generateGitHubReadme(user) {
   readme += `<!-- Configuration options for GitHub Repo card:
   - &theme=transparent (or other available themes)
   - &repo=<repo_name> (specify the repository name)
-  -->\n\n`;
-  readme += `<!--  [![Repo Card](img_link)](repo_link)  -->\n\n`;
+-->\n\n`;
+  readme += `<!--
+  <a href="repo_link">
+    <img src="img_link" alt="Repo Card">
+  </a>
+-->\n\n`;
   readme += `<div align="center">\n\n`;
-  readme += `[![Repo Card](https://github-readme-stats.vercel.app/api/pin/?username=${githubUsername}&theme=transparent&repo=${githubUsername})](https://github.com/${githubUsername}/${githubUsername})\n\n`;
+  readme += `<a href="https://github.com/${githubUsername}/${githubUsername}">
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=${githubUsername}&theme=transparent&repo=${githubUsername}" alt="Repo Card">
+</a>\n`;
+  readme += `<a href="https://github.com/${githubUsername}/${githubUsername}">
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=${githubUsername}&theme=transparent&repo=${githubUsername}" alt="Repo Card">
+</a>\n\n`;
   readme += `</div>\n\n`;
   readme += "\n---  \n\n\n";
 
