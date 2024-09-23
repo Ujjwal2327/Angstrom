@@ -16,7 +16,6 @@ body .w-md-editor-text-input {
 
 .MDEditor .w-md-editor-toolbar li button {
   height: auto;
-  /* margin: 4 !important; */
 }
 
 .MDEditor {
@@ -33,7 +32,8 @@ body .w-md-editor-text-input {
   fill: #D3D3D3 !important;
 }
 
-.label-container, .actor {
+.label-container,
+.actor {
   stroke: #CCCCCC !important;
   fill: #1F2020 !important;
 }
@@ -55,7 +55,6 @@ tspan {
 
 [class^="messageLine"] {
   stroke: #D3D3D3 !important;
-  /* Use stroke instead of fill */
 }
 
 .note {
@@ -92,11 +91,6 @@ tspan {
   border-radius: 0 !important;
   width: 100% !important;
   overflow: auto !important;
-}
-
-.w-md-editor-text-input {
-  font-family: 'Fira Code', monospace; /* For code snippets */
-  letter-spacing: 20 !important;
 }
 
 .w-md-editor-preview {
