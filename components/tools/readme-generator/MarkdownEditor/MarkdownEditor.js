@@ -305,7 +305,7 @@ function generateGitHubReadme(user) {
   readme += "\n---  \n\n\n";
 
   // github repo card section
-  readme += `## 📦 GitHub Repositories\n`;
+  readme += `## 📦 Awesome GitHub Repositories\n`;
   readme += `<!-- Configuration options for GitHub Repo card:
   - &theme=transparent (or other available themes)
   - &repo=<repo_name> (specify the repository name)
@@ -325,7 +325,7 @@ function generateGitHubReadme(user) {
   readme += "\n---  \n\n\n";
 
   readme += `<div align="center">\n\n`;
-  readme += `### ⭐️ From ${fullname}\n\n`;
+  readme += `### ⭐️ Thanks for stopping by!\n\n`;
   readme += `</div>\n`;
 
   // Return the formatted README content
