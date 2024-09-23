@@ -2,6 +2,7 @@ body .w-md-editor-text-pre>code,
 body .w-md-editor-text-input {
   font-size: 0.9rem !important;
   line-height: 1.5rem !important;
+  font-family: 'Fira Code', monospace !important;
 }
 
 .w-md-editor-toolbar {
@@ -24,6 +25,53 @@ body .w-md-editor-text-input {
   height: calc(100vh - 7.5rem) !important;
 }
 
+.MDEditor img[src$=".svg"] {
+  margin: 3px 0;
+}
+
+.messageText {
+  fill: #D3D3D3 !important;
+}
+
+.label-container, .actor {
+  stroke: #CCCCCC !important;
+  fill: #1F2020 !important;
+}
+
+line {
+  stroke: #CCCCCC !important;
+}
+
+tspan {
+  fill: #D3D3D3 !important;
+}
+
+.flowchart-link {
+  stroke: #D3D3D3 !important;
+  /* Set stroke color */
+  fill: none;
+  /* No fill for the path */
+}
+
+[class^="messageLine"] {
+  stroke: #D3D3D3 !important;
+  /* Use stroke instead of fill */
+}
+
+.note {
+  stroke: #323232 !important;
+  fill: #474949 !important;
+}
+
+.nodeLabel p {
+  color: #C9C9C9 !important;
+}
+
+.edgeLabel p {
+  color: #C9C9C9 !important;
+  background-color: #585858 !important;
+}
+
 .w-md-editor-content {
   display: flex !important;
   flex-direction: column !important;
@@ -44,6 +92,11 @@ body .w-md-editor-text-input {
   border-radius: 0 !important;
   width: 100% !important;
   overflow: auto !important;
+}
+
+.w-md-editor-text-input {
+  font-family: 'Fira Code', monospace; /* For code snippets */
+  letter-spacing: 20 !important;
 }
 
 .w-md-editor-preview {

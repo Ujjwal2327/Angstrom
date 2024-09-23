@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef, Fragment, useCallback } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  Fragment,
+  useCallback,
+  useMemo,
+} from "react";
 import { Copy, Moon, Send, Sun, WandSparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -81,6 +88,32 @@ function greet() {
 |----------|----------|
 | Row 1    | Row 2    |
 | Row 3    | Row 4    |
+
+## UML diagrams
+
+You can render UML diagrams using [Mermaid](https://mermaidjs.github.io/). For example, this will produce a sequence diagram:
+
+\`\`\`mermaid
+sequenceDiagram
+Alice ->> Bob: Hello Bob, how are you?
+Bob-->>John: How about you John?
+Bob--x Alice: I am good thanks!
+Bob-x John: I am good thanks!
+Note right of John: Bob thinks a long<br/>long time, so long<br/>that the text does<br/>not fit on a row.
+
+Bob-->Alice: Checking with John...
+Alice->John: Yes... John, how are you?
+\`\`\`
+
+And this will produce a flow chart:
+
+\`\`\`mermaid
+graph LR
+A[Square Rect] -- Link text --> B((Circle))
+A --> C(Round Rect)
+B --> D{Rhombus}
+C --> D
+\`\`\`
 `;
 
 function generateGitHubReadme(user) {
@@ -96,6 +129,8 @@ function generateGitHubReadme(user) {
     education = [],
     experience = [],
   } = user;
+
+  console.log("user", user);
 
   let readme = "";
   const githubUsername = userProfiles.github || "github_username";
@@ -317,69 +352,136 @@ export default function MarkdownEditor({ user }) {
     return () => window.removeEventListener("resize", handleResize);
   }, [handleResize]);
 
-  const themeToggleCommand = {
-    name: "theme-toggle",
-    keyCommand: "themeToggle",
-    buttonProps: { "aria-label": "Toggle theme", title: "Toggle theme" },
-    icon: <span>{theme === "light" ? <Sun /> : <Moon />}</span>,
-    execute: () =>
-      setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light")),
+  const themeToggleCommand = useMemo(
+    () => ({
+      name: "theme-toggle",
+      keyCommand: "themeToggle",
+      buttonProps: { "aria-label": "Toggle theme", title: "Toggle theme" },
+      icon: <span>{theme === "light" ? <Sun /> : <Moon />}</span>,
+      execute: () =>
+        setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light")),
+    }),
+    [theme]
+  );
+
+  const copyCommand = useMemo(
+    () => ({
+      name: "copy",
+      keyCommand: "copyMarkdown",
+      buttonProps: {
+        "aria-label": "Copy Markdown",
+        title: "Copy Markdown (ctrl + a + c)",
+      },
+      icon: <Copy className="w-4 h-4" />,
+      execute: () => {
+        navigator.clipboard.writeText(value).then(() => {
+          toast.success("Markdown copied to clipboard!");
+        });
+      },
+    }),
+    [value]
+  );
+
+  const MermaidRenderer = ({ code, id }) => {
+    const [svg, setSvg] = useState("");
+    const [error, setError] = useState(null);
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+      let isMounted = true;
+      const renderMermaid = async () => {
+        try {
+          mermaid.initialize({ startOnLoad: false, securityLevel: "loose" });
+          const { svg } = await mermaid.render(`mermaid-${id}`, code);
+          if (isMounted) {
+            setSvg(svg);
+            setError(null);
+          }
+        } catch (err) {
+          console.error("Mermaid render error:", err);
+          if (isMounted) {
+            setError(err.message);
+          }
+        }
+      };
+
+      renderMermaid();
+
+      return () => {
+        isMounted = false;
+      };
+    }, [code, id]);
+
+    useEffect(() => {
+      if (svg && containerRef.current) {
+        containerRef.current.innerHTML = svg;
+      }
+    }, [svg]);
+
+    if (error) {
+      return (
+        <div className="mermaid-error">Error rendering diagram: {error}</div>
+      );
+    }
+
+    return <div ref={containerRef} className="mermaid-container" />;
   };
 
-  const copyCommand = {
-    name: "copy",
-    keyCommand: "copyMarkdown",
-    buttonProps: {
-      "aria-label": "Copy Markdown",
-      title: "Copy Markdown (ctrl + a + c)",
-    },
-    icon: <Copy className="w-4 h-4" />,
-    execute: () => {
-      navigator.clipboard.writeText(value).then(() => {
-        toast.success("Markdown copied to clipboard!");
-      });
-    },
-  };
-
-  const randomid = () =>
-    parseInt(String(Math.random() * 1e15), 10).toString(36);
+  let mermaidCounter = 0;
 
   const Code = ({ inline, children = [], className, ...props }) => {
-    const demoid = useRef(`dome${randomid()}`);
-    const [container, setContainer] = useState(null);
     const isMermaid =
       className && /^language-mermaid/.test(className.toLocaleLowerCase());
     const code = children
       ? getCodeString(props.node.children)
       : children[0] || "";
 
-    useEffect(() => {
-      if (container && isMermaid && demoid.current && code) {
-        mermaid
-          .render(demoid.current, code)
-          .then(({ svg, bindFunctions }) => {
-            container.innerHTML = svg;
-            if (bindFunctions) bindFunctions(container);
-          })
-          .catch((error) => {
-            console.log("error:", error);
-          });
-      }
-    }, [container, isMermaid, code, demoid]);
+    const mermaidId = useRef(mermaidCounter++);
 
-    const refElement = useCallback((node) => {
-      if (node !== null) setContainer(node);
-    }, []);
+    if (isMermaid) {
+      return (
+        <MermaidRenderer
+          code={code}
+          id={mermaidId.current}
+          key={mermaidId.current}
+        />
+      );
+    }
 
-    return isMermaid ? (
-      <Fragment>
-        <code id={demoid.current} style={{ display: "none" }} />
-        <code className={className} ref={refElement} data-name="mermaid" />
-      </Fragment>
-    ) : (
-      <code className={className}>{children}</code>
-    );
+    return <code className={className}>{children}</code>;
   };
+
+  const memoizedComponents = useMemo(
+    () => ({
+      toolbar: (command, disabled, executeCommand) => (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                onClick={(evn) => {
+                  evn.stopPropagation();
+                  executeCommand(command, command.groupName);
+                }}
+                aria-label={command.buttonProps["aria-label"]}
+                disabled={disabled}
+                type="button"
+                variant="ghost"
+                className="p-2"
+              >
+                {command.icon}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{command.buttonProps.title}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ),
+      code: Code,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return (
     <div className="flex flex-col">
@@ -427,72 +529,14 @@ export default function MarkdownEditor({ user }) {
         className="MDEditor"
         value={value}
         onChange={setValue}
-        textareaProps={{ placeholder: "Please enter Markdown text" }}
+        textareaProps={{ placeholder: "Please enter Markdown text..." }}
         preview={previewMode}
-        commands={[...getCommands(), copyCommand]}
-        extraCommands={[...getExtraCommands(), themeToggleCommand]}
-        components={{
-          toolbar: (command, disabled, executeCommand) => (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Button
-                    onClick={(evn) => {
-                      evn.stopPropagation();
-                      executeCommand(command, command.groupName);
-                    }}
-                    aria-label={command.buttonProps["aria-label"]}
-                    disabled={disabled}
-                    type="button"
-                    variant="ghost"
-                    className="p-2"
-                  >
-                    {command.icon}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{command.buttonProps.title}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ),
-          code: ({ children = [], className, ...props }) => {
-            if (
-              typeof children === "string" &&
-              /^\$\$(.*)\$\$/.test(children)
-            ) {
-              const html = katex.renderToString(
-                children.replace(/^\$\$(.*)\$\$/, "$1"),
-                {
-                  throwOnError: false,
-                }
-              );
-              return (
-                <code
-                  dangerouslySetInnerHTML={{ __html: html }}
-                  style={{ background: "transparent" }}
-                />
-              );
-            }
-            const code = props.node?.children
-              ? getCodeString(props.node.children)
-              : children;
-            if (
-              typeof code === "string" &&
-              typeof className === "string" &&
-              /^language-katex/.test(className.toLowerCase())
-            ) {
-              const html = katex.renderToString(code, { throwOnError: false });
-              return (
-                <code
-                  dangerouslySetInnerHTML={{ __html: html }}
-                  style={{ fontSize: "150%" }}
-                />
-              );
-            }
-            return <code className={String(className)}>{children}</code>;
-          },
-        }}
+        commands={useMemo(() => [...getCommands(), copyCommand], [copyCommand])}
+        extraCommands={useMemo(
+          () => [...getExtraCommands(), themeToggleCommand],
+          [themeToggleCommand]
+        )}
+        components={memoizedComponents}
         visibleDragbar={false}
         previewOptions={{ components: { code: Code } }}
         enableScroll={false}
