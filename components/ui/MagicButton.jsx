@@ -3,17 +3,8 @@
 import { useRouter } from "next/navigation";
 import { Button } from "./button";
 
-export const MagicButton = ({
-  title,
-  icon,
-  position,
-  otherClasses,
-  href,
-  suspense,
-}) => {
+export const MagicButton = ({ title, icon, position, otherClasses, href }) => {
   const router = useRouter();
-
-  if (suspense) return <div className="h-12" />;
 
   return (
     <Button

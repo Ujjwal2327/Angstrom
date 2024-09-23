@@ -21,7 +21,7 @@ body .w-md-editor-text-input {
 .MDEditor {
   height: auto !important;
   display: flex !important;
-  height: calc(100vh - 5rem) !important;
+  height: calc(100vh - 7.5rem) !important;
 }
 
 .w-md-editor-content {
@@ -48,6 +48,10 @@ body .w-md-editor-text-input {
 
 .w-md-editor-preview {
   border-top: 3px solid #30363D !important;
+}
+
+button[data-state] {
+  padding: 0 !important;
 }
 
 @media (min-width: 768px) {

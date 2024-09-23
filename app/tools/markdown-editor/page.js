@@ -6,7 +6,7 @@ import Loader from "@/components/Loader";
 
 export default function MarkdownEditorPage() {
   return (
-    <div className="-mt-10">
+    <div>
       <Suspense fallback={<Loader className="mt-10" />}>
         <SuspenseComponent />
       </Suspense>

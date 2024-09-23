@@ -6,6 +6,8 @@ import { getUserByEmail } from "@/action/user";
 import { Send } from "lucide-react";
 import { Suspense } from "react";
 import { TextGenerateEffect } from "./ui/text-generate-effect";
+import Image from "next/image";
+import { EmptySpace } from "./ui/EmptySpace";
 
 export default function Hero() {
   return (
@@ -39,7 +41,7 @@ export default function Hero() {
           className="text-xl sm:text-2xl font-extrabold text-center text-neutral-300 -mt-4 sm:mt-0 text-wrap-balance"
         />
 
-        <Suspense fallback={<MagicButton suspense />}>
+        <Suspense fallback={<EmptySpace h="12" />}>
           <SuspenseComponent />
         </Suspense>
       </div>
@@ -69,6 +71,19 @@ async function SuspenseComponent() {
       ) : (
         <></>
       )}
+      <MagicButton
+        title="Markdown Editor"
+        position="right"
+        icon={
+          <Image
+            src="/icons/others/markdown.svg"
+            alt="markdown logo"
+            width={30}
+            height={30}
+          />
+        }
+        href="/tools/markdown-editor"
+      />
     </div>
   );
 }
