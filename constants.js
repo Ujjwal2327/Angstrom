@@ -9,7 +9,7 @@ export const menuItems = {
 
 // only use for outside sites
 const iconBaseUrl =
-  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/6141c7f43227475c4bef0cba0a264020f5e0c610/public/icons/";
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/da96fda64c782c14cb885150a13f35ade31d37be/public/icons/";
 export const profileIconBaseUrl = `${iconBaseUrl}profiles/`;
 export const skillIconBaseUrl = `${iconBaseUrl}categorizedSkills/`;
 
