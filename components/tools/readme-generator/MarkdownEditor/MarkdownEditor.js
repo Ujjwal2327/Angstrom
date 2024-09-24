@@ -154,7 +154,7 @@ function generateGitHubReadme(user) {
 
   console.log("user", user);
 
-  let readme = "";
+  let readme = "<!-- Basic Customization Required -->\n\n";
   const githubUsername = userProfiles.github || "github_username";
   const fullname =
     [firstname, lastname].filter(Boolean).join(" ").trim() ||
