@@ -65,13 +65,25 @@ You can create headers using \`#\` for H1, \`##\` for H2, and so on.
 ## Images
 ![Markdown Logo](https://markdown-here.com/img/icon256.png)
 
-## Code
+## Inline Code
 Inline code: \`console.log('Hello, Markdown!');\`
 
-Code block:
+## Code block:
+### JavaScript Code Block:
 \`\`\`javascript
 function greet() {
     console.log('Hello, world!');
+}
+\`\`\`
+
+### C++ Code Block:
+\`\`\`cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello, world!" << endl;
+    return 0;
 }
 \`\`\`
 
@@ -84,6 +96,14 @@ function greet() {
 ## Task List
 - [x] Task 1
 - [ ] Task 2
+
+## Paragraphs
+You can create paragraphs by leaving a blank line between them.
+
+This is a new paragraph.
+
+This is another paragraph, demonstrating how to separate content.
+This text is in the same paragraph.
 
 ## Tables
 | Header 1 | Header 2 |
