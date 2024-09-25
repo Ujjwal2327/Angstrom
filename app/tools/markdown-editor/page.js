@@ -4,6 +4,13 @@ import { getUserByEmail } from "@/action/user";
 import { Suspense } from "react";
 import Loader from "@/components/Loader";
 
+export function generateMetadata({ params }) {
+  return {
+    title: `Markdown Editor | Angstrom`,
+    description: `Enhance your GitHub profile effortlessly with Angstrom's Markdown Editor. Enjoy seamless editing, live previews, and one-click generation of customized README profiles.`,
+  };
+}
+
 export default function MarkdownEditorPage() {
   return (
     <div>
