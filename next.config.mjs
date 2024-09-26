@@ -16,7 +16,13 @@ const nextConfig = {
   },
 };
 
-// Apply the hydration overlay with the given configuration
-export default withHydrationOverlay({
-  appRootSelector: "main",
-})(nextConfig);
+const isDev = process.env.NODE_ENV === "development";
+
+// Conditionally apply the hydration overlay
+const config = isDev
+  ? withHydrationOverlay({
+      appRootSelector: "main",
+    })(nextConfig) // apply overlay only in development
+  : nextConfig; // use normal config in production
+
+export default config;
