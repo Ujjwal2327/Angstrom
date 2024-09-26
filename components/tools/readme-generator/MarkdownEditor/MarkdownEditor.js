@@ -32,7 +32,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
   ssr: false,
-  loading: () => <Loader />,
+  loading: () => <Loader className="h-[calc(100vh-7.5rem)]" />,
 });
 
 const defaultMarkdownValue = `<!-- Project Readme Templates: https://www.readme-templates.com/-->
@@ -389,8 +389,8 @@ export default function MarkdownEditor({ user }) {
       name: "copy",
       keyCommand: "copyMarkdown",
       buttonProps: {
-        "aria-label": "Copy Markdown",
-        title: "Copy Markdown (ctrl + a + c)",
+        "aria-label": "Copy markdown",
+        title: "Copy markdown (ctrl + a + c)",
       },
       icon: <Copy className="w-4 h-4" />,
       execute: () => {
@@ -477,42 +477,45 @@ export default function MarkdownEditor({ user }) {
 
   let mermaidCounter = 0;
 
-  const Code = ({ inline, children = [], className, ...props }) => {
-    const isMermaid =
-      className && /^language-mermaid/.test(className.toLocaleLowerCase());
-    const code = children
-      ? getCodeString(props.node.children)
-      : children[0] || "";
+  const Code = useCallback(
+    ({ inline, children = [], className, ...props }) => {
+      const isMermaid =
+        className && /^language-mermaid/.test(className.toLocaleLowerCase());
+      const code = children
+        ? getCodeString(props.node.children)
+        : children[0] || "";
 
-    const mermaidId = useRef(mermaidCounter++);
+      const mermaidId = mermaidCounter++;
 
-    if (isMermaid) {
-      return (
-        <MermaidRenderer
-          code={code}
-          id={mermaidId.current}
-          key={mermaidId.current}
-        />
-      );
-    }
+      if (isMermaid) {
+        return (
+          <MermaidRenderer
+            code={code}
+            id={mermaidId.current}
+            key={mermaidId.current}
+          />
+        );
+      }
 
-    return <code className={className}>{children}</code>;
-  };
+      return <code className={className}>{children}</code>;
+    },
+    [mermaidCounter]
+  );
 
   const memoizedCommands = useMemo(
-    () => [...getCommands(), copyCommand],
-    [copyCommand]
+    () => [...getCommands(), resetCommand],
+    [resetCommand]
   );
 
   const memoizedExtraCommands = useMemo(
     () => [
-      resetCommand,
+      copyCommand,
       divider,
       ...getExtraCommands(),
       divider,
       themeToggleCommand,
     ],
-    [resetCommand, divider, themeToggleCommand]
+    [copyCommand, divider, themeToggleCommand]
   );
 
   const memoizedComponents = useMemo(
@@ -543,12 +546,25 @@ export default function MarkdownEditor({ user }) {
       ),
       code: Code,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [Code]
   );
 
   return (
     <div className="flex flex-col">
+      <MDEditor
+        className="MDEditor"
+        value={value}
+        onChange={setValue}
+        textareaProps={{ placeholder: "Please enter Markdown text..." }}
+        preview={previewMode}
+        commands={memoizedCommands}
+        extraCommands={memoizedExtraCommands}
+        components={memoizedComponents}
+        visibleDragbar={false}
+        previewOptions={{ components: { code: Code } }}
+        enableScroll={false}
+      />
+
       <div className="flex items-center justify-center gap-2">
         {user?.profiles?.github ? (
           <Button
@@ -588,20 +604,6 @@ export default function MarkdownEditor({ user }) {
           </Button>
         )}
       </div>
-
-      <MDEditor
-        className="MDEditor"
-        value={value}
-        onChange={setValue}
-        textareaProps={{ placeholder: "Please enter Markdown text..." }}
-        preview={previewMode}
-        commands={memoizedCommands}
-        extraCommands={memoizedExtraCommands}
-        components={memoizedComponents}
-        visibleDragbar={false}
-        previewOptions={{ components: { code: Code } }}
-        enableScroll={false}
-      />
     </div>
   );
 }
