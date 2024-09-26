@@ -352,6 +352,8 @@ export default function MarkdownEditor({ user }) {
   const [value, setValue] = useState(defaultMarkdownValue);
   const [theme, setTheme] = useState("dark");
   const [previewMode, setPreviewMode] = useState("edit");
+  const mermaidCounterRef = useRef(0);
+  const mermaidIdRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-color-mode", theme);
@@ -475,29 +477,26 @@ export default function MarkdownEditor({ user }) {
     return <div ref={containerRef} className="mermaid-container" />;
   };
 
-  let mermaidCounter = 0;
-
-  const Code = ({ inline, children = [], className, ...props }) => {
+  const Code = useCallback(({ inline, children = [], className, ...props }) => {
     const isMermaid =
       className && /^language-mermaid/.test(className.toLocaleLowerCase());
     const code = children
       ? getCodeString(props.node.children)
       : children[0] || "";
 
-    const mermaidId = useRef(mermaidCounter++);
-
     if (isMermaid) {
+      mermaidIdRef.current = mermaidCounterRef.current++;
       return (
         <MermaidRenderer
           code={code}
-          id={mermaidId.current}
-          key={mermaidId.current}
+          id={mermaidIdRef.current}
+          key={mermaidIdRef.current}
         />
       );
     }
 
     return <code className={className}>{children}</code>;
-  };
+  }, []);
 
   const memoizedCommands = useMemo(
     () => [...getCommands(), resetCommand],
