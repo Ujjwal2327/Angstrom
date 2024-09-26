@@ -256,22 +256,6 @@ function generateGitHubReadme(user) {
     readme += projectEntries + "\n\n\n---  \n\n\n";
   }
 
-  // education section
-  if (education.length) {
-    readme += `## 🏫 Education\n`;
-    const educationEntries = education
-      .map((edu) => {
-        return `### 🌟 ${edu.degree}${
-          edu.specialization ? ` in ${edu.specialization}` : ""
-        }\n- ${
-          edu.score ? `**Score**: ${edu.score} &nbsp;&nbsp;&nbsp; ` : ""
-        }[ ${edu.start} - ${edu.end || "Present"} ]`;
-      })
-      .join("\n\n");
-
-    readme += educationEntries + "\n\n\n---  \n\n\n";
-  }
-
   // github streak card section
   readme += `## 🔥 GitHub Streak  \n`;
   readme += `<!--  ![${fullname}'s GitHub Streak](img_link)  -->\n\n`;
