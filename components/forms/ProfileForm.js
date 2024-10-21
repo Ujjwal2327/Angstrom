@@ -780,7 +780,7 @@ function ExperienceSection({
           key={item.id}
           className="flex flex-col gap-4 bg-slate-900 rounded-md p-2 mb-2"
         >
-          <div className="flex justify-between sm:gap-10">
+          <div className="flex justify-between items-center gap-10">
             <div className="flex flex-col sm:flex-row gap-4 w-full">
               <FormField
                 control={control}
@@ -815,9 +815,9 @@ function ExperienceSection({
                 )}
               />
             </div>
-            <div className="flex justify-between items-center gap-3">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
               <DeleteDialog
-                category="Project"
+                category="Experience"
                 deleteHandler={() => removeExperience(index)}
               />
               <MoveItemTooltip
@@ -906,7 +906,7 @@ function ProjectsSection({
           key={item.id}
           className="flex flex-col gap-4 bg-slate-900 rounded-md p-2 mb-2"
         >
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center gap-10">
             <FormField
               control={control}
               name={`projects.${index}.name`}
