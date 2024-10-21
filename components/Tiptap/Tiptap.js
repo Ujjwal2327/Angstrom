@@ -33,7 +33,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/tooltip";
 
 const lowlight = createLowlight(all);
 
@@ -128,8 +128,8 @@ function Toolbar({ editor }) {
   return (
     <div className="control-group">
       <div className="button-group flex flex-wrap items-center gap-1">
-        {/* heading */}
         <TooltipProvider>
+          {/* heading */}
           <Tooltip>
             <TooltipTrigger>
               <Toggle
@@ -150,10 +150,8 @@ function Toolbar({ editor }) {
               <p>Heading</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
 
-        {/* bold */}
-        <TooltipProvider>
+          {/* bold */}
           <Tooltip>
             <TooltipTrigger>
               <Toggle
@@ -174,10 +172,8 @@ function Toolbar({ editor }) {
               <p>Bold</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
 
-        {/* italic */}
-        <TooltipProvider>
+          {/* italic */}
           <Tooltip>
             <TooltipTrigger>
               <Toggle
@@ -198,10 +194,8 @@ function Toolbar({ editor }) {
               <p>Italic</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
 
-        {/* link */}
-        <TooltipProvider>
+          {/* link */}
           <Tooltip>
             <TooltipTrigger>
               <Toggle
@@ -222,10 +216,8 @@ function Toolbar({ editor }) {
               <p>Link</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
 
-        {/* code */}
-        <TooltipProvider>
+          {/* code */}
           <Tooltip>
             <TooltipTrigger>
               <Toggle
@@ -246,10 +238,8 @@ function Toolbar({ editor }) {
               <p>Code</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
 
-        {/* unordered list */}
-        <TooltipProvider>
+          {/* unordered list */}
           <Tooltip>
             <TooltipTrigger>
               <Toggle
@@ -270,10 +260,8 @@ function Toolbar({ editor }) {
               <p>Bullet List</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
 
-        {/* blockquote */}
-        <TooltipProvider>
+          {/* blockquote */}
           <Tooltip>
             <TooltipTrigger>
               <Toggle
@@ -294,10 +282,8 @@ function Toolbar({ editor }) {
               <p>Blockquote</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
 
-        {/* undo */}
-        <TooltipProvider>
+          {/* undo */}
           <Tooltip>
             <TooltipTrigger>
               <Button
@@ -318,10 +304,8 @@ function Toolbar({ editor }) {
               <p>Undo</p>
             </TooltipContent>
           </Tooltip>
-        </TooltipProvider>
 
-        {/* redo */}
-        <TooltipProvider>
+          {/* redo */}
           <Tooltip>
             <TooltipTrigger>
               <Button

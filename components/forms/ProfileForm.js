@@ -16,12 +16,27 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import Image from "next/image";
 import { profiles, categorizedSkills, default_user_pic } from "@/constants";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { RotateCcw, Trash } from "lucide-react";
+import { ChevronDown, ChevronUp, RotateCcw, Trash } from "lucide-react";
 import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 import Spinner from "../Spinner";
@@ -36,6 +51,7 @@ const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
 // Define form schema
 const projectSchema = z
   .object({
+    order: z.number(),
     name: z.string().trim().min(1, { message: "Project name is required" }),
     code_url: z.string().trim().url({ message: "Invalid URL" }),
     live_url: z.string().trim().optional(),
@@ -64,6 +80,7 @@ const projectSchema = z
 
 const educationSchema = z
   .object({
+    order: z.number(),
     institution: z
       .string()
       .trim()
@@ -81,6 +98,7 @@ const educationSchema = z
 
 const experienceSchema = z
   .object({
+    order: z.number(),
     company: z.string().trim().min(1, { message: "Company name is required" }),
     position: z.string().trim().min(1, { message: "Position is required" }),
     start: z.string().trim().min(1, { message: "Start date is required" }),
@@ -144,33 +162,53 @@ const formSchema = z.object({
         .max(30, "Skill cannot exceed 30 characters")
     )
     .default([]),
-  experience: z.array(experienceSchema).refine(
-    (experience) => {
-      const combinations = experience.map(
-        (item) => `${item.company}|${item.position}`
-      );
-      return uniqueValidator(combinations);
-    },
-    {
-      message: "Company and Position combinations must be unique.",
-    }
-  ),
-  projects: z.array(projectSchema).refine(
-    (projects) => {
-      const projectNames = projects.map((item) => item.name);
-      return uniqueValidator(projectNames);
-    },
-    { message: "Project names must be unique." }
-  ),
-  education: z.array(educationSchema).refine(
-    (education) => {
-      const degrees = education.map((item) => item.degree);
-      return uniqueValidator(degrees);
-    },
-    {
-      message: "Degrees must be unique.",
-    }
-  ),
+  experience: z
+    .array(experienceSchema)
+    .refine(
+      (experience) => {
+        const combinations = experience.map(
+          (item) => `${item.company}|${item.position}`
+        );
+        return uniqueValidator(combinations);
+      },
+      { message: "Company and Position combinations must be unique." }
+    )
+    .transform((experience) =>
+      experience.map((exp, index) => ({
+        ...exp,
+        order: index,
+      }))
+    ),
+  projects: z
+    .array(projectSchema)
+    .refine(
+      (projects) => {
+        const projectNames = projects.map((item) => item.name);
+        return uniqueValidator(projectNames);
+      },
+      { message: "Project names must be unique." }
+    )
+    .transform((projects) =>
+      projects.map((project, index) => ({
+        ...project,
+        order: index,
+      }))
+    ),
+  education: z
+    .array(educationSchema)
+    .refine(
+      (education) => {
+        const degrees = education.map((item) => item.degree);
+        return uniqueValidator(degrees);
+      },
+      { message: "Degrees must be unique." }
+    )
+    .transform((education) =>
+      education.map((edu, index) => ({
+        ...edu,
+        order: index,
+      }))
+    ),
 });
 
 export default function ProfileForm({ user }) {
@@ -194,6 +232,7 @@ export default function ProfileForm({ user }) {
       }, {}),
       projects:
         user.projects?.map((project) => ({
+          order: project.order,
           name: project.name,
           live_url: project.live_url,
           code_url: project.code_url,
@@ -202,6 +241,7 @@ export default function ProfileForm({ user }) {
         })) || [],
       education:
         user.education?.map((edu) => ({
+          order: edu.order,
           institution: edu.institution,
           degree: edu.degree,
           score: edu.score || "",
@@ -211,6 +251,7 @@ export default function ProfileForm({ user }) {
         })) || [],
       experience:
         user.experience?.map((exp) => ({
+          order: exp.order,
           company: exp.company,
           position: exp.position,
           start: exp.start,
@@ -233,28 +274,53 @@ export default function ProfileForm({ user }) {
     fields: projectFields,
     append: appendProject,
     remove: removeProject,
+    update: updateProject,
   } = useFieldArray({
     control,
     name: "projects",
   });
   const {
-    fields: educationFields,
-    append: appendEducation,
-    remove: removeEducation,
-  } = useFieldArray({
-    control,
-    name: "education",
-  });
-  const {
     fields: experienceFields,
     append: appendExperience,
     remove: removeExperience,
+    update: updateExperience,
   } = useFieldArray({
     control,
     name: "experience",
   });
+  const {
+    fields: educationFields,
+    append: appendEducation,
+    remove: removeEducation,
+    update: updateEducation,
+  } = useFieldArray({
+    control,
+    name: "education",
+  });
 
   const skills = watch("skills");
+
+  const moveItem = (fields, updateFunc, index, direction) => {
+    if (
+      (direction === "up" && index <= 0) ||
+      (direction === "down" && index >= fields.length - 1)
+    )
+      return;
+
+    const swapIndex = direction === "up" ? index - 1 : index + 1;
+    updateFunc(swapIndex, fields[index]);
+    updateFunc(index, fields[swapIndex]);
+  };
+
+  const moveExperience = (index, direction) => {
+    moveItem(experienceFields, updateExperience, index, direction);
+  };
+  const moveProject = (index, direction) => {
+    moveItem(projectFields, updateProject, index, direction);
+  };
+  const moveEducation = (index, direction) => {
+    moveItem(educationFields, updateEducation, index, direction);
+  };
 
   const onSubmit = async (formdata) => {
     // Handle form submission
@@ -348,6 +414,7 @@ export default function ProfileForm({ user }) {
           experienceFields={experienceFields}
           appendExperience={appendExperience}
           removeExperience={removeExperience}
+          moveExperience={moveExperience}
           control={control}
         />
         <Separator />
@@ -356,6 +423,7 @@ export default function ProfileForm({ user }) {
           projectFields={projectFields}
           appendProject={appendProject}
           removeProject={removeProject}
+          moveProject={moveProject}
           skills={skills}
           control={control}
         />
@@ -365,6 +433,7 @@ export default function ProfileForm({ user }) {
           educationFields={educationFields}
           appendEducation={appendEducation}
           removeEducation={removeEducation}
+          moveEducation={moveEducation}
           control={control}
         />
         <Separator />
@@ -376,10 +445,10 @@ export default function ProfileForm({ user }) {
         >
           {loading ? (
             <>
-              Loading <Spinner className="size-4 ml-2" />
+              Saving <Spinner className="size-4 ml-2" />
             </>
           ) : (
-            "Submit"
+            "Save Changes"
           )}
         </Button>
       </form>
@@ -432,7 +501,7 @@ function BasicInfoSection({ control, user }) {
                       if (e.key === "Enter") e.preventDefault();
                     }}
                     {...field}
-                    className="sm:h-[6.13rem] resize-none"
+                    className="sm:h-[6.6rem] resize-none"
                   />
                 </FormControl>
                 <FormMessage />
@@ -455,7 +524,18 @@ function BasicInfoSection({ control, user }) {
                   loading="lazy"
                 />
               </div>
-              <FormLabel>Profile Pic</FormLabel>
+              <FormLabel>
+                <p className="mt-4">
+                  Profile Pic{" "}
+                  <Link
+                    href="https://postimages.org/"
+                    target="_blank"
+                    className="text-blue-300 text-xs"
+                  >
+                    (Upload & Use Direct link)
+                  </Link>
+                </p>
+              </FormLabel>
               <FormControl>
                 <div className="flex gap-x-2 items-center">
                   <Input {...field} />
@@ -689,6 +769,7 @@ function ExperienceSection({
   experienceFields,
   appendExperience,
   removeExperience,
+  moveExperience,
   control,
 }) {
   return (
@@ -734,14 +815,17 @@ function ExperienceSection({
                 )}
               />
             </div>
-            <Button
-              type="button"
-              onClick={() => removeExperience(index)}
-              variant="ghost"
-              aria-label="remove experience"
-            >
-              <Trash className="w-4 h-4" />
-            </Button>
+            <div className="flex justify-between items-center gap-3">
+              <DeleteDialog
+                category="Project"
+                deleteHandler={() => removeExperience(index)}
+              />
+              <MoveItemTooltip
+                index={index}
+                fieldsLength={experienceFields.length}
+                moveHandler={moveExperience}
+              />
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
             <FormField
@@ -810,6 +894,7 @@ function ProjectsSection({
   projectFields,
   appendProject,
   removeProject,
+  moveProject,
   skills,
   control,
 }) {
@@ -838,14 +923,17 @@ function ProjectsSection({
                 </FormItem>
               )}
             />
-            <Button
-              type="button"
-              onClick={() => removeProject(index)}
-              variant="ghost"
-              aria-label="remove project"
-            >
-              <Trash className="w-4 h-4" />
-            </Button>
+            <div className="flex justify-between items-center gap-3">
+              <DeleteDialog
+                category="Project"
+                deleteHandler={() => removeProject(index)}
+              />
+              <MoveItemTooltip
+                index={index}
+                fieldsLength={projectFields.length}
+                moveHandler={moveProject}
+              />
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
             <FormField
@@ -979,6 +1067,7 @@ function EducationSection({
   educationFields,
   appendEducation,
   removeEducation,
+  moveEducation,
   control,
 }) {
   return (
@@ -989,7 +1078,7 @@ function EducationSection({
           key={item.id}
           className="flex flex-col gap-4 bg-slate-900 rounded-md p-2 mb-2"
         >
-          <div className="flex justify-between gap-10">
+          <div className="flex justify-between items-center gap-10">
             <FormField
               control={control}
               name={`education.${index}.degree`}
@@ -1006,14 +1095,17 @@ function EducationSection({
                 </FormItem>
               )}
             />
-            <Button
-              type="button"
-              onClick={() => removeEducation(index)}
-              variant="ghost"
-              aria-label="remove education"
-            >
-              <Trash className="w-4 h-4" />
-            </Button>
+            <div className="flex justify-between items-center gap-3">
+              <DeleteDialog
+                category="Education"
+                deleteHandler={() => removeEducation(index)}
+              />
+              <MoveItemTooltip
+                index={index}
+                fieldsLength={educationFields.length}
+                moveHandler={moveEducation}
+              />
+            </div>
           </div>
           <div className="flex flex-col sm:flex-row gap-4">
             <FormField
@@ -1108,5 +1200,76 @@ function EducationSection({
         Add Education
       </Button>
     </div>
+  );
+}
+
+function DeleteDialog({ category, deleteHandler }) {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Trash
+          className="w-4 h-4"
+          aria-label={`remove ${category.toLowerCase()}`}
+        />
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Are you absolutely sure?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. This will permanently delete the{" "}
+            {category.toLowerCase()} from our servers.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center gap-5">
+          <DialogClose asChild>
+            <Button type="button" variant="secondary" className="flex-1">
+              Cancel
+            </Button>
+          </DialogClose>
+          <Button
+            type="button"
+            onClick={deleteHandler}
+            variant="destructive"
+            className="flex-1"
+            aria-label={`remove ${category.toLowerCase()}`}
+          >
+            Delete {category}
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function MoveItemTooltip({ index, fieldsLength, moveHandler }) {
+  return (
+    <TooltipProvider>
+      {index > 0 && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ChevronUp
+              className="cursor-pointer"
+              onClick={() => moveHandler(index, "up")}
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Move Upward</p>
+          </TooltipContent>
+        </Tooltip>
+      )}
+      {index < fieldsLength - 1 && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <ChevronDown
+              className="cursor-pointer"
+              onClick={() => moveHandler(index, "down")}
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Move Downward</p>
+          </TooltipContent>
+        </Tooltip>
+      )}
+    </TooltipProvider>
   );
 }

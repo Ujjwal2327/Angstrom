@@ -16,9 +16,9 @@ export async function getUserByEmail(email, throwable = false) {
         email,
       },
       include: {
-        projects: true,
-        education: true,
-        experience: true,
+        projects: { orderBy: { order: "asc" } },
+        education: { orderBy: { order: "asc" } },
+        experience: { orderBy: { order: "asc" } },
       },
     });
 
@@ -33,20 +33,6 @@ export async function getUserByEmail(email, throwable = false) {
       error.message,
       throwable,
       null
-    );
-  }
-}
-
-export async function getAllUsers(throwable = false) {
-  try {
-    const users = await prisma.user.findMany();
-    return users;
-  } catch (error) {
-    handleCaughtActionError(
-      "Error in fetching users",
-      error.message,
-      throwable,
-      []
     );
   }
 }
@@ -71,9 +57,9 @@ export async function getUserByUsername(username, throwable = false) {
         username,
       },
       include: {
-        projects: true,
-        education: true,
-        experience: true,
+        projects: { orderBy: { order: "asc" } },
+        education: { orderBy: { order: "asc" } },
+        experience: { orderBy: { order: "asc" } },
       },
     });
 
@@ -151,9 +137,9 @@ export async function updateUser(data, throwable = false) {
             email: data.email,
           },
           include: {
-            experience: true,
             projects: true,
             education: true,
+            experience: true,
           },
         });
 
@@ -265,7 +251,11 @@ export async function updateUser(data, throwable = false) {
             profiles: data.profiles,
             skills: { set: data.skills },
           },
-          include: { projects: true, education: true, experience: true },
+          include: {
+            projects: { orderBy: { order: "asc" } },
+            education: { orderBy: { order: "asc" } },
+            experience: { orderBy: { order: "asc" } },
+          },
         });
       },
       {
@@ -286,6 +276,20 @@ export async function updateUser(data, throwable = false) {
       error.message,
       throwable,
       null
+    );
+  }
+}
+
+export async function getAllUsers(throwable = false) {
+  try {
+    const users = await prisma.user.findMany();
+    return users;
+  } catch (error) {
+    handleCaughtActionError(
+      "Error in fetching users",
+      error.message,
+      throwable,
+      []
     );
   }
 }

@@ -31,6 +31,7 @@ model User {
 
 model Project {
   id       Int      @id @default(autoincrement())
+  order    Int
   name     String
   live_url String?
   code_url String
@@ -44,6 +45,7 @@ model Project {
 
 model Education {
   id             Int     @id @default(autoincrement())
+  order          Int
   institution    String
   degree         String
   specialization String?
@@ -58,6 +60,7 @@ model Education {
 
 model Experience {
   id       Int     @id @default(autoincrement())
+  order    Int
   company  String
   position String
   start    String
