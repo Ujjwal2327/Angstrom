@@ -263,7 +263,6 @@ export default function ProfileForm({ user }) {
 
   const { control, handleSubmit, watch, setValue, formState } = form;
   const {
-    fields: skillsFields,
     append: appendSkill,
     remove: removeSkill,
   } = useFieldArray({
@@ -300,26 +299,29 @@ export default function ProfileForm({ user }) {
 
   const skills = watch("skills");
 
-  const moveItem = (fields, updateFunc, index, direction) => {
+  const moveItem = (watchFunc, updateFunc, index, direction) => {
+    const fields = watchFunc(); // get current values from the form state
     if (
       (direction === "up" && index <= 0) ||
       (direction === "down" && index >= fields.length - 1)
     )
       return;
-
+  
     const swapIndex = direction === "up" ? index - 1 : index + 1;
-    updateFunc(swapIndex, fields[index]);
-    updateFunc(index, fields[swapIndex]);
+    const currentItem = fields[index];
+    const swapItem = fields[swapIndex];
+    updateFunc(swapIndex, currentItem);
+    updateFunc(index, swapItem);
   };
 
   const moveExperience = (index, direction) => {
-    moveItem(experienceFields, updateExperience, index, direction);
+    moveItem(() => watch("experience"), updateExperience, index, direction);
   };
   const moveProject = (index, direction) => {
-    moveItem(projectFields, updateProject, index, direction);
+    moveItem(() => watch("projects"), updateProject, index, direction);
   };
   const moveEducation = (index, direction) => {
-    moveItem(educationFields, updateEducation, index, direction);
+    moveItem(() => watch("education"), updateEducation, index, direction);
   };
 
   const onSubmit = async (formdata) => {
