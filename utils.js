@@ -75,7 +75,7 @@ export function capitalizeString(word) {
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
-export const mergeSkills = () => {
+export function mergeSkills() {
   const mergedSkills = {};
 
   for (const category in categorizedSkills) {
@@ -84,4 +84,21 @@ export const mergeSkills = () => {
   }
 
   return mergedSkills;
-};
+}
+
+export function uniqueValidator(strings) {
+  const seenStrings = new Set();
+  for (const str of strings) {
+    if (str.trim() === "") continue;
+    if (seenStrings.has(str)) return false;
+    seenStrings.add(str);
+  }
+  return true;
+}
+
+export function skillExistsInCategories(searchSkill) {
+  if (!searchSkill || !searchSkill.trim()) return false;
+  for (const category of Object.keys(categorizedSkills))
+    if (categorizedSkills[category].skills[searchSkill]) return true;
+  return false;
+}

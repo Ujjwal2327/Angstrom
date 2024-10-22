@@ -85,7 +85,7 @@ export default function Tiptap({ desc, onChange }) {
   return (
     <div className="pt-3">
       {onChange && <Toolbar editor={editor} />}
-      <EditorContent editor={editor} className="tiptap" />
+      <EditorContent editor={editor} />
     </div>
   );
 }
@@ -131,14 +131,13 @@ function Toolbar({ editor }) {
         <TooltipProvider>
           {/* heading */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Toggle
                 type="button"
                 pressed={editor.isActive("heading", { level: 2 })}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   editor.chain().focus().toggleHeading({ level: 2 }).run();
                 }}
                 aria-label="toggle heading"
@@ -153,14 +152,13 @@ function Toolbar({ editor }) {
 
           {/* bold */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Toggle
                 type="button"
                 pressed={editor.isActive("bold")}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   editor.chain().focus().toggleBold().run();
                 }}
                 aria-label="toggle bold"
@@ -175,14 +173,13 @@ function Toolbar({ editor }) {
 
           {/* italic */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Toggle
                 type="button"
                 pressed={editor.isActive("italic")}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   editor.chain().focus().toggleItalic().run();
                 }}
                 aria-label="toggle italic"
@@ -197,16 +194,13 @@ function Toolbar({ editor }) {
 
           {/* link */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Toggle
                 type="button"
                 pressed={editor.isActive("link")}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setLink();
-                }}
+                onClick={setLink}
                 aria-label="toggle link"
               >
                 <LinkIcon />
@@ -219,14 +213,13 @@ function Toolbar({ editor }) {
 
           {/* code */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Toggle
                 type="button"
                 pressed={editor.isActive("codeBlock")}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   editor.chain().focus().toggleCodeBlock().run();
                 }}
                 aria-label="toggle code"
@@ -241,14 +234,13 @@ function Toolbar({ editor }) {
 
           {/* unordered list */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Toggle
                 type="button"
                 pressed={editor.isActive("bulletList")}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   editor.chain().focus().toggleBulletList().run();
                 }}
                 aria-label="toggle list"
@@ -263,14 +255,13 @@ function Toolbar({ editor }) {
 
           {/* blockquote */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Toggle
                 type="button"
                 pressed={editor.isActive("blockquote")}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   editor.chain().focus().toggleBlockquote().run();
                 }}
                 aria-label="toggle blockquote"
@@ -285,14 +276,13 @@ function Toolbar({ editor }) {
 
           {/* undo */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
                 type="button"
                 disabled={!editor.can().undo()}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   editor.chain().focus().undo().run();
                 }}
                 aria-label="undo"
@@ -307,14 +297,13 @@ function Toolbar({ editor }) {
 
           {/* redo */}
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               <Button
                 type="button"
                 disabled={!editor.can().redo()}
                 variant="outline"
                 size="sm"
-                onClick={(e) => {
-                  e.preventDefault();
+                onClick={() => {
                   editor.chain().focus().redo().run();
                 }}
                 aria-label="redo"
