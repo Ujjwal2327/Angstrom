@@ -28,7 +28,7 @@ export async function getUserByEmail(email, throwable = false) {
 
     return user;
   } catch (error) {
-    handleCaughtActionError(
+    return handleCaughtActionError(
       "Error in fetching user",
       error.message,
       throwable,
@@ -69,7 +69,7 @@ export async function getUserByUsername(username, throwable = false) {
 
     return user;
   } catch (error) {
-    handleCaughtActionError(
+    return handleCaughtActionError(
       "Error in fetching user",
       error.message,
       throwable,
@@ -106,18 +106,11 @@ export async function createUser(data, throwable = false) {
       data,
     });
 
-    if (!newUser)
-      return handleActionError(
-        "Failed to create user. Please try again later.",
-        throwable,
-        null
-      );
-
     await updateUserCache(newUser);
 
     return newUser;
   } catch (error) {
-    handleCaughtActionError(
+    return handleCaughtActionError(
       "Error in creating user",
       error.message,
       throwable,
@@ -264,14 +257,11 @@ export async function updateUser(data, throwable = false) {
       }
     );
 
-    if (!updatedUser)
-      return handleActionError("Failed to update user.", throwable, null);
-
     await updateUserCache(updatedUser, user.username);
 
     return updatedUser;
   } catch (error) {
-    handleCaughtActionError(
+    return handleCaughtActionError(
       "Error in updating user",
       error.message,
       throwable,
@@ -285,7 +275,7 @@ export async function getAllUsers(throwable = false) {
     const users = await prisma.user.findMany();
     return users;
   } catch (error) {
-    handleCaughtActionError(
+    return handleCaughtActionError(
       "Error in fetching users",
       error.message,
       throwable,

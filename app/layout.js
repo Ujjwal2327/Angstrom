@@ -27,7 +27,7 @@ export default function RootLayout({ children }) {
         <HydrationOverlay>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >

@@ -148,13 +148,11 @@ function generateGitHubReadme(user) {
     profiles: userProfiles = {},
     skills = [],
     projects = [],
-    education = [],
     experience = [],
   } = user;
 
   console.log("user", user);
 
-  let readme = "<!-- Basic Customization Required -->\n\n";
   const githubUsername = userProfiles.github || "github_username";
   const fullname =
     [firstname, lastname].filter(Boolean).join(" ").trim() ||
@@ -162,10 +160,11 @@ function generateGitHubReadme(user) {
     username;
   const mergedSkills = mergeSkills();
 
+  let readme = `<!-- ${githubUsername}/README.md -->\n<!-- Basic Customization Required -->\n\n`;
   // intro section
   const introSections = [
     `<div align="center">\n\n`,
-    `![${fullname}'s Github Profile Counter Card](https://profile-counter.glitch.me/${githubUsername}/count.svg)\n\n`,
+    `<img src="https://visitcount.itsvg.in/api?id=${githubUsername}&label=Profile%20Views&color=0&icon=2" align="right" />\n<br/>\n\n`,
     `<!-- Choose one heading style -->\n`,
     `<!-- Option 1: Fast & simple text -->\n`,
     `# 👋 Hey, I'm ${fullname}!\n\n`,
@@ -247,9 +246,11 @@ function generateGitHubReadme(user) {
     readme += `## 📁 Projects\n`;
     const projectEntries = projects
       .map((project) => {
-        return `### 🌟 ${project.name} | [Live](${
-          project.live_url || "#"
-        }) | [Code](${project.code_url})\n- ${project.about}`;
+        return `### 🌟 ${project.name} | [Code](${project.code_url})${
+          project.code_url !== project.live_url
+            ? ` | [Live](${project.live_url})`
+            : ""
+        }\n- ${project.about}`;
       })
       .join("\n\n");
 

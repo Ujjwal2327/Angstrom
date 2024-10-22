@@ -31,6 +31,10 @@ export default function BottomMenuItemsList({ session }) {
     if (session?.user?.email && !user) getUser(session.user.email);
     else if (!session) setUser(null);
   }, [session, user, setUser]);
+
+  const fullname =
+    [user?.firstname, user?.lastname].filter(Boolean).join(" ").trim() ||
+    user?.username;
   return (
     <div className="absolute bottom-0 w-full">
       {session?.user?.email ? (
@@ -63,7 +67,7 @@ export default function BottomMenuItemsList({ session }) {
                           src={resolveUrl(user.pic, default_user_pic)}
                         />
                         <AvatarFallback>
-                          {extractFirstLetters(user)}
+                          {extractFirstLetters(fullname)}
                         </AvatarFallback>
                       </Avatar>
                     )}

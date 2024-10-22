@@ -1,9 +1,10 @@
 import { categorizedSkills } from "./constants";
 
-export function extractFirstLetters(user) {
-  return `${user.firstname?.[0] || ""}${
-    user.lastname ? " " + user.lastname[0] : ""
-  }`.trim();
+export function extractFirstLetters(str) {
+  return str
+    .split(" ")
+    .map((word) => word[0]?.toUpperCase())
+    .join("");
 }
 
 export function handleActionError(errorMessage, throwable, returnValue) {

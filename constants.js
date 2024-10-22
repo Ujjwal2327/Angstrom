@@ -19,6 +19,11 @@ export const profiles = {
     base_url: "https://www.behance.net/",
     icon: `${profileIconBaseUrl}behance.svg`,
   },
+  calendly: {
+    name: "Calendly",
+    base_url: "https://calendly.com/",
+    icon: `${profileIconBaseUrl}calendly.svg`,
+  },
   codechef: {
     name: "CodeChef",
     base_url: "https://www.codechef.com/users/",
@@ -113,6 +118,11 @@ export const profiles = {
     name: "Stack Overflow",
     base_url: "https://stackoverflow.com/users/",
     icon: `${profileIconBaseUrl}stackoverflow.svg`,
+  },
+  telegram: {
+    name: "Telegram",
+    base_url: "https://t.me/",
+    icon: `${profileIconBaseUrl}telegram.svg`,
   },
   topcoder: {
     name: "Topcoder",
