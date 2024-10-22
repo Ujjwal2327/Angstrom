@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { default_user_pic, menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import useStore from "@/stores/useStore";
 import { toast } from "sonner";
 import { extractFirstLetters, resolveUrl } from "@/utils";
-import { SheetClose } from "../ui/sheet";
+import { SheetClose } from "@/components/ui/sheet";
 import { LogOut } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 

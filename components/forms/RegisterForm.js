@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useState } from "react";
-import Spinner from "../ui/Spinner";
+import Spinner from "@/components/ui/Spinner";
 
 const FormSchema = z.object({
   username: z

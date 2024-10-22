@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
-import { SheetClose } from "../ui/sheet";
+import { SheetClose } from "@/components/ui/sheet";
 
 export default function TopMenuItemsList() {
   const pathname = usePathname();

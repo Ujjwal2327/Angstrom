@@ -1,5 +1,5 @@
 import { signIn } from "@/auth";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { FaGoogle } from "react-icons/fa";
 
 export default function GoogleSignIn({ isFull }) {

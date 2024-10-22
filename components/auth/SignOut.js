@@ -1,6 +1,6 @@
 import { LogOut } from "lucide-react";
-import { signOut } from "../../auth.js";
-import { Button } from "../ui/button.jsx";
+import { signOut } from "@/auth.js";
+import { Button } from "@/components/ui/button.jsx";
 
 export default function SignOut({ isFull }) {
   return (
