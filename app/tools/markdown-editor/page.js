@@ -2,7 +2,7 @@ import MarkdownEditor from "@/components/tools/readme-generator/MarkdownEditor/M
 import { auth } from "@/auth";
 import { getUserByEmail } from "@/action/user";
 import { Suspense } from "react";
-import Loader from "@/components/Loader";
+import Loader from "@/components/ui/Loader";
 
 export function generateMetadata({ params }) {
   return {

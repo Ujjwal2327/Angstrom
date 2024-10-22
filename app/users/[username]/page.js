@@ -9,7 +9,7 @@ import { default_user_pic, profiles } from "@/constants";
 import { Suspense } from "react";
 import { capitalizeString, resolveUrl } from "@/utils";
 import { permanentRedirect } from "next/navigation";
-import Loader from "@/components/Loader";
+import Loader from "@/components/ui/Loader";
 import dynamic from "next/dynamic";
 const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
   ssr: false,

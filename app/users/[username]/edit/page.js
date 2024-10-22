@@ -1,7 +1,7 @@
 import { getUserByEmail } from "@/action/user";
 import { auth } from "@/auth";
 import ProfileForm from "@/components/forms/ProfileForm/ProfileForm";
-import Loader from "@/components/Loader";
+import Loader from "@/components/ui/Loader";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { permanentRedirect } from "next/navigation";

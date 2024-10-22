@@ -27,7 +27,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import Loader from "@/components/Loader";
+import Loader from "@/components/ui/Loader";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {

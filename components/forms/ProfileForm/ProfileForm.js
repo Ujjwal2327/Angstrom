@@ -17,7 +17,7 @@ import { profiles, categorizedSkills, default_user_pic } from "@/constants";
 import { useEffect, useState } from "react";
 import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
-import Spinner from "@/components/Spinner";
+import Spinner from "@/components/ui/Spinner";
 import { isSameObject, resolveUrl } from "@/utils";
 
 export default function ProfileForm({ user }) {
