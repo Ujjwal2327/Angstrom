@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
 import { default_user_pic, profiles } from "@/constants";
-import { Suspense } from "react";
 import { capitalizeString, resolveUrl } from "@/utils";
 import { permanentRedirect } from "next/navigation";
 import Loader from "@/components/ui/Loader";
@@ -24,25 +23,15 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function UserPage({ params }) {
+export default async function UserPage({ params }) {
   params.username = decodeURIComponent(params.username);
-
-  return (
-    <div className="flex flex-col justify-center items-center max-w-3xl mx-auto -mb-10">
-      <Suspense fallback={<Loader />}>
-        <SuspenseComponent params={params} />
-      </Suspense>
-    </div>
-  );
-}
-
-async function SuspenseComponent({ params }) {
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
   const paramsUser = await getUserByUsername(params.username);
   if (!paramsUser) permanentRedirect("/not-found");
+
   return (
-    <>
+    <div className="flex flex-col justify-center items-center max-w-3xl mx-auto -mb-10">
       {params.username === user?.username && (
         <div className="bg-slate-900 rounded-md p-3 mb-6 w-full flex flex-wrap justify-center items-center gap-3">
           Edit your profile
@@ -109,7 +98,7 @@ async function SuspenseComponent({ params }) {
           <></>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

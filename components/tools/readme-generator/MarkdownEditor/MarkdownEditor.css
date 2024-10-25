@@ -21,7 +21,7 @@ body .w-md-editor-text-input {
 .MDEditor {
   height: auto !important;
   display: flex !important;
-  height: calc(100vh - 7.5rem) !important;
+  height: calc(var(--vh, 1vh) * 100 - 7.5rem) !important;
 }
 
 .MDEditor img[src$=".svg"] {

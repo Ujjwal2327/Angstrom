@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useState,
-  useEffect,
-  useRef,
-  Fragment,
-  useCallback,
-  useMemo,
-} from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Copy, Moon, RotateCcw, Send, Sun, WandSparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -17,7 +10,6 @@ import {
   getExtraCommands,
 } from "@uiw/react-md-editor/nohighlight";
 import { getCodeString } from "rehype-rewrite";
-import katex from "katex";
 import mermaid from "mermaid";
 import { mergeSkills } from "@/utils";
 import { profiles } from "@/constants";
@@ -32,7 +24,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
   ssr: false,
-  loading: () => <Loader className="h-[calc(100vh-7.5rem)]" />,
+  loading: () => <Loader className="h-[calc(var(--vh, 1vh) * 100-7.5rem)]" />,
 });
 
 const defaultMarkdownValue = `<!-- Project Readme Templates: https://www.readme-templates.com/-->
