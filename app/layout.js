@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import DynamicHeight from "@/components/ui/DynamicHeight";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang={metadata.lang}>
       <body className={inter.className}>
+        <DynamicHeight />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
