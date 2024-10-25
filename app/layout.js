@@ -12,6 +12,7 @@ export const metadata = {
   title: "Angstrom",
   description:
     "The ultimate toolkit for coders and engineers. Effortlessly showcase your career profile to recruiters and potential employers.",
+  icons: { icon: "/favicon.ico" },
   keywords: "coders, engineers, toolbox, programming, development",
   url: "https://angstrom.vercel.app/",
   canonical: "https://angstrom.vercel.app/",
