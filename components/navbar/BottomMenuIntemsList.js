@@ -44,7 +44,7 @@ export default function BottomMenuItemsList({ session }) {
               <SheetClose asChild key={item.path}>
                 <Link
                   href={
-                    item.name === "My Details"
+                    item.name === "My Profile"
                       ? `${item.path}/${user.username}`
                       : item.path
                   }
@@ -52,7 +52,7 @@ export default function BottomMenuItemsList({ session }) {
                 >
                   <Button
                     className={`w-full mb-1.5 ${
-                      item.name === "My Details"
+                      item.name === "My Profile"
                         ? pathname === `${item.path}/${user.username}` &&
                           "bg-slate-300 hover:bg-slate-300"
                         : pathname === item.path &&
@@ -61,7 +61,7 @@ export default function BottomMenuItemsList({ session }) {
                     aria-label={item.name}
                   >
                     {item.name}
-                    {item.name === "My Details" && (
+                    {item.name === "My Profile" && (
                       <Avatar className="ml-3 size-7 text-foreground">
                         <AvatarImage
                           src={resolveUrl(user.pic, default_user_pic)}

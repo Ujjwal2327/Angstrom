@@ -1,10 +1,9 @@
 export const menuItems = {
   top: [
     { name: "Home", path: "/" },
-    // { name: "Users List", path: "/users" },
     { name: "Markdown Editor", path: "/tools/markdown-editor" },
   ],
-  bottom: [{ name: "My Details", path: "/users" }],
+  bottom: [{ name: "My Profile", path: "/users" }],
 };
 
 // only use for outside sites
