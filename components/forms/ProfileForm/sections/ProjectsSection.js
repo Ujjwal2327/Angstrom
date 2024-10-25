@@ -149,7 +149,7 @@ function ProjectSkillsComponent({ skills, field }) {
 
   return (
     <div>
-      <div className="w-full bg-background rounded-md py-2">
+      <div className="w-full bg-background rounded-md py-2 max-h-44 overflow-auto">
         {field.value.map((item) => (
           <Badge
             key={item}
