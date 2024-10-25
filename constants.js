@@ -1,7 +1,7 @@
 export const menuItems = {
   top: [
     { name: "Home", path: "/" },
-    { name: "Markdown Editor", path: "/tools/markdown-editor" },
+    { name: "Markdown Editor", path: "/utilities/markdown-editor" },
   ],
   bottom: [{ name: "My Profile", path: "/users" }],
 };

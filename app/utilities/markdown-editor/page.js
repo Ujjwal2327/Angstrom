@@ -1,4 +1,4 @@
-import MarkdownEditor from "@/components/tools/readme-generator/MarkdownEditor/MarkdownEditor";
+import MarkdownEditor from "@/components/utilities/readme-generator/MarkdownEditor/MarkdownEditor";
 import { auth } from "@/auth";
 import { getUserByEmail } from "@/action/user";
 
