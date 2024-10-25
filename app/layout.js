@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import DynamicHeight from "@/components/ui/DynamicHeight";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
         >
           <Navbar />
           <div className="p-10">{children}</div>
+          <Analytics />
         </ThemeProvider>
         <Toaster />
       </body>
