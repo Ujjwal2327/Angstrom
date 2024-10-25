@@ -3,7 +3,6 @@ import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import { ThemeProvider } from "@/components/themeProvider";
 import { Toaster } from "@/components/ui/sonner";
-import { HydrationOverlay } from "@builder.io/react-hydration-overlay";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,19 +22,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang={metadata.lang}>
-      <body className={inter.className}>        
-        <HydrationOverlay>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            <div className="p-10">{children}</div>
-          </ThemeProvider>
-          <Toaster />
-        </HydrationOverlay>
+      <body className={inter.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <div className="p-10">{children}</div>
+        </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );
