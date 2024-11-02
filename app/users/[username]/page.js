@@ -35,7 +35,7 @@ export default async function UserPage({ params }) {
       {params.username === user?.username && (
         <div className="bg-slate-900 rounded-md p-3 mb-6 w-full flex flex-wrap justify-center items-center gap-3">
           Edit your profile
-          <Link href={`/users/${user.username}/edit`}>
+          <Link href={`${user.username}/edit`}>
             <Button variant="outline" aria-label="edit your profile">
               Here
             </Button>
