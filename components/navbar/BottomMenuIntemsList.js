@@ -55,7 +55,7 @@ export default function BottomMenuItemsList({ session }) {
                       item.name === "My Profile"
                         ? pathname === `${item.path}/${user.username}` &&
                           "bg-slate-300 hover:bg-slate-300"
-                        : pathname === item.path &&
+                        : pathname.includes(item.path) &&
                           "bg-slate-300 hover:bg-slate-300"
                     }`}
                     aria-label={item.name}

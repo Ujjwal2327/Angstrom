@@ -23,7 +23,7 @@ export default async function UserEditPage({ params }) {
     <div className="flex flex-col justify-center items-center max-w-3xl mx-auto">
       {params.username === user?.username && (
         <>
-          <div className="bg-slate-900 rounded-md p-3 w-full flex flex-wrap gap-3 justify-center items-center mb-10">
+          <div className="bg-slate-900 rounded-md p-3 mb-6 w-full flex flex-wrap gap-3 justify-center items-center">
             View your profile
             <Link href={`/users/${user.username}`}>
               <Button variant="outline" aria-label="view your profile">
