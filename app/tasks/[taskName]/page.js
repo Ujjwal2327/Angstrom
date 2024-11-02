@@ -59,7 +59,7 @@ export default async function TaskPage({ params }) {
 
       <p className="text-muted-foreground">{task.description}</p>
 
-      <Tabs defaultValue="preview" className="">
+      <Tabs defaultValue="preview">
         <TabsList className="bg-transparent">
           <TabsTrigger
             value="preview"

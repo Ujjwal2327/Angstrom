@@ -1,10 +1,16 @@
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 // import { ModeToggle } from "../ModeToggle";
 import TopMenuItemsList from "./TopMenuItemsList";
 import BottomMenuItemsList from "./BottomMenuIntemsList";
 import { Menu } from "lucide-react";
 import { auth } from "@/auth";
 import { Suspense } from "react";
+import Link from "next/link";
 
 export default async function Navbar() {
   const session = await auth();
@@ -17,7 +23,12 @@ export default async function Navbar() {
         <SheetContent side="left">
           <div className="flex flex-col relative h-full">
             <div className="flex justify-center items-center gap-x-3 mb-4">
-              <span className="font-bold text-xl">Angstrom</span>
+              <SheetClose
+                asChild
+                className="font-bold text-xl flex justify-center"
+              >
+                <Link href="/">Angstrom</Link>
+              </SheetClose>
               {/* <ModeToggle /> */}
             </div>
 
