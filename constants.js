@@ -2,13 +2,14 @@ export const menuItems = {
   top: [
     { name: "Home", path: "/" },
     { name: "Markdown Editor", path: "/utilities/markdown-editor" },
+    { name: "Tasks", path: "/tasks/Accordian" },
   ],
   bottom: [{ name: "My Profile", path: "/users" }],
 };
 
 // only use for outside sites
 const iconBaseUrl =
-  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/14674eaf273dfc8d6c43b7c769a9ae8c8b1e7efd/public/icons/";
+  "https://raw.githubusercontent.com/Ujjwal2327/Angstrom/db291c753661eb48c1644231387395790adb6a48/public/icons/";
 export const profileIconBaseUrl = `${iconBaseUrl}profiles/`;
 export const skillIconBaseUrl = `${iconBaseUrl}categorizedSkills/`;
 

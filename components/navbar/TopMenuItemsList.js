@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
 import { SheetClose } from "@/components/ui/sheet";
-import { House } from "lucide-react";
+import { House, ListTodo } from "lucide-react";
 import Image from "next/image";
 
 const navIcons = {
@@ -18,6 +18,7 @@ const navIcons = {
       height={25}
     />
   ),
+  Tasks: <ListTodo size={20} />,
 };
 
 export default function TopMenuItemsList() {
@@ -29,7 +30,7 @@ export default function TopMenuItemsList() {
         <SheetClose asChild key={item.name}>
           <Link href={item.path} className="w-full">
             <Button
-              className={`w-full mb-1.5 flex gap-x-2 ${
+              className={`w-full mb-1.5 justify-between gap-x-2 px-8 ${
                 pathname == item.path && "bg-slate-300 hover:bg-slate-300"
               }`}
               aria-label={item.name}

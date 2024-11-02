@@ -51,7 +51,7 @@ export default function BottomMenuItemsList({ session }) {
                   className="w-full"
                 >
                   <Button
-                    className={`w-full mb-1.5 ${
+                    className={`w-full mb-1.5 justify-between gap-x-2 px-8 ${
                       item.name === "My Profile"
                         ? pathname === `${item.path}/${user.username}` &&
                           "bg-slate-300 hover:bg-slate-300"
@@ -82,7 +82,7 @@ export default function BottomMenuItemsList({ session }) {
             <Link href="/sign-out" className="w-full">
               <Button
                 variant="ghost"
-                className="w-full"
+                className="w-full justify-between gap-x-2 px-8"
                 aria-label="go to sign-out page"
               >
                 Sign Out <LogOut className="ml-2 text-xl" />

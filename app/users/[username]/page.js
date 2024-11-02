@@ -1,5 +1,6 @@
 import { getUserByEmail, getUserByUsername } from "@/action/user";
 import { auth } from "@/auth";
+import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +8,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { default_user_pic, profiles } from "@/constants";
 import { capitalizeString, resolveUrl } from "@/utils";
-import { permanentRedirect } from "next/navigation";
 import Loader from "@/components/ui/Loader";
 import dynamic from "next/dynamic";
 const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
@@ -28,7 +28,7 @@ export default async function UserPage({ params }) {
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
   const paramsUser = await getUserByUsername(params.username);
-  if (!paramsUser) permanentRedirect("/not-found");
+  if (!paramsUser) notFound();
 
   return (
     <div className="flex flex-col justify-center items-center max-w-3xl mx-auto -mb-10">
