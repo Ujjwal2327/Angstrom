@@ -12,15 +12,34 @@ const CodeHighlighter = dynamic(() => import("@/components/CodeHighlighter"), {
   loading: () => <Loader />,
 });
 
-const getTaskCodeFiles = (taskName) => {
-  const taskDir = path.join(process.cwd(), `components/tasks/${taskName}`);
+const getTaskCodeFiles = (
+  taskName,
+  dirPath = `components/tasks/${taskName}`
+) => {
+  const taskDir = path.join(process.cwd(), dirPath);
+
   if (!fs.existsSync(taskDir)) throw new Error("Task directory not found");
 
-  return fs.readdirSync(taskDir).map((fileName) => {
-    const filePath = path.join(taskDir, fileName);
-    const fileContent = fs.readFileSync(filePath, "utf8");
-    return { name: fileName, content: fileContent };
-  });
+  const files = [];
+
+  const readDir = (currentPath, relativePath = "") => {
+    fs.readdirSync(currentPath).forEach((fileOrDir) => {
+      const fullPath = path.join(currentPath, fileOrDir);
+      const relativeFilePath = path.join(relativePath, fileOrDir);
+
+      if (fs.statSync(fullPath).isDirectory()) {
+        // Recursively read folders
+        readDir(fullPath, relativeFilePath);
+      } else {
+        // Add files with their relative path
+        const content = fs.readFileSync(fullPath, "utf8");
+        files.push({ name: relativeFilePath, content });
+      }
+    });
+  };
+
+  readDir(taskDir);
+  return files;
 };
 
 export async function generateStaticParams() {
