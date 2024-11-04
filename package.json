@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build && prisma migrate deploy && prisma generate",
+    "dev": "node helpers/generateTasksTree.js && next dev",
+    "build": "node helpers/generateTasksTree.js && next build && prisma migrate deploy && prisma generate",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"

@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import { getNextTask, getPreviousTask, tasksData } from "@/data/tasks";
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,32 +9,6 @@ const CodeHighlighter = dynamic(() => import("@/components/CodeHighlighter"), {
   ssr: false,
   loading: () => <Loader />,
 });
-
-const getTaskCodeFiles = (taskName) => {
-  const taskDir = path.join(process.cwd(), `components/tasks/${taskName}`);
-  console.log("Resolved Task Directory:", taskDir); // Log the resolved path
-
-  if (!fs.existsSync(taskDir)) throw new Error("Task directory not found");
-
-  const createTree = (dir) => {
-    const structure = {};
-    fs.readdirSync(dir).forEach((item) => {
-      const fullPath = path.join(dir, item);
-      if (fs.statSync(fullPath).isDirectory()) {
-        const nestedTree = createTree(fullPath);
-        // Add folder only if it's non-empty
-        if (Object.keys(nestedTree).length > 0) {
-          structure[item] = nestedTree;
-        }
-      } else {
-        structure[item] = fs.readFileSync(fullPath, "utf8");
-      }
-    });
-    return structure;
-  };
-
-  return createTree(taskDir);
-};
 
 const renderFileTreeTabs = (tree, parentPath = "") => {
   const defaultTab = `${parentPath}/${Object.keys(tree)[0]}`;
@@ -85,15 +57,6 @@ export default async function TaskPage({ params }) {
   const task = tasksData[taskName];
   if (!task) notFound();
 
-  let codeFilesTree;
-  try {
-    codeFilesTree = getTaskCodeFiles(taskName);
-  } catch (error) {
-    console.error("Task Directory Error:", error.message);
-    notFound();
-  }
-  console.log("codeFilesTree", codeFilesTree);
-
   const PreviewComponent = dynamic(() =>
     import(`@/components/tasks/${taskName}/index.js`).then((mod) => mod.default)
   );
@@ -132,9 +95,7 @@ export default async function TaskPage({ params }) {
             </div>
           </div>
         </TabsContent>
-        <TabsContent value="code">
-          {renderFileTreeTabs(codeFilesTree)}
-        </TabsContent>
+        <TabsContent value="code">{renderFileTreeTabs(task.fs)}</TabsContent>
       </Tabs>
 
       <div className="flex justify-between items-center -mb-5">
