@@ -1,13 +1,12 @@
 import fs from "fs";
 import path from "path";
 import { getNextTask, getPreviousTask, tasksData } from "@/data/tasks";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Loader from "@/components/ui/Loader";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
+import dynamic from "next/dynamic";
 const CodeHighlighter = dynamic(() => import("@/components/CodeHighlighter"), {
   ssr: false,
   loading: () => <Loader />,
@@ -18,6 +17,7 @@ const getTaskCodeFiles = (
   dirPath = `components/tasks/${taskName}`
 ) => {
   const taskDir = path.join(process.cwd(), dirPath);
+  console.log("Resolved Task Directory:", taskDir); // Log the resolved path
 
   if (!fs.existsSync(taskDir)) throw new Error("Task directory not found");
 
