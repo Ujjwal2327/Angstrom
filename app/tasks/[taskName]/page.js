@@ -92,6 +92,7 @@ export default async function TaskPage({ params }) {
     console.error("Task Directory Error:", error.message);
     notFound();
   }
+  console.log("codeFilesTree", codeFilesTree);
 
   const PreviewComponent = dynamic(() =>
     import(`@/components/tasks/${taskName}/index.js`).then((mod) => mod.default)
