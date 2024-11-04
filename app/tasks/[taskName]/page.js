@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Loader from "@/components/ui/Loader";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
 const CodeHighlighter = dynamic(() => import("@/components/CodeHighlighter"), {
   ssr: false,
   loading: () => <Loader />,
@@ -20,26 +21,62 @@ const getTaskCodeFiles = (
 
   if (!fs.existsSync(taskDir)) throw new Error("Task directory not found");
 
-  const files = [];
-
-  const readDir = (currentPath, relativePath = "") => {
-    fs.readdirSync(currentPath).forEach((fileOrDir) => {
-      const fullPath = path.join(currentPath, fileOrDir);
-      const relativeFilePath = path.join(relativePath, fileOrDir);
-
+  const createTree = (dir) => {
+    const structure = {};
+    fs.readdirSync(dir).forEach((item) => {
+      const fullPath = path.join(dir, item);
       if (fs.statSync(fullPath).isDirectory()) {
-        // Recursively read folders
-        readDir(fullPath, relativeFilePath);
+        const nestedTree = createTree(fullPath);
+        // Add folder only if it's non-empty
+        if (Object.keys(nestedTree).length > 0) {
+          structure[item] = nestedTree;
+        }
       } else {
-        // Add files with their relative path
-        const content = fs.readFileSync(fullPath, "utf8");
-        files.push({ name: relativeFilePath, content });
+        structure[item] = fs.readFileSync(fullPath, "utf8");
       }
     });
+    return structure;
   };
 
-  readDir(taskDir);
-  return files;
+  return createTree(taskDir);
+};
+
+const renderFileTreeTabs = (tree, parentPath = "") => {
+  const defaultTab = `${parentPath}/${Object.keys(tree)[0]}`;
+  return (
+    <Tabs defaultValue={defaultTab} className="w-full py-0 my-0">
+      <TabsList className="bg-transparent justify-start h-auto overflow-x-auto w-full">
+        {Object.keys(tree).map((key) => (
+          <TabsTrigger
+            key={key}
+            value={`${parentPath}/${key}`}
+            className="text-xs py-1"
+          >
+            {key}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+      {Object.entries(tree).map(([key, value]) =>
+        typeof value === "string" ? (
+          <TabsContent key={key} value={`${parentPath}/${key}`}>
+            <CodeHighlighter
+              code={value}
+              language={key.split(".").pop()}
+              className="h-[18.5rem]"
+            />
+          </TabsContent>
+        ) : (
+          <TabsContent
+            key={key}
+            value={`${parentPath}/${key}`}
+            className="py-0 my-0"
+          >
+            {renderFileTreeTabs(value, `${parentPath}/${key}`)}
+          </TabsContent>
+        )
+      )}
+    </Tabs>
+  );
 };
 
 export async function generateStaticParams() {
@@ -51,9 +88,9 @@ export default async function TaskPage({ params }) {
   const task = tasksData[taskName];
   if (!task) notFound();
 
-  let codeFiles;
+  let codeFilesTree;
   try {
-    codeFiles = getTaskCodeFiles(taskName);
+    codeFilesTree = getTaskCodeFiles(taskName);
   } catch (error) {
     console.error("Task Directory Error:", error.message);
     notFound();
@@ -67,7 +104,7 @@ export default async function TaskPage({ params }) {
     nextTask = getNextTask(taskName);
 
   return (
-    <div className=" sm:ml-64 sm:max-w-3xl flex flex-col gap-y-5  ">
+    <div className="sm:ml-64 sm:max-w-3xl flex flex-col gap-y-5">
       <div className="flex sm:justify-between sm:items-center flex-col sm:flex-row gap-y-2 gap-x-10">
         <h2 className="font-bold text-3xl">{task.name}</h2>
         <span className="text-xs">Duration: {task.duration} minutes</span>
@@ -91,35 +128,14 @@ export default async function TaskPage({ params }) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="preview">
-          <div className="flex border-2 rounded-lg h-[21rem] p-10 ">
+          <div className="flex border-2 rounded-lg h-[21rem] p-10">
             <div className="flex w-full overflow-auto">
               <PreviewComponent />
             </div>
           </div>
         </TabsContent>
         <TabsContent value="code">
-          <Tabs defaultValue={codeFiles[0].name} className="w-full">
-            <TabsList className="bg-transparent">
-              {codeFiles.map((file) => (
-                <TabsTrigger
-                  key={file.name}
-                  value={file.name}
-                  className=" rounded-none data-[state=active]:border-b data-[state=active]:border-b-white text-xs"
-                >
-                  {file.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {codeFiles.map((file) => (
-              <TabsContent key={file.name} value={file.name}>
-                <CodeHighlighter
-                  code={file.content}
-                  language={file.name.split(".").pop()}
-                  className="h-72"
-                />
-              </TabsContent>
-            ))}
-          </Tabs>
+          {renderFileTreeTabs(codeFilesTree)}
         </TabsContent>
       </Tabs>
 
