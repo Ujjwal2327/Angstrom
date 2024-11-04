@@ -16,8 +16,9 @@ const getTaskCodeFiles = (
   taskName,
   dirPath = `components/tasks/${taskName}`
 ) => {
-  const taskDir = path.join(process.cwd(), dirPath);
+  const taskDir = dirPath;
   console.log("Resolved Task Directory:", taskDir); // Log the resolved path
+  console.log("Resolved dirPath:", dirPath); // Log the dirPath
 
   if (!fs.existsSync(taskDir)) throw new Error("Task directory not found");
 
