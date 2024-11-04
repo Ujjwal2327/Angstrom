@@ -44,11 +44,8 @@ export default async function TaskPage({ params }) {
     import(`@/components/tasks/${taskName}/index.js`).then((mod) => mod.default)
   );
 
-  const [previousTask, nextTask] = [
-    getPreviousTask(taskName),
-    getNextTask(taskName),
-  ];
-  console.log(previousTask, nextTask);
+  const previousTask = getPreviousTask(taskName),
+    nextTask = getNextTask(taskName);
 
   return (
     <div className=" sm:ml-64 sm:max-w-3xl flex flex-col gap-y-5  ">
@@ -99,7 +96,7 @@ export default async function TaskPage({ params }) {
                 <CodeHighlighter
                   code={file.content}
                   language={file.name.split(".").pop()}
-                  className="max-h-72"
+                  className="h-72"
                 />
               </TabsContent>
             ))}

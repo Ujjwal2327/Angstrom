@@ -10,13 +10,15 @@ export default function Sidebar() {
 
   return (
     <aside className="w-52 fixed border-r-2 h-screen hidden sm:block overflow-y-auto pb-20">
-      <h2 className="text-xl font-bold mb-4">Tasks</h2>
+      <Link href="/tasks" className="text-xl font-bold mb-4">
+        Tasks
+      </Link>
       {Object.keys(tasksData).map((key) => {
         const task = tasksData[key];
         return (
           <Link
             key={key}
-            href={key}
+            href={`/tasks/${key}`}
             className={`hover:underline block truncate text-sm leading-loose ${
               key === paramsTask ? "opacity-100" : "opacity-50"
             }`}
