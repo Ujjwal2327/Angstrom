@@ -1,3 +1,6 @@
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+
 export default function TasksPage() {
   return (
     <div className=" sm:ml-64 sm:max-w-3xl flex flex-col gap-y-5  ">
@@ -19,6 +22,15 @@ export default function TasksPage() {
             snippets to understand the solution.
           </li>
         </ol>
+      </div>
+      <div className="flex justify-between items-center -mb-5">
+        <div />
+        <Link
+          href={"/tasks/Accordian"}
+          className="flex justify-center items-center gap-x-2"
+        >
+          Accordian <ChevronRight size={15} />
+        </Link>
       </div>
     </div>
   );

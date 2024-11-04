@@ -10,7 +10,7 @@ export default function Sidebar() {
 
   return (
     <aside className="w-52 fixed border-r-2 h-screen hidden sm:block overflow-y-auto pb-20">
-      <Link href="/tasks" className="text-xl font-bold mb-4">
+      <Link href="/tasks" className="hover:underline text-xl font-bold">
         Tasks
       </Link>
       {Object.keys(tasksData).map((key) => {
