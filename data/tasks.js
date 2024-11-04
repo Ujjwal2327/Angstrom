@@ -4,10 +4,7 @@ const unsortedTasksData = {
     "description": "A component that toggles content visibility.",
     "duration": 30,
     "fs": {
-      "index.js": "\"use client\";\r\nimport { useState } from \"react\";\r\n\r\nexport default function Accordian() {\r\n  const [isOpen, setIsOpen] = useState(false);\r\n\r\n  const toggleAccordian = () => {\r\n    setIsOpen(!isOpen);\r\n  };\r\n\r\n  return (\r\n    <div className=\"accordian\">\r\n      <div className=\"accordian-header\" onClick={toggleAccordian}>\r\n        <h3>Accordian Header</h3>\r\n      </div>\r\n      {isOpen && (\r\n        <div className=\"accordian-content\">\r\n          <p>This is the accordian content.</p>\r\n        </div>\r\n      )}\r\n    </div>\r\n  );\r\n}\r\n",
-      "new folder": {
-        "demo.cpp": "// \r\n\r\n#include <bits/stdc++.h>\r\nusing namespace std;\r\n\r\nint main() {\r\n\r\n\r\n\r\n  return 0;\r\n}"
-      }
+      "index.js": "\"use client\";\r\nimport { useState } from \"react\";\r\n\r\nexport default function Accordian() {\r\n  const [isOpen, setIsOpen] = useState(false);\r\n\r\n  const toggleAccordian = () => {\r\n    setIsOpen(!isOpen);\r\n  };\r\n\r\n  return (\r\n    <div className=\"accordian\">\r\n      <div className=\"accordian-header\" onClick={toggleAccordian}>\r\n        <h3>Accordian Header</h3>\r\n      </div>\r\n      {isOpen && (\r\n        <div className=\"accordian-content\">\r\n          <p>This is the accordian content.</p>\r\n        </div>\r\n      )}\r\n    </div>\r\n  );\r\n}\r\n"
     }
   },
   "TodoList": {
