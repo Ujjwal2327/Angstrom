@@ -5,6 +5,7 @@ import Loader from "@/components/ui/Loader";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import dynamic from "next/dynamic";
+import PreviewComponent from "@/components/tasks/PreviewComponent";
 const CodeHighlighter = dynamic(() => import("@/components/CodeHighlighter"), {
   ssr: false,
   loading: () => <Loader />,
@@ -57,10 +58,6 @@ export default async function TaskPage({ params }) {
   const task = tasksData[taskName];
   if (!task) notFound();
 
-  const PreviewComponent = dynamic(() =>
-    import(`@/components/tasks/${taskName}/index.js`).then((mod) => mod.default)
-  );
-
   const previousTask = getPreviousTask(taskName),
     nextTask = getNextTask(taskName);
 
@@ -89,9 +86,9 @@ export default async function TaskPage({ params }) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="preview">
-          <div className="flex border-2 rounded-lg h-[21rem] p-10">
+          <div className="flex border-2 rounded-lg h-[21rem] p-5">
             <div className="flex w-full overflow-auto">
-              <PreviewComponent />
+              <PreviewComponent taskName={taskName} />
             </div>
           </div>
         </TabsContent>
