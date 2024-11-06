@@ -1,13 +1,13 @@
 import { auth } from "@/auth";
-import { Spotlight } from "./ui/Spotlight";
-import { MagicButton } from "./ui/MagicButton";
+import { Spotlight } from "@/components/ui/Spotlight";
+import { MagicButton } from "@/components/ui/MagicButton";
 import { FaGoogle } from "react-icons/fa";
 import { getUserByEmail } from "@/action/user";
 import { Send } from "lucide-react";
 import { Suspense } from "react";
-import { TextGenerateEffect } from "./ui/text-generate-effect";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import Image from "next/image";
-import { EmptySpace } from "./ui/EmptySpace";
+import { EmptySpace } from "@/components/ui/EmptySpace";
 
 export default function Hero() {
   return (
