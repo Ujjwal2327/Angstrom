@@ -53,6 +53,21 @@ export async function generateStaticParams() {
   return Object.keys(tasksData).map((taskName) => ({ taskName }));
 }
 
+export function generateMetadata({ params }) {
+  const { taskName } = params;
+  const task = tasksData[taskName];
+  if (task)
+    return {
+      title: `${taskName} | Angstrom`,
+      description: task.description,
+    };
+  else
+    return {
+      title: `Page Not Found | Angstrom`,
+      description: `The page you're looking for does not exist. Please check the URL or return to the homepage.`,
+    };
+}
+
 export default async function TaskPage({ params }) {
   const { taskName } = params;
   const task = tasksData[taskName];
