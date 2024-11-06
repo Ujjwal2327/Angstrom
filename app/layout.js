@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
-import { ThemeProvider } from "@/components/themeProvider";
+import { ThemeProvider } from "@/providers/themeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import DynamicHeight from "@/components/ui/DynamicHeight";
 import { Analytics } from "@vercel/analytics/react";

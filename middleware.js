@@ -26,11 +26,13 @@ async function fetchUser(session, baseUrl) {
 
 export async function middleware(request) {
   const { pathname, origin } = request.nextUrl;
-  const protectedRoutes = ["/users/[username]/edit"];
-  const isProtectedRoute = protectedRoutes.some((route) => {
-    const routePattern = new RegExp(`^${route.replace(/\[.+?\]/g, "[^/]+")}$`);
-    return routePattern.test(pathname);
-  });
+  const protectedRoutes = [
+    /^\/users\/[^/]+\/edit$/, // Matches /users/[username]/edit
+    /^\/intervue(\/.*)?$/, // Matches /intervue and all sub-paths under it
+  ];
+  const isProtectedRoute = protectedRoutes.some((routePattern) =>
+    routePattern.test(pathname)
+  );
 
   // Check if user is authenticated
   const session = await auth();
@@ -89,7 +91,6 @@ export async function middleware(request) {
 
 export const config = {
   matcher: [
-    "/users/:username/edit", // Protected route: middleware will run
-    "/((?!api|_next/static|_next/image|images|icons|favicon.ico).*)", // Everything else (protected routes not listed above)
+    "/((?!api|_next/static|_next/image|images|icons|favicon.ico).*)", // Protects all other routes, excluding specific paths
   ],
 };
