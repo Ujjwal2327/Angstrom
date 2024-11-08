@@ -135,14 +135,19 @@ function BasicInfoSection({ user }) {
               </span>
             </div>
           </div>
-          <Image
-            src={resolveUrl(user.pic, default_user_pic)}
-            alt="Profile Picture"
-            width={200}
-            height={200}
-            className="rounded-full mx-auto"
-            loading="lazy"
-          />
+          <div className="flex flex-col items-center relative">
+            <Image
+              src={resolveUrl(user.pic, default_user_pic)}
+              alt="Profile Picture"
+              width={200}
+              height={200}
+              className="rounded-full mx-auto"
+              loading="lazy"
+            />
+            {user.username === process.env.MY_USERNAME && (
+              <Badge className="absolute bottom-2 font-bold italic">Creater of Angstrom</Badge>
+            )}
+          </div>
         </div>
         {user.about && (
           <div className="mt-4">
