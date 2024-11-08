@@ -145,7 +145,7 @@ function BasicInfoSection({ user }) {
               loading="lazy"
             />
             {user.username === process.env.MY_USERNAME && (
-              <Badge className="absolute bottom-2 font-bold italic">Creater of Angstrom</Badge>
+              <Badge className="absolute bottom-0 font-bold italic">Creater of Angstrom</Badge>
             )}
           </div>
         </div>
