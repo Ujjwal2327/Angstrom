@@ -136,7 +136,10 @@ export default function CodeDiffer({
                     value={differSettings.fontFamily}
                     onValueChange={(value) => handleChange("fontFamily", value)}
                   >
-                    <SelectTrigger className="w-[180px]">
+                    <SelectTrigger
+                      className="w-[180px]"
+                      style={{ fontFamily: differSettings.fontFamily }}
+                    >
                       <SelectValue placeholder={differSettings.fontFamily} />
                     </SelectTrigger>
                     <SelectContent>
