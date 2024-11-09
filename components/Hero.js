@@ -82,7 +82,7 @@ async function SuspenseComponent() {
             height={30}
           />
         }
-        href="/utilities/markdown-editor"
+        href="/markdown-editor"
       />
     </div>
   );
