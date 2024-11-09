@@ -22,7 +22,7 @@ export default function CodeDiffer({
   editorHeight = "100vh",
   editorWidth = "100%",
 }) {
-  const languages = ["javascript", "python", "java", "cpp"];
+  const languages = ["cpp", "java", "javascript", "python", "typescript"];
   const tabSizes = [2, 4, 6, 8];
   const fontSizes = [10, 12, 14, 16, 18, 20, 22, 24];
   const fontFamilies = [
