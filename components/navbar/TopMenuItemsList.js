@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
 import { SheetClose } from "@/components/ui/sheet";
-import { House, ListTodo } from "lucide-react";
+import { FileJson2, House, ListTodo } from "lucide-react";
 import Image from "next/image";
 
 const navIcons = {
@@ -19,6 +19,7 @@ const navIcons = {
     />
   ),
   Tasks: <ListTodo size={20} />,
+  "Code Differ": <FileJson2 size={20} />,
 };
 
 export default function TopMenuItemsList() {

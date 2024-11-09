@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import dynamic from "next/dynamic";
 import PreviewComponent from "@/components/tasks/PreviewComponent";
-const CodeHighlighter = dynamic(() => import("@/components/CodeHighlighter"), {
+const CodeHighlighter = dynamic(() => import("@/components/code/CodeHighlighter"), {
   ssr: false,
   loading: () => <Loader />,
 });
