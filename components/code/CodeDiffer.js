@@ -23,6 +23,7 @@ export default function CodeDiffer({
   editorWidth = "100%",
 }) {
   const languages = ["cpp", "java", "javascript", "python", "typescript"];
+  const themes = ["hc-black", "light", "vs-dark"];
   const tabSizes = [2, 4, 6, 8];
   const fontSizes = [10, 12, 14, 16, 18, 20, 22, 24];
   const fontFamilies = [
@@ -162,12 +163,16 @@ export default function CodeDiffer({
                     onValueChange={(value) => handleChange("theme", value)}
                   >
                     <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Theme" />
+                      <SelectValue placeholder={differSettings.theme} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="vs-dark">Dark</SelectItem>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="hc-black">High Contrast</SelectItem>
+                      <SelectContent>
+                        {themes.map((theme) => (
+                          <SelectItem key={theme} value={theme}>
+                            {theme}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
                     </SelectContent>
                   </Select>
                 </div>
