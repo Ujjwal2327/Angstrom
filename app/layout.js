@@ -20,6 +20,9 @@ export const metadata = {
   author: "Ujjwal",
   publisher: "Ujjwal",
   lang: "en",
+  colorScheme: "dark",
+  viewport: "width=device-width, initial-scale=1",
+  themeColor: "#020817",
 };
 
 export default function RootLayout({ children }) {
