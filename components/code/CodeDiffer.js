@@ -13,23 +13,31 @@ import { Settings } from "lucide-react";
 import { DiffEditor } from "@monaco-editor/react";
 
 export default function CodeDiffer({
-  language = "cpp",
+  language = "javascript",
   theme = "vs-dark",
   fontSize = 14,
+  fontFamily = "system-ui",
   isWrappable = true,
   tabSize = 4,
   editorHeight = "100vh",
   editorWidth = "100%",
-  execute = false,
 }) {
   const languages = ["javascript", "python", "java", "cpp"];
   const tabSizes = [2, 4, 6, 8];
   const fontSizes = [10, 12, 14, 16, 18, 20, 22, 24];
+  const fontFamilies = [
+    "system-ui",
+    "Arial Black, sans-serif",
+    "Comic Sans MS, cursive",
+    "Courier New, monospace",
+    "Georgia, serif",
+  ];
 
   const [differSettings, setDifferSettings] = useState({
     language,
     theme,
     fontSize,
+    fontFamily,
     isWrappable,
     tabSize,
     editorHeight,
@@ -122,6 +130,28 @@ export default function CodeDiffer({
                   </Select>
                 </div>
                 <div className="flex items-center justify-between">
+                  <label>Font Family:</label>
+                  <Select
+                    value={differSettings.fontFamily}
+                    onValueChange={(value) => handleChange("fontFamily", value)}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder={differSettings.fontFamily} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {fontFamilies.map((family) => (
+                        <SelectItem
+                          key={family}
+                          value={family}
+                          style={{ fontFamily: family }}
+                        >
+                          {family.split(",")[0].trim()}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center justify-between">
                   <label>Theme:</label>
                   <Select
                     value={differSettings.theme}
@@ -172,7 +202,7 @@ export default function CodeDiffer({
             tabSize: differSettings.tabSize,
             scrollBeyondLastLine: false,
             originalEditable: true,
-            formatOnType: true,
+            fontFamily: differSettings.fontFamily,
           }}
           width={differSettings.editorWidth}
           height={differSettings.editorHeight}
