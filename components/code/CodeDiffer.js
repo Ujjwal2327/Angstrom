@@ -16,7 +16,7 @@ export default function CodeDiffer({
   language = "javascript",
   theme = "vs-dark",
   fontSize = 14,
-  fontFamily = "system-ui",
+  fontFamily = "Source Code Pro, monospace",
   isWrappable = true,
   tabSize = 4,
   editorHeight = "100vh",
@@ -26,11 +26,12 @@ export default function CodeDiffer({
   const tabSizes = [2, 4, 6, 8];
   const fontSizes = [10, 12, 14, 16, 18, 20, 22, 24];
   const fontFamilies = [
-    "system-ui",
     "Arial Black, sans-serif",
-    "Comic Sans MS, cursive",
+    "Comic Sans MS, cursive, sans-serif",
     "Courier New, monospace",
-    "Georgia, serif",
+    "Georgia, serif, sans-serif",
+    "Source Code Pro, monospace",
+    "system-ui, sans-serif",
   ];
 
   const [differSettings, setDifferSettings] = useState({
