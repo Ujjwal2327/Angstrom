@@ -11,6 +11,13 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Settings } from "lucide-react";
 import { DiffEditor } from "@monaco-editor/react";
+import {
+  themes,
+  tabSizes,
+  fontSizes,
+  fontFamilies,
+  languages,
+} from "@/data/codeDifferConfig";
 
 export default function CodeDiffer({
   language = "javascript",
@@ -22,19 +29,6 @@ export default function CodeDiffer({
   editorHeight = "100vh",
   editorWidth = "100%",
 }) {
-  const languages = ["cpp", "java", "javascript", "python", "typescript"];
-  const themes = ["hc-black", "light", "vs-dark"];
-  const tabSizes = [2, 4, 6, 8];
-  const fontSizes = [10, 12, 14, 16, 18, 20, 22, 24];
-  const fontFamilies = [
-    "Arial Black, sans-serif",
-    "Comic Sans MS, cursive, sans-serif",
-    "Courier New, monospace",
-    "Georgia, serif, sans-serif",
-    "Source Code Pro, monospace",
-    "system-ui, sans-serif",
-  ];
-
   const [differSettings, setDifferSettings] = useState({
     language,
     theme,

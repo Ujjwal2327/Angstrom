@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button";
 import { menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
 import { SheetClose } from "@/components/ui/sheet";
-import { FileJson2, House, ListTodo } from "lucide-react";
+import { BookOpen, ImagePlus, ListTodo } from "lucide-react";
 import Image from "next/image";
 
 const navIcons = {
-  Home: <House size={20} />,
   "Markdown Editor": (
     <Image
       src="/icons/navbar/Markdown Editor.svg"
@@ -19,7 +18,8 @@ const navIcons = {
     />
   ),
   Tasks: <ListTodo size={20} />,
-  "Code Differ": <FileJson2 size={20} />,
+  "Code Differ": <BookOpen size={20} />,
+  "Code Snapshots": <ImagePlus size={20} />,
 };
 
 export default function TopMenuItemsList() {
