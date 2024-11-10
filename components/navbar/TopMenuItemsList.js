@@ -19,7 +19,7 @@ const navIcons = {
   ),
   Tasks: <ListTodo size={20} />,
   "Code Differ": <BookOpen size={20} />,
-  "Code Snapshots": <ImagePlus size={20} />,
+  "Code Snapshot": <ImagePlus size={20} />,
 };
 
 export default function TopMenuItemsList() {

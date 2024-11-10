@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/sheet";
 // import { ModeToggle } from "../ModeToggle";
 import TopMenuItemsList from "./TopMenuItemsList";
-import BottomMenuItemsList from "./BottomMenuIntemsList";
+import BottomMenuItemsList from "./BottomMenuItemsList";
 import { Menu } from "lucide-react";
 import { auth } from "@/auth";
 import { Suspense } from "react";
@@ -16,7 +16,7 @@ import { FaGithub } from "react-icons/fa";
 export default async function Navbar() {
   const session = await auth();
   return (
-    <div className="fixed top-3 right-3 z-50 flex justify-center items-center gap-x-4">
+    <div className="fixed top-0 pt-4 pr-4 z-50 flex justify-end items-center gap-x-4 w-full backdrop-blur bg-background/80">
       <Link href="https://github.com/Ujjwal2327/Angstrom" target="_blank">
         <FaGithub size={20} />
       </Link>
