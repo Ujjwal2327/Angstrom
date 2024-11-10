@@ -1,11 +1,38 @@
 import { cn } from "@/lib/utils";
-import { fonts } from "@/data/codeSnapshotConfig";
+import { fonts, paddings } from "@/data/codeSnapshotConfig";
 import useStore from "./store";
 import hljs from "highlight.js";
 import Editor from "react-simple-code-editor";
+import { useEffect, useState } from "react";
 
 export default function CodeSnapshotEditor() {
   const store = useStore();
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setInnerWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const validPaddings = paddings.filter(
+      (pad) => pad * 2 + 320 < innerWidth - 80
+    );
+    useStore.setState({ validPaddings });
+
+    if (store.padding * 2 + 320 > innerWidth - 80) {
+      const validPadding = validPaddings.at(-1);
+      if (validPadding !== undefined)
+        useStore.setState({ padding: validPadding });
+      else useStore.setState({ padding: 0 });
+    }
+  }, [store.padding, innerWidth]);
 
   return (
     <div

@@ -77,13 +77,15 @@ export default function CodeSnapshot() {
         <div className="bg-gradient-to-br from-red-400 to-orange-500 h-32 w-32 rounded-lg relative"></div>
       </div>
 
-      <div className="flex w-full justify-center flex-wrap gap-x-6 gap-y-4 sticky top-10 z-10 backdrop-blur bg-background/80 py-2">
-        <ThemeSelect />
-        <LanguageSelect />
-        <FontSelect />
-        <PaddingSelect />
-        <BackgroundSwitch />
-        <DarkModeSwitch />
+      <div className="flex max-w-full flex-wrap mx-auto gap-x-6 gap-y-4 sticky top-10 z-10 backdrop-blur bg-background/80 py-2">
+        <div className="flex gap-x-6 overflow-x-auto pb-1">
+          <ThemeSelect />
+          <DarkModeSwitch />
+          <BackgroundSwitch />
+          <PaddingSelect />
+          <LanguageSelect />
+          <FontSelect />
+        </div>
         <div className="place-self-center">
           <ExportOptions targetRef={editorRef} />
         </div>

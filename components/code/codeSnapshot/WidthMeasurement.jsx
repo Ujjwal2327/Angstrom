@@ -6,7 +6,7 @@ export default function WidthMeasurement({ showWidth, width }) {
     <div
       className={cn(
         "border-l-2 border-r-2 h-3 flex items-center justify-center mt-2 relative text-xs text-muted-foreground",
-        !showWidth && "hidden"
+        (!showWidth || width === "auto") && "hidden"
       )}
     >
       <Separator />

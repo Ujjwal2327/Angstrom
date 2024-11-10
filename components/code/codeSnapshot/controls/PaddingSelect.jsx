@@ -5,10 +5,10 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import useStore from "../store";
-import { paddings } from "@/data/codeSnapshotConfig";
 
 export default function PaddingSelect() {
   const padding = useStore((state) => state.padding);
+  const validPaddings = useStore((state) => state.validPaddings);
 
   return (
     <div>
@@ -21,9 +21,9 @@ export default function PaddingSelect() {
       >
         <SelectTrigger className="w-20">{padding}</SelectTrigger>
         <SelectContent>
-          {paddings.map((padding) => (
-            <SelectItem key={padding} value={padding}>
-              {padding}
+          {validPaddings.map((pad) => (
+            <SelectItem key={pad} value={pad}>
+              {pad}
             </SelectItem>
           ))}
         </SelectContent>
