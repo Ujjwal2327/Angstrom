@@ -16,7 +16,6 @@ import { useHotkeys } from "react-hotkeys-hook";
 export default function ExportOptions({ targetRef }) {
   const title = useStore((state) => state.title);
   const baseurl = process.env.NEXT_PUBLIC_BASE_URL;
-  console.log(baseurl);
 
   const copyImage = async (e) => {
     e.preventDefault();
@@ -49,7 +48,8 @@ export default function ExportOptions({ targetRef }) {
 
       toast.success("Link copied to clipboard!");
     } catch (error) {
-      toast.error(error.message || "Something went wrong!");
+      if (error.code === 5) toast.error("Emojis are not allowed!");
+      else toast.error(error.message || "Something went wrong!");
     }
   };
 

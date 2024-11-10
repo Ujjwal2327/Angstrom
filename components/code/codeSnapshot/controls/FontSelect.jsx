@@ -10,7 +10,7 @@ import useStore from "../store";
 
 export default function FontSelect() {
   const fontStyle = useStore((state) => state.fontStyle);
-  console.log(fontStyle);
+
   return (
     <div>
       <label className="block mb-2 text-xs font-medium text-neutral-400">
