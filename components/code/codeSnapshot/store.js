@@ -13,7 +13,7 @@ const useStore = create(
       autoDetectLanguage: false,
       fontSize: 18,
       fontStyle: "jetBrainsMono",
-      padding: 48,
+      padding: 32,
     }),
     {
       name: "user-snapshot-preferences",
