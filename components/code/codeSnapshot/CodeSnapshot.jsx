@@ -22,6 +22,7 @@ export default function CodeSnapshot() {
 
   const theme = useStore((state) => state.theme);
   const padding = useStore((state) => state.padding);
+  const validPaddings = useStore((state) => state.validPaddings);
   const showBackground = useStore((state) => state.showBackground);
   const editorRef = useRef(null);
 
@@ -77,12 +78,12 @@ export default function CodeSnapshot() {
         <div className="bg-gradient-to-br from-red-400 to-orange-500 h-32 w-32 rounded-lg relative"></div>
       </div>
 
-      <div className="flex max-w-full flex-wrap mx-auto gap-x-6 gap-y-4 sticky top-10 z-10 backdrop-blur bg-background/80 py-2">
-        <div className="flex gap-x-6 overflow-x-auto pb-1">
+      <div className="flex max-w-full flex-wrap mx-auto gap-x-6 gap-y-4 sticky top-10 z-10 backdrop-blur bg-background/80">
+        <div className="flex gap-x-6 overflow-x-auto p-1">
           <ThemeSelect />
           <DarkModeSwitch />
           <BackgroundSwitch />
-          <PaddingSelect />
+          {validPaddings?.length > 1 && <PaddingSelect />}
           <LanguageSelect />
           <FontSelect />
         </div>

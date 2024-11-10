@@ -4,6 +4,7 @@ import useStore from "./store";
 import hljs from "highlight.js";
 import Editor from "react-simple-code-editor";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function CodeSnapshotEditor() {
   const store = useStore();
@@ -32,7 +33,10 @@ export default function CodeSnapshotEditor() {
         useStore.setState({ padding: validPadding });
       else useStore.setState({ padding: 0 });
     }
-  }, [store.padding, innerWidth]);
+
+    if (validPaddings.length === 1)
+      toast.message("For optimal view, use a larger device.");
+  }, [innerWidth]);
 
   return (
     <div
