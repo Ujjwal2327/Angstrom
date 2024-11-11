@@ -1,6 +1,7 @@
 import { languages, paddings } from "@/data/codeSnapshotConfig";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+
 const useStore = create(
   persist(
     () => ({
@@ -14,10 +15,9 @@ const useStore = create(
       fontSize: 18,
       fontStyle: "jetBrainsMono",
       padding: 48,
-      validPaddings: paddings,
     }),
     {
-      name: "user-snapshot-preferences",
+      name: "snapshotSettings",
     }
   )
 );
