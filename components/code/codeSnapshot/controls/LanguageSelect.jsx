@@ -8,24 +8,18 @@ import {
 } from "@/components/ui/select";
 import useStore from "../store";
 import { WandSparkles } from "lucide-react";
-import { useEffect } from "react";
 import flourite from "flourite";
 
 export default function LanguageSelect() {
-  const language = useStore((state) => state.language);
-  const autoDetectLanguage = useStore((state) => state.autoDetectLanguage);
   const store = useStore();
-
-  useEffect(() => {
-    if (autoDetectLanguage) useStore.setState({ autoDetectLanguage: false });
-  }, []);
+  const { autoDetectLanguage, code, language, title } = store;
 
   const handleTitleChange = (lang1) => {
     const { extension } = languages[lang1];
     let newTitle;
-    const oldTitle = store.title?.split(".")[0];
+    const oldTitle = title?.split(".")[0];
     if (extension.includes(".")) {
-      if (store.title.includes(".")) newTitle = oldTitle + extension;
+      if (title.includes(".")) newTitle = oldTitle + extension;
       else newTitle = "main" + extension;
     } else newTitle = extension;
     useStore.setState({ title: newTitle });
@@ -33,7 +27,7 @@ export default function LanguageSelect() {
 
   const handleChange = (lang) => {
     if (lang === "auto-detect") {
-      const lang1 = flourite(store.code, {
+      const lang1 = flourite(code, {
         noUnknown: true,
       }).language.toLowerCase();
 

@@ -8,7 +8,8 @@ import useStore from "../store";
 import { paddings } from "@/data/codeSnapshotConfig";
 
 export default function PaddingSelect() {
-  const padding = useStore((state) => state.padding);
+  const store = useStore();
+  const { padding } = store;
 
   return (
     <div>

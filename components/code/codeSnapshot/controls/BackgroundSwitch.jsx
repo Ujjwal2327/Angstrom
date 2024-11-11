@@ -2,7 +2,8 @@ import useStore from "../store";
 import { Switch } from "@/components/ui/switch";
 
 export default function BackgroundSwitch() {
-  const showBg = useStore((state) => state.showBackground);
+  const store = useStore();
+  const { showBackground } = store;
 
   return (
     <div>
@@ -10,7 +11,7 @@ export default function BackgroundSwitch() {
         Background
       </label>
       <Switch
-        checked={showBg}
+        checked={showBackground}
         onCheckedChange={(checked) =>
           useStore.setState({ showBackground: checked })
         }

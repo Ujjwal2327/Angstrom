@@ -9,7 +9,8 @@ import {
 import useStore from "../store";
 
 export default function FontSelect() {
-  const fontStyle = useStore((state) => state.fontStyle);
+  const store = useStore();
+  const { fontStyle } = store;
 
   return (
     <div>

@@ -9,7 +9,8 @@ import { cn } from "@/lib/utils";
 import useStore from "../store";
 
 export default function ThemeSelect() {
-  const theme = useStore((state) => state.theme);
+  const store = useStore();
+  const { theme } = store;
 
   return (
     <div>

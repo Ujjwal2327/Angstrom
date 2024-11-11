@@ -2,7 +2,8 @@ import useStore from "../store";
 import { Switch } from "@/components/ui/switch";
 
 export default function DarkModeSwitch() {
-  const darkMode = useStore((state) => state.darkMode);
+  const store = useStore();
+  const { darkMode } = store;
 
   return (
     <div>

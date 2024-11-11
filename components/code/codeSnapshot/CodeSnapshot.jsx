@@ -19,15 +19,16 @@ import PaddingSelect from "./controls/PaddingSelect.jsx";
 export default function CodeSnapshot() {
   const [width, setWidth] = useState("auto");
   const [showWidth, setShowWidth] = useState(false);
-
-  const theme = useStore((state) => state.theme);
-  const padding = useStore((state) => state.padding);
-  const showBackground = useStore((state) => state.showBackground);
-  const editorRef = useRef(null);
   const [scale, setScale] = useState(1);
-  const containerRef = useRef(null);
   const [innerWidth, setInnerWidth] = useState(window.innerWidth - 80);
 
+  const store = useStore();
+  const { theme, padding, showBackground, autoDetectLanguage } = store;
+
+  const editorRef = useRef(null);
+  const containerRef = useRef(null);
+
+  // set data from links
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     if (queryParams.size === 0) return;
@@ -42,6 +43,7 @@ export default function CodeSnapshot() {
     });
   }, []);
 
+  // get viewport_width - padding(40+40)
   useEffect(() => {
     const handleResize = () => {
       setInnerWidth(window.innerWidth - 80);
@@ -53,14 +55,20 @@ export default function CodeSnapshot() {
     };
   }, []);
 
+  // set scale of snapshot
   useEffect(() => {
     if (containerRef.current) {
       const containerWidth = containerRef.current.offsetWidth;
-      console.log(containerRef.current.offsetWidth);
       const newScale = innerWidth / containerWidth;
       setScale(newScale < 1 ? newScale : 1);
     }
   }, [padding, innerWidth]);
+
+  // set autoDetectLanguage false at initial render
+  useEffect(() => {
+    if (autoDetectLanguage) useStore.setState({ autoDetectLanguage: false });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="relative flex justify-center overflow-y-auto overflow-x-hidden h-screen -my-10">

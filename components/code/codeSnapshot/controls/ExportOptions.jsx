@@ -14,7 +14,8 @@ import useStore from "../store";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export default function ExportOptions({ targetRef }) {
-  const title = useStore((state) => state.title);
+  const store = useStore();
+  const { title } = store;
   const baseurl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const copyImage = async (e) => {

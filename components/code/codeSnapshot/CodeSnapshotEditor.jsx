@@ -6,12 +6,13 @@ import Editor from "react-simple-code-editor";
 
 export default function CodeSnapshotEditor() {
   const store = useStore();
+  const { code, darkMode, fontStyle, language, title } = store;
 
   return (
     <div
       className={cn(
         " border-2 rounded-xl shadow-2xl min-w-80",
-        store.darkMode
+        darkMode
           ? "bg-black/80 border-gray-600/40"
           : "bg-white/90 border-gray-200/20"
       )}
@@ -25,13 +26,13 @@ export default function CodeSnapshotEditor() {
         <div className="col-span-4 flex justify-center">
           <input
             type="text"
-            value={`${store.title}`}
+            value={`${title}`}
             onChange={(e) => useStore.setState({ title: e.target.value })}
             spellCheck={false}
             maxLength={12}
             className={cn(
               "bg-transparent text-center text-sm font-medium focus:outline-none max-w-36 truncate",
-              store.darkMode ? "text-gray-300" : "text-gray-600"
+              darkMode ? "text-gray-300" : "text-gray-600"
             )}
           />
         </div>
@@ -39,21 +40,21 @@ export default function CodeSnapshotEditor() {
       <div
         className={cn(
           "px-4 pb-4",
-          store.darkMode
+          darkMode
             ? "brightness-110"
             : "text-gray-800 brightness-50 saturate-200 contrast-200"
         )}
       >
         <Editor
-          value={store.code}
+          value={code}
           onValueChange={(code) => useStore.setState({ code })}
           highlight={(code) =>
             hljs.highlight(code, {
-              language: store.language || "plaintext",
+              language: language || "plaintext",
             }).value
           }
           style={{
-            fontFamily: fonts[store.fontStyle].name,
+            fontFamily: fonts[fontStyle].name,
             fontSize: 18,
           }}
           textareaClassName="focus:outline-none"
