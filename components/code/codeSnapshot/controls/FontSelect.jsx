@@ -9,8 +9,8 @@ import {
 import useStore from "../store";
 
 export default function FontSelect() {
-  const store = useStore();
-  const { fontStyle } = store;
+  const { getEffectiveSettings, setEffectiveSettings } = useStore();
+  const { fontStyle } = getEffectiveSettings();
 
   return (
     <div>
@@ -19,7 +19,7 @@ export default function FontSelect() {
       </label>
       <Select
         value={fontStyle}
-        onValueChange={(fontStyle) => useStore.setState({ fontStyle })}
+        onValueChange={(fontStyle) => setEffectiveSettings({ fontStyle })}
       >
         <SelectTrigger className="w-40">
           <SelectValue placeholder="Select Font" />

@@ -14,8 +14,8 @@ import useStore from "../store";
 import { useHotkeys } from "react-hotkeys-hook";
 
 export default function ExportOptions({ targetRef }) {
-  const store = useStore();
-  const { title } = store;
+  const { getEffectiveSettings } = useStore();
+  const { title } = getEffectiveSettings();
   const baseurl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const copyImage = async (e) => {
@@ -40,7 +40,9 @@ export default function ExportOptions({ targetRef }) {
     e.preventDefault();
 
     try {
-      const state = useStore.getState();
+      const state = getEffectiveSettings();
+      delete state.isSharable;
+      delete state.autoDetectLanguage;
       const queryParams = new URLSearchParams({
         ...state,
         code: btoa(state.code),

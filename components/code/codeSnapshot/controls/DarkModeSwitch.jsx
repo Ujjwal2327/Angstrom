@@ -2,8 +2,8 @@ import useStore from "../store";
 import { Switch } from "@/components/ui/switch";
 
 export default function DarkModeSwitch() {
-  const store = useStore();
-  const { darkMode } = store;
+  const { getEffectiveSettings, setEffectiveSettings } = useStore();
+  const { darkMode } = getEffectiveSettings();
 
   return (
     <div>
@@ -12,7 +12,9 @@ export default function DarkModeSwitch() {
       </label>
       <Switch
         checked={darkMode}
-        onCheckedChange={(checked) => useStore.setState({ darkMode: checked })}
+        onCheckedChange={(checked) =>
+          setEffectiveSettings({ darkMode: checked })
+        }
         size="sm"
         className="mt-2"
       />

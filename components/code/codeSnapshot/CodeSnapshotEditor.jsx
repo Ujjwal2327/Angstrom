@@ -1,17 +1,26 @@
 import { cn } from "@/lib/utils";
-import { fonts, paddings } from "@/data/codeSnapshotConfig";
+import { fonts } from "@/data/codeSnapshotConfig";
 import useStore from "./store";
 import hljs from "highlight.js";
 import Editor from "react-simple-code-editor";
 
 export default function CodeSnapshotEditor() {
-  const store = useStore();
-  const { code, darkMode, fontStyle, language, title } = store;
+  const { getEffectiveSettings, setEffectiveSettings } = useStore();
+  const { code, darkMode, fontStyle, language, title, fontSize } =
+    getEffectiveSettings();
+
+  const handleTitleChange = (e) => {
+    setEffectiveSettings({ title: e.target.value });
+  };
+
+  const handleCodeChange = (newCode) => {
+    setEffectiveSettings({ code: newCode });
+  };
 
   return (
     <div
       className={cn(
-        " border-2 rounded-xl shadow-2xl min-w-80",
+        "border-2 rounded-xl shadow-2xl min-w-80",
         darkMode
           ? "bg-black/80 border-gray-600/40"
           : "bg-white/90 border-gray-200/20"
@@ -26,8 +35,8 @@ export default function CodeSnapshotEditor() {
         <div className="col-span-4 flex justify-center">
           <input
             type="text"
-            value={`${title}`}
-            onChange={(e) => useStore.setState({ title: e.target.value })}
+            value={title}
+            onChange={handleTitleChange}
             spellCheck={false}
             maxLength={12}
             className={cn(
@@ -47,15 +56,15 @@ export default function CodeSnapshotEditor() {
       >
         <Editor
           value={code}
-          onValueChange={(code) => useStore.setState({ code })}
+          onValueChange={handleCodeChange}
           highlight={(code) =>
             hljs.highlight(code, {
               language: language || "plaintext",
             }).value
           }
           style={{
-            fontFamily: fonts[fontStyle].name,
-            fontSize: 18,
+            fontFamily: fonts[fontStyle]?.name,
+            fontSize: fontSize || 18,
           }}
           textareaClassName="focus:outline-none"
         />

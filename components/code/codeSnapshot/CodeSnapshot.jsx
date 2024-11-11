@@ -2,7 +2,7 @@
 import useStore from "./store.js";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils.js";
-import { fonts, themes } from "@/data/codeSnapshotConfig";
+import { fonts, languages, paddings, themes } from "@/data/codeSnapshotConfig";
 import ExportOptions from "./controls/ExportOptions.jsx";
 import ThemeSelect from "./controls/ThemeSelect.jsx";
 import LanguageSelect from "./controls/LanguageSelect.jsx";
@@ -22,26 +22,69 @@ export default function CodeSnapshot() {
   const [scale, setScale] = useState(1);
   const [innerWidth, setInnerWidth] = useState(window.innerWidth - 80);
 
-  const store = useStore();
-  const { theme, padding, showBackground, autoDetectLanguage } = store;
+  const { getEffectiveSettings, setEffectiveSettings } = useStore();
+  const { theme, padding, showBackground } = getEffectiveSettings();
 
   const editorRef = useRef(null);
   const containerRef = useRef(null);
 
-  // set data from links
+  // set data on initial render or from sharable link
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    if (queryParams.size === 0) return;
-    const state = Object.fromEntries(queryParams);
+    const query = new URLSearchParams(location.search);
 
-    useStore.setState({
-      ...state,
-      code: state.code ? atob(state.code) : "",
-      autoDetectLanguage: state.autoDetectLanguage === "true",
-      darkMode: state.darkMode === "true",
-      padding: Number(state.padding || 64),
+    if (query.size === 0) {
+      setEffectiveSettings({
+        autoDetectLanguage: false,
+        isSharable: false,
+      });
+      return;
+    }
+
+    const getDecodedValue = (param) => {
+      try {
+        return decodeURIComponent(query.get(param) || "");
+      } catch (e) {
+        console.error(`Error decoding ${param}:`, e);
+        return "";
+      }
+    };
+
+    const getDecodedCode = () => {
+      const codeParam = query.get("code") || "";
+      try {
+        return atob(codeParam);
+      } catch (e) {
+        console.error("Error decoding base64 code:", e);
+        return ""; // Default to an empty string if decoding fails
+      }
+    };
+
+    const params = {
+      code: getDecodedCode(),
+      title: getDecodedValue("title"),
+      theme: themes.hasOwnProperty(getDecodedValue("theme"))
+        ? getDecodedValue("theme")
+        : "bitmap",
+      darkMode: query.get("darkMode") !== "false",
+      showBackground: query.get("showBackground") !== "false",
+      language: languages.hasOwnProperty(getDecodedValue("language"))
+        ? getDecodedValue("language")
+        : "c++",
+      fontSize: parseInt(query.get("fontSize"), 10) || 18,
+      fontStyle: fonts.hasOwnProperty(getDecodedValue("fontStyle"))
+        ? getDecodedValue("fontStyle")
+        : "jetBrainsMono",
+      padding: paddings.includes(parseInt(query.get("padding"), 10))
+        ? parseInt(query.get("padding"), 10)
+        : 48,
+    };
+
+    setEffectiveSettings({
+      ...params,
+      autoDetectLanguage: false,
+      isSharable: true,
     });
-  }, []);
+  }, [setEffectiveSettings]);
 
   // get viewport_width - padding(40+40)
   useEffect(() => {
@@ -63,12 +106,6 @@ export default function CodeSnapshot() {
       setScale(newScale < 1 ? newScale : 1);
     }
   }, [padding, innerWidth]);
-
-  // set autoDetectLanguage false at initial render
-  useEffect(() => {
-    if (autoDetectLanguage) useStore.setState({ autoDetectLanguage: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="relative flex justify-center overflow-y-auto overflow-x-hidden h-screen -my-10">
@@ -116,7 +153,6 @@ export default function CodeSnapshot() {
           <DarkModeSwitch />
           <BackgroundSwitch />
           <PaddingSelect />
-          {/* {validPaddings?.length > 1 && <PaddingSelect />} */}
           <LanguageSelect />
           <FontSelect />
         </div>

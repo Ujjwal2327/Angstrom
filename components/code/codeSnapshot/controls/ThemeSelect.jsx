@@ -9,18 +9,19 @@ import { cn } from "@/lib/utils";
 import useStore from "../store";
 
 export default function ThemeSelect() {
-  const store = useStore();
-  const { theme } = store;
+  const { getEffectiveSettings, setEffectiveSettings } = useStore();
+  const { theme } = getEffectiveSettings();
+
+  const handleChange = (theme) => {
+    setEffectiveSettings({ theme });
+  };
 
   return (
     <div>
       <label className="block mb-2 text-xs font-medium text-neutral-400">
         Theme
       </label>
-      <Select
-        value={theme}
-        onValueChange={(theme) => useStore.setState({ theme })}
-      >
+      <Select value={theme} onValueChange={handleChange}>
         <SelectTrigger className="w-16 p-2 flex justify-around">
           <div
             className={cn("h-4 w-4 rounded-full", themes[theme]?.background)}
