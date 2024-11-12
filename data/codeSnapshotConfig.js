@@ -317,10 +317,6 @@ export const fonts = {
     name: "Cascadia Code",
     src: "https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@4.2.1/index.min.css",
   },
-  comicSans: {
-    name: "Comic Sans MS",
-    src: "https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap",
-  },
   courierPrime: {
     name: "Courier Prime",
     src: "https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap",
