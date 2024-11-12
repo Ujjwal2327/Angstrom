@@ -109,15 +109,12 @@ export default function CodeSnapshot() {
 
   return (
     <div className="relative flex justify-center overflow-y-auto overflow-x-hidden h-screen -my-10">
-      {/* themes and fonts meta links */}
-      {Object.entries(themes).map(([key, value]) => (
-        <link
-          key={key}
-          rel="stylesheet"
-          href={value.theme}
-          crossOrigin="anonymous"
-        />
-      ))}
+      {/* font colour and font style meta links */}
+      <link
+        rel="stylesheet"
+        href={themes[theme].color}
+        crossOrigin="anonymous"
+      />
       {Object.entries(fonts).map(([key, value]) => (
         <link
           key={key}
@@ -129,21 +126,29 @@ export default function CodeSnapshot() {
 
       {/* without manually adding like this, the theme is not being rendered in ui */}
       <div className="hidden">
-        <div className="bg-gradient-to-br from-gray-200 to-gray-500 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-blue-400 to-emerald-400 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-red-500 via-pink-600 to-purple-700 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-pink-400 to-pink-600 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-gray-700 via-gray-900 to-black h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-orange-500 to-yellow-300 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-fuchsia-500 via-red-600 to-orange-400 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-rose-100 to-teal-100 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-gray-800 to-blue-900 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-green-300 via-blue-500 to-purple-600 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-rose-400 to-orange-300 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-yellow-400 to-orange-300 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-rose-400 via-fuchsia-500 to-indigo-500 h-32 w-32 rounded-lg"></div>
-        <div className="bg-gradient-to-br from-red-400 to-orange-500 h-32 w-32 rounded-lg"></div>
+        <div className="bg-gradient-to-br from-gray-200 to-gray-500 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-cyan-100 via-blue-200 to-indigo-300 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-tr from-gray-700 via-gray-800 to-gray-900 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-red-500 via-pink-600 to-purple-700 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-tl from-orange-600 via-red-500 to-pink-400 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-pink-400 to-pink-600 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-teal-300 to-lime-400 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-gray-700 via-gray-900 to-black h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-tr from-yellow-300 via-amber-400 to-orange-500 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-fuchsia-500 via-red-600 to-orange-400 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-rose-100 to-teal-100 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-cyan-200 via-teal-300 to-blue-400 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-lime-300 to-green-400 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-gray-800 to-blue-900 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-cyan-500 to-purple-700 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-black h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-rose-200 via-purple-200 to-teal-300 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-rose-400 to-orange-300 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-yellow-400 to-orange-300 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-sky-500 to-indigo-600 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-red-400 to-orange-500 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-t from-gray-700 via-gray-500 to-gray-900 h-32 w-32 rounded-lg" />
+        <div className="bg-gradient-to-br from-red-600 via-orange-600 to-yellow-500 h-32 w-32 rounded-lg" />
       </div>
 
       {/* controls */}

@@ -206,132 +206,140 @@ export const languages = {
   },
 };
 
+export const colors = [
+  "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/chalk.min.css",
+  "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css",
+  "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/atelier-plateau.min.css",
+  "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/ocean.min.css",
+];
+
 export const themes = {
   bitmap: {
     background: "bg-gradient-to-br from-gray-200 to-gray-500",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/vs.min.css",
+    color: colors[1],
   },
   candy: {
-    background: "bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/chalk.min.css",
+    background: "bg-gradient-to-br from-cyan-100 via-blue-200 to-indigo-300",
+    color: colors[1],
   },
-  coral: {
-    background: "bg-gradient-to-br from-blue-400 to-emerald-400",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/tokyo-night-dark.min.css",
+  charcoal: {
+    background: "bg-gradient-to-tr from-gray-700 via-gray-800 to-gray-900",
+    color: colors[1],
   },
   crimson: {
     background: "bg-gradient-to-br from-red-500 via-pink-600 to-purple-700",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/atelier-plateau.min.css",
+    color: colors[1],
+  },
+  emberGlow: {
+    background: "bg-gradient-to-tl from-orange-600 via-red-500 to-pink-400",
+    color: colors[0],
   },
   flamingo: {
     background: "bg-gradient-to-br from-pink-400 to-pink-600",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/panda-syntax-dark.min.css",
+    color: colors[2],
+  },
+  forestMist: {
+    background: "bg-gradient-to-br from-teal-300 to-lime-400",
+    color: colors[0],
   },
   gotham: {
     background: "bg-gradient-to-br from-gray-700 via-gray-900 to-black",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/black-metal-dark-funeral.min.css",
+    color: colors[1],
   },
-  horizon: {
-    background: "bg-gradient-to-br from-orange-500 to-yellow-300",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/monokai-sublime.min.css",
+  goldenSun: {
+    background: "bg-gradient-to-tr from-yellow-300 via-amber-400 to-orange-500",
+    color: colors[0],
   },
   hyper: {
     background: "bg-gradient-to-br from-fuchsia-500 via-red-600 to-orange-400",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css",
+    color: colors[0],
   },
   ice: {
     background: "bg-gradient-to-br from-rose-100 to-teal-100",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/ashes.min.css",
+    color: colors[1],
+  },
+  lagoon: {
+    background: "bg-gradient-to-br from-cyan-200 via-teal-300 to-blue-400",
+    color: colors[1],
+  },
+  meadow: {
+    background: "bg-gradient-to-br from-lime-300 to-green-400",
+    color: colors[0],
   },
   midnight: {
     background: "bg-gradient-to-br from-gray-800 to-blue-900",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/dracula.min.css",
+    color: colors[1],
   },
-  oceanic: {
-    background: "bg-gradient-to-br from-green-300 via-blue-500 to-purple-600",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/material-darker.min.css",
+  neon: {
+    background: "bg-gradient-to-br from-cyan-500 to-purple-700",
+    color: colors[1],
+  },
+  obsidian: {
+    background: "bg-gradient-to-br from-gray-900 via-gray-800 to-black",
+    color: colors[1],
+  },
+  pastel: {
+    background: "bg-gradient-to-br from-rose-200 via-purple-200 to-teal-300",
+    color: colors[1],
   },
   peach: {
     background: "bg-gradient-to-br from-rose-400 to-orange-300",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/zenburn.min.css",
+    color: colors[0],
   },
   sand: {
     background: "bg-gradient-to-br from-yellow-400 to-orange-300",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/atelier-cave-light.min.css",
+    color: colors[0],
   },
-  sublime: {
-    background: "bg-gradient-to-br from-rose-400 via-fuchsia-500 to-indigo-500",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css",
+  sapphireSkies: {
+    background: "bg-gradient-to-br from-sky-500 to-indigo-600",
+    color: colors[2],
   },
   sunset: {
     background: "bg-gradient-to-br from-red-400 to-orange-500",
-    theme:
-      "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/base16/sunset.min.css",
+    color: colors[0],
+  },
+  thunderCloud: {
+    background: "bg-gradient-to-t from-gray-700 via-gray-500 to-gray-900",
+    color: colors[1],
+  },
+  volcano: {
+    background: "bg-gradient-to-br from-red-600 via-orange-600 to-yellow-500",
+    color: colors[0],
   },
 };
 
 export const fonts = {
-  jetBrainsMono: {
-    name: "JetBrains Mono",
-    src: "https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap",
-  },
-  inconsolata: {
-    name: "Inconsolata",
-    src: "https://fonts.googleapis.com/css2?family=Inconsolata&display=swap",
-  },
-  firaCode: {
-    name: "Fira Code",
-    src: "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap",
+  anonymousPro: {
+    name: "Anonymous Pro",
+    src: "https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap",
   },
   cascadiaCode: {
     name: "Cascadia Code",
     src: "https://cdn.jsdelivr.net/npm/@fontsource/cascadia-code@4.2.1/index.min.css",
   },
-  victorMono: {
-    name: "Victor Mono",
-    src: "https://fonts.googleapis.com/css2?family=Victor+Mono&display=swap",
-  },
-  sourceCodePro: {
-    name: "Source Code Pro",
-    src: "https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap",
-  },
-  ibmPlexMono: {
-    name: "IBM Plex Mono",
-    src: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap",
-  },
-  robotoMono: {
-    name: "Roboto Mono",
-    src: "https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap",
-  },
-  ubuntuMono: {
-    name: "Ubuntu Mono",
-    src: "https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap",
-  },
-  spaceMono: {
-    name: "Space Mono",
-    src: "https://fonts.googleapis.com/css2?family=Space+Mono&display=swap",
+  comicSans: {
+    name: "Comic Sans MS",
+    src: "https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap",
   },
   courierPrime: {
     name: "Courier Prime",
     src: "https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap",
   },
-  anonymousPro: {
-    name: "Anonymous Pro",
-    src: "https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap",
+  firaCode: {
+    name: "Fira Code",
+    src: "https://fonts.googleapis.com/css2?family=Fira+Code&display=swap",
+  },
+  ibmPlexMono: {
+    name: "IBM Plex Mono",
+    src: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap",
+  },
+  inconsolata: {
+    name: "Inconsolata",
+    src: "https://fonts.googleapis.com/css2?family=Inconsolata&display=swap",
+  },
+  jetBrainsMono: {
+    name: "JetBrains Mono",
+    src: "https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap",
   },
   oxygenMono: {
     name: "Oxygen Mono",
@@ -340,6 +348,26 @@ export const fonts = {
   redHatMono: {
     name: "Red Hat Mono",
     src: "https://fonts.googleapis.com/css2?family=Red+Hat+Mono&display=swap",
+  },
+  robotoMono: {
+    name: "Roboto Mono",
+    src: "https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap",
+  },
+  sourceCodePro: {
+    name: "Source Code Pro",
+    src: "https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap",
+  },
+  spaceMono: {
+    name: "Space Mono",
+    src: "https://fonts.googleapis.com/css2?family=Space+Mono&display=swap",
+  },
+  ubuntuMono: {
+    name: "Ubuntu Mono",
+    src: "https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap",
+  },
+  victorMono: {
+    name: "Victor Mono",
+    src: "https://fonts.googleapis.com/css2?family=Victor+Mono&display=swap",
   },
 };
 
