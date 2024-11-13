@@ -3,7 +3,7 @@ import { Spotlight } from "@/components/ui/Spotlight";
 import { MagicButton } from "@/components/ui/MagicButton";
 import { FaGoogle } from "react-icons/fa";
 import { getUserByEmail } from "@/action/user";
-import { Send } from "lucide-react";
+import { ImagePlus, Send } from "lucide-react";
 import { Suspense } from "react";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import Image from "next/image";
@@ -72,17 +72,10 @@ async function SuspenseComponent() {
         <></>
       )}
       <MagicButton
-        title="Markdown Editor"
+        title="Code Snapshot"
         position="right"
-        icon={
-          <Image
-            src="/icons/others/markdown.svg"
-            alt="markdown logo"
-            width={30}
-            height={30}
-          />
-        }
-        href="/markdown-editor"
+        icon={<ImagePlus size={20} />}
+        href="/code-snapshot"
       />
     </div>
   );
