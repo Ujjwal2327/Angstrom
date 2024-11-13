@@ -6,7 +6,6 @@ import { getUserByEmail } from "@/action/user";
 import { ImagePlus, Send } from "lucide-react";
 import { Suspense } from "react";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
-import Image from "next/image";
 import { EmptySpace } from "@/components/ui/EmptySpace";
 
 export default function Hero() {
@@ -57,25 +56,25 @@ async function SuspenseComponent() {
       {!session?.user?.email ? (
         <MagicButton
           title="Sign in with Google"
-          position="right"
-          icon={<FaGoogle className="text-xl" />}
           href="/sign-in"
+          icon={<FaGoogle className="text-lg" />}
+          position="right"
         />
       ) : user?.username ? (
         <MagicButton
           title="View Your Profile"
-          position="right"
-          icon={<Send size={20} />}
           href={`/users/${user?.username}`}
+          icon={<Send size={20} />}
+          position="right"
         />
       ) : (
         <></>
       )}
       <MagicButton
         title="Code Snapshot"
-        position="right"
-        icon={<ImagePlus size={20} />}
         href="/code-snapshot"
+        icon={<ImagePlus size={20} />}
+        position="right"
       />
     </div>
   );
