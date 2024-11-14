@@ -39,9 +39,8 @@ export default function CodeSnapshotEditor({ scale }) {
             onChange={handleTitleChange}
             spellCheck={false}
             className={cn(
-              "bg-transparent text-center font-medium focus:outline-none truncate w-[calc(100%-110px)]",
-              darkMode ? "text-gray-300" : "text-gray-600",
-              `text-[calc(${14 * scale}px)] leading-[calc(${20 * scale}px)]`
+              "bg-transparent text-center text-sm font-medium focus:outline-none truncate w-[calc(100%-110px)]",
+              darkMode ? "text-gray-300" : "text-gray-600"
             )}
           />
         </div>
