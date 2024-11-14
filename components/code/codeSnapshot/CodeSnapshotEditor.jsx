@@ -26,26 +26,26 @@ export default function CodeSnapshotEditor() {
           : "bg-white/90 border-gray-200/20"
       )}
     >
-      <header className="grid grid-cols-6 items-center px-4 py-3">
-        <div className="flex gap-1.5">
+      <header className="flex items-center justify-center px-4 py-3 relative w-full">
+        <div className="flex gap-1.5 absolute left-4">
           <div className="rounded-full h-3 w-3 bg-red-500" />
           <div className="rounded-full h-3 w-3 bg-yellow-500" />
           <div className="rounded-full h-3 w-3 bg-green-500" />
         </div>
-        <div className="col-span-4 flex justify-center">
+        <div className="flex justify-center w-full">
           <input
             type="text"
             value={title}
             onChange={handleTitleChange}
             spellCheck={false}
-            maxLength={12}
             className={cn(
-              "bg-transparent text-center text-sm font-medium focus:outline-none max-w-36 truncate",
+              "bg-transparent text-center text-sm font-medium focus:outline-none truncate w-[calc(100%-110px)]",
               darkMode ? "text-gray-300" : "text-gray-600"
             )}
           />
         </div>
       </header>
+
       <div
         className={cn(
           "px-4 pb-4",
