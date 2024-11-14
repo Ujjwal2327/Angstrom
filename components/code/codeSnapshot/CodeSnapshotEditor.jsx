@@ -4,7 +4,7 @@ import useStore from "./store";
 import hljs from "highlight.js";
 import Editor from "react-simple-code-editor";
 
-export default function CodeSnapshotEditor() {
+export default function CodeSnapshotEditor({ scale }) {
   const { getEffectiveSettings, setEffectiveSettings } = useStore();
   const { code, darkMode, fontStyle, language, title, fontSize } =
     getEffectiveSettings();
@@ -39,8 +39,9 @@ export default function CodeSnapshotEditor() {
             onChange={handleTitleChange}
             spellCheck={false}
             className={cn(
-              "bg-transparent text-center text-sm font-medium focus:outline-none truncate w-[calc(100%-110px)]",
-              darkMode ? "text-gray-300" : "text-gray-600"
+              "bg-transparent text-center font-medium focus:outline-none truncate w-[calc(100%-110px)]",
+              darkMode ? "text-gray-300" : "text-gray-600",
+              `text-[calc(${14 * scale}px)] leading-[calc(${20 * scale}px)]`
             )}
           />
         </div>

@@ -199,7 +199,7 @@ export default function CodeSnapshot() {
               style={{ padding }}
               ref={editorRef}
             >
-              <CodeSnapshotEditor />
+              <CodeSnapshotEditor scale={scale} />
             </div>
           </div>
 
