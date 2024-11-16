@@ -15,6 +15,7 @@ const navIcons = {
       alt="markdown logo"
       width={25}
       height={25}
+      className="relative -right-1"
     />
   ),
   Tasks: <ListTodo size={20} />,
