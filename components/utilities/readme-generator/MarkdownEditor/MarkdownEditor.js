@@ -167,7 +167,7 @@ function generateGitHubReadme(user) {
     )}!)\n\n`,
     about ? `### ${about}\n\n` : "",
     `### [🔗 Portfolio](https://angstrom.vercel.app/users/${username}) | [📧 Email](mailto:${email})\n\n`,
-    `![${fullname}'s Github Stats Graph](https://github-readme-activity-graph-mnex.vercel.app/graph?username=${username}&bg_color=transparent&color=00b8b5&line=eb008b&point=FFFFFF&area=true&hide_border=true&hide_title=true)\n\n`,
+    `![${fullname}'s Github Stats Graph](https://github-readme-activity-graph-mnex.vercel.app/graph?username=${githubUsername}&bg_color=transparent&color=00b8b5&line=eb008b&point=FFFFFF&area=true&hide_border=true&hide_title=true)\n\n`,
     `</div>\n\n`,
     "\n---  \n\n\n",
   ];
