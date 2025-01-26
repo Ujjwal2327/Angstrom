@@ -9,11 +9,21 @@ import { Analytics } from "@vercel/analytics/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Angstrom",
+  title: "Angstrom - Build Your Professional Developer Profile",
   description:
-    "The ultimate toolkit for coders and engineers. Effortlessly showcase your career profile to recruiters and potential employers.",
+    "Create and share professional developer profiles with Angstrom. Showcase coding skills, projects, and achievements, and access powerful tools like Markdown Editor, Code Differ, and Code Snapshot.",
   icons: { icon: "/favicon.ico" },
-  keywords: "coders, engineers, toolbox, programming, development",
+  keywords: [
+    "Angstrom",
+    "developer profile",
+    "coding portfolio",
+    "career tools",
+    "markdown editor",
+    "github profile builder",
+    "code differ",
+    "code snapshot",
+    "ray.so alternative",
+  ],
   url: "https://angstrom.vercel.app/",
   canonical: "https://angstrom.vercel.app/",
   robots: "index, follow",
