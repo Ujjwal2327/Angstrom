@@ -103,3 +103,67 @@ export function skillExistsInCategories(searchSkill) {
     if (categorizedSkills[category].skills[searchSkill]) return true;
   return false;
 }
+
+export function normalizeJsonValue(value) {
+  try {
+    const parsedValue = JSON.parse(value);
+    if (typeof parsedValue === "object") return parsedValue;
+  } catch (error) {}
+
+  // value is string
+  try {
+    let parsedValue = value;
+
+    // // Ensure any backticks-wrapped strings are treated properly (no effect on value)
+    // parsedValue = parsedValue.replace(/`([^`]+)`/g, '"$1"');
+
+    // Check if the value is wrapped in backticks (``) and remove them
+    if (/^`.*`$/.test(parsedValue)) {
+      parsedValue = parsedValue.slice(1, -1); // Remove the backticks
+    }
+
+    // Check if the value is wrapped in single quotes and remove them
+    if (/^'.*'$/.test(parsedValue)) {
+      parsedValue = parsedValue.slice(1, -1); // Remove the single quotes
+    }
+
+    // Check if the value is wrapped in double quotes and remove them
+    if (/^".*"$/.test(parsedValue)) {
+      parsedValue = parsedValue.slice(1, -1); // Remove the double quotes
+    }
+
+    // Remove any trailing commas before closing brackets or braces
+    parsedValue = parsedValue.replace(/,\s*([\]}])/g, "$1");
+
+    // Normalize the string to valid JSON format by adding quotes around object keys
+    parsedValue = parsedValue.replace(/(\w+):/g, '"$1":'); // Add quotes around keys for object-like strings
+
+    // Replace single quotes with double quotes for string values in object or array
+    parsedValue = parsedValue.replace(/'([^']+)'/g, '"$1"'); // Replace single quotes with double quotes for values
+
+    // Handle array-like structures with JSON-compliant replacements
+    parsedValue = parsedValue.replace(/undefined/g, "null"); // Replace undefined with null
+    parsedValue = parsedValue.replace(/\bNaN\b/g, "null"); // Replace NaN with null
+
+    // Parse the normalized value if it looks like an array or object
+    if (/^[{\[][\s\S]*[}\]]$/.test(parsedValue)) {
+      parsedValue = JSON.parse(parsedValue); // Parse it as JSON
+    } else {
+      // Handle edge cases (e.g., converting to primitive values)
+      if (parsedValue === "true" || parsedValue === "false") {
+        parsedValue = parsedValue === "true"; // Convert to boolean
+      } else if (!isNaN(parsedValue)) {
+        parsedValue = Number(parsedValue); // Convert to number
+      } else if (parsedValue === "null") {
+        parsedValue = null; // Convert to null if it's the string "null"
+      } else if (parsedValue === "undefined") {
+        parsedValue = undefined; // Convert to undefined if it's the string "undefined"
+      }
+    }
+
+    return parsedValue;
+  } catch (error) {
+    // Return original value if parsing fails
+    return value;
+  }
+}

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Switch } from "@/components/ui/switch";
-import { Settings } from "lucide-react";
+import { RotateCcw, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Editor from "@monaco-editor/react";
 
@@ -23,7 +23,11 @@ export default function CodeEditor({
   editorHeight = "100vh",
   editorWidth = "70%",
   code = "",
-  execute = false,
+  handleExecution = null,
+  showLanguageSelector = true,
+  executeButtonTitle = "Execute Code",
+  executeButtonLoadTitle = "Executing",
+  configAtBottom = false,
 }) {
   const [editorSettings, setEditorSettings] = useState({
     language,
@@ -37,14 +41,14 @@ export default function CodeEditor({
     code,
   });
   const [isExecuting, setIsExecuting] = useState(false);
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
 
   useEffect(() => {
     function updateEditorHeight() {
       setEditorSettings((prev) => ({
         ...prev,
-        editorHeight: `calc(${window.innerHeight}px - 7.5rem)`,
+        editorHeight: `calc(${
+          editorHeight ? editorHeight : `${window.innerHeight}px`
+        } - 7.5rem)`,
       }));
     }
     updateEditorHeight();
@@ -52,17 +56,6 @@ export default function CodeEditor({
 
     return () => window.removeEventListener("resize", updateEditorHeight);
   }, []);
-
-  const handleExecution = async () => {
-    setIsExecuting(true);
-    try {
-    } catch (error) {
-      console.error(error);
-      setOutput("Error executing code");
-    } finally {
-      setIsExecuting(false);
-    }
-  };
 
   const handleChange = (key, value) => {
     setEditorSettings((prev) => ({
@@ -76,24 +69,28 @@ export default function CodeEditor({
   const fontSizes = [10, 12, 14, 16, 18, 20, 22, 24];
 
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      className={`flex flex-col gap-2 ${configAtBottom && "flex-col-reverse"}`}
+    >
       <div className="flex items-center justify-between flex-wrap">
         <div className="flex items-center gap-x-5">
-          <Select
-            defaultValue={editorSettings.language}
-            onValueChange={(value) => handleChange("language", value)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Language" />
-            </SelectTrigger>
-            <SelectContent>
-              {languages.map((lang) => (
-                <SelectItem key={lang} value={lang}>
-                  {lang}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          {showLanguageSelector && (
+            <Select
+              defaultValue={editorSettings.language}
+              onValueChange={(value) => handleChange("language", value)}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Language" />
+              </SelectTrigger>
+              <SelectContent>
+                {languages.map((lang) => (
+                  <SelectItem key={lang} value={lang}>
+                    {lang}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
 
           <Dialog>
             <DialogTrigger asChild>
@@ -176,14 +173,27 @@ export default function CodeEditor({
             </DialogContent>
           </Dialog>
         </div>
-        {execute && (
-          <Button onClick={handleExecution} disabled={isExecuting}>
-            {isExecuting ? "Executing..." : "Run Code"}
+
+        <div className="flex gap-x-2 items-center">
+          <Button
+            onClick={() => handleChange("code", code)}
+            disabled={isExecuting}
+          >
+            <RotateCcw variant="icon" className="w-4 h-4" />
           </Button>
-        )}
+
+          {handleExecution && (
+            <Button
+              onClick={() => handleExecution(editorSettings.code)}
+              disabled={isExecuting}
+            >
+              {isExecuting ? executeButtonLoadTitle : executeButtonTitle}
+            </Button>
+          )}
+        </div>
       </div>
 
-      <div className="-mb-2 flex gap-x-5">
+      <div className="-mb-2 flex gap-x-5 rounded-lg overflow-hidden">
         {/* <MonacoEditor */}
         <Editor
           theme={editorSettings.theme}

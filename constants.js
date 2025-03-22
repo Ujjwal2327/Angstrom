@@ -4,6 +4,7 @@ export const menuItems = {
     // { name: "Tasks", path: "/tasks" },
     { name: "Code Differ", path: "/code-differ" },
     { name: "Code Snapshot", path: "/code-snapshot" },
+    { name: "JSON Slicer", path: "/json-slicer" },
   ],
   bottom: [{ name: "My Profile", path: "/users" }],
 };

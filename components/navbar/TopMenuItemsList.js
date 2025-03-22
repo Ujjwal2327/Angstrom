@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button";
 import { menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
 import { SheetClose } from "@/components/ui/sheet";
-import { BookOpen, ImagePlus, ListTodo } from "lucide-react";
+import {
+  BookOpen,
+  Braces,
+  ListTodo,
+  SquareDashedBottomCode,
+} from "lucide-react";
 import Image from "next/image";
 
 const navIcons = {
@@ -20,7 +25,8 @@ const navIcons = {
   ),
   Tasks: <ListTodo size={20} />,
   "Code Differ": <BookOpen size={20} />,
-  "Code Snapshot": <ImagePlus size={20} />,
+  "Code Snapshot": <SquareDashedBottomCode size={20} />,
+  "JSON Slicer": <Braces size={20} />,
 };
 
 export default function TopMenuItemsList() {
