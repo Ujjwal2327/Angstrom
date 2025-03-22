@@ -3,7 +3,7 @@ import { Spotlight } from "@/components/ui/Spotlight";
 import { MagicButton } from "@/components/ui/MagicButton";
 import { FaGoogle } from "react-icons/fa";
 import { getUserByEmail } from "@/action/user";
-import { Send, SquareDashedBottomCode } from "lucide-react";
+import { Braces, Send, SquareDashedBottomCode } from "lucide-react";
 import { Suspense } from "react";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { EmptySpace } from "@/components/ui/EmptySpace";
@@ -71,9 +71,9 @@ async function SuspenseComponent() {
         <></>
       )}
       <MagicButton
-        title="Code Snapshot"
-        href="/code-snapshot"
-        icon={<SquareDashedBottomCode size={20} />}
+        title="JSON Slicer"
+        href="/json-slicer"
+        icon={<Braces size={20} />}
         position="right"
       />
     </div>

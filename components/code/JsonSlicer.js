@@ -5,8 +5,83 @@ import { Button } from "../ui/button";
 import { normalizeJsonValue } from "@/utils";
 import { ArrowBigDown, ArrowBigRight } from "lucide-react";
 
+const initialInputJson = `{
+  "user": {
+    "id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "profile": {
+      "age": 30,
+      "gender": "Male",
+      "location": {
+        "city": "New York",
+        "country": "USA",
+        "coordinates": {
+          "latitude": 40.7128,
+          "longitude": -74.0060
+        }
+      }
+    }
+  },
+  "posts": [
+    {
+      "id": 101,
+      "title": "First Post",
+      "tags": ["tech", "json", "react"],
+      "content": "This is my first post!",
+      "comments": [
+        {
+          "id": 201,
+          "user": "Alice",
+          "message": "Great post!",
+          "replies": []
+        },
+        {
+          "id": 202,
+          "user": "Bob",
+          "message": "Nice article",
+          "replies": [
+            {
+              "id": 301,
+              "user": "Charlie",
+              "message": "I agree with Bob!"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "title": "Second Post",
+      "content": "This is another post.",
+      "tags": [],
+      "comments": []
+    }
+  ],
+  "settings": {
+    "language": "en",
+    "privacy": {
+      "profileVisibility": "public",
+      "searchEngineIndexing": false
+    },
+    "notifications": {
+      "email": true,
+      "sms": false,
+      "push": {
+        "enabled": true,
+        "frequency": "daily"
+      }
+    }
+  },
+  "metadata": {
+    "createdAt": "2025-03-22T10:00:00Z",
+    "updatedAt": null,
+    "tags": ["sample", "example"]
+  }
+}`;
+
 export default function JsonSlicer() {
-  const [inputJson, setInputJson] = useState("");
+  const [inputJson, setInputJson] = useState(initialInputJson);
   const [parsedJson, setParsedJson] = useState(null);
   const [selectedFields, setSelectedFields] = useState({});
   const [copied, setCopied] = useState(false);
@@ -166,7 +241,7 @@ export default function JsonSlicer() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col sm:flex-row  sm:items-center gap-1">
+      <div className="flex flex-col sm:flex-row gap-1">
         <div className="sm:w-1/3 flex flex-col gap-y-5">
           <h2 className="font-bold text-xl">Input JSON</h2>
           <Textarea
@@ -176,7 +251,7 @@ export default function JsonSlicer() {
           />
           <Button onClick={handleJsonInput}>Parse JSON</Button>
         </div>
-        <ArrowBigRight className="size-10 hidden sm:block" />
+        <ArrowBigRight className="size-10 self-center hidden sm:block" />
         <ArrowBigDown className="size-10 self-center sm:hidden" />
 
         <div className="sm:w-1/3 flex flex-col gap-y-5">
@@ -185,7 +260,7 @@ export default function JsonSlicer() {
             {parsedJson !== null && renderJsonTree(parsedJson)}
           </div>
         </div>
-        <ArrowBigRight className="size-10 hidden sm:block" />
+        <ArrowBigRight className="size-10 self-center hidden sm:block" />
         <ArrowBigDown className="size-10 self-center sm:hidden" />
 
         <div className="sm:w-1/3 max-w-1/3 flex flex-col gap-y-5">

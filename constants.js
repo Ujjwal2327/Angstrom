@@ -1,10 +1,10 @@
 export const menuItems = {
   top: [
-    { name: "Markdown Editor", path: "/markdown-editor" },
-    // { name: "Tasks", path: "/tasks" },
     { name: "Code Differ", path: "/code-differ" },
     { name: "Code Snapshot", path: "/code-snapshot" },
     { name: "JSON Slicer", path: "/json-slicer" },
+    { name: "Markdown Editor", path: "/markdown-editor" },
+    // { name: "Tasks", path: "/tasks" },
   ],
   bottom: [{ name: "My Profile", path: "/users" }],
 };

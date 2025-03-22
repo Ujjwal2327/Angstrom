@@ -14,6 +14,9 @@ import {
 import Image from "next/image";
 
 const navIcons = {
+  "Code Differ": <BookOpen size={20} />,
+  "Code Snapshot": <SquareDashedBottomCode size={20} />,
+  "JSON Slicer": <Braces size={20} />,
   "Markdown Editor": (
     <Image
       src="/icons/navbar/Markdown Editor.svg"
@@ -24,9 +27,6 @@ const navIcons = {
     />
   ),
   Tasks: <ListTodo size={20} />,
-  "Code Differ": <BookOpen size={20} />,
-  "Code Snapshot": <SquareDashedBottomCode size={20} />,
-  "JSON Slicer": <Braces size={20} />,
 };
 
 export default function TopMenuItemsList() {
