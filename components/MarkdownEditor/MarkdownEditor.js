@@ -156,7 +156,7 @@ function generateGitHubReadme(user) {
   // intro section
   const introSections = [
     `<div align="center">\n\n`,
-    `<img src="https://visitcount.itsvg.in/api?id=${githubUsername}&label=Profile%20Views&color=0&icon=2" align="right" />\n<br/>\n\n`,
+    `<img src="https://komarev.com/ghpvc/?username=${githubUsername}" align="right" />\n<br/>\n\n`,
     `<!-- Choose one heading style -->\n`,
     `<!-- Option 1: Fast & simple text -->\n`,
     `# 👋 Hey, I'm ${fullname}!\n\n`,
