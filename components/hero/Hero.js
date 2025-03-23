@@ -41,7 +41,7 @@ export default function Hero() {
           className="text-xl sm:text-2xl font-extrabold text-center text-neutral-300 -mt-4 sm:mt-0 text-wrap-balance"
         />
 
-        <Suspense fallback={<EmptySpace h="12" />}>
+        <Suspense fallback={<EmptySpace h="20" />}>
           <SuspenseComponent />
         </Suspense>
       </div>
