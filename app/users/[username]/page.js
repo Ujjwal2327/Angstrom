@@ -34,9 +34,9 @@ export default async function UserPage({ params }) {
     <div className="flex flex-col justify-center items-center max-w-3xl mx-auto -mb-10">
       {params.username === user?.username && (
         <div className="bg-slate-900 rounded-md p-3 mb-6 w-full flex flex-wrap justify-center items-center gap-3">
-          Edit Portfolio
+          Build Portfolio
           <Link href={`${user.username}/edit`}>
-            <Button variant="outline" aria-label="edit portfolio">
+            <Button variant="outline" aria-label="build portfolio">
               Here
             </Button>
           </Link>
