@@ -1,7 +1,7 @@
 import Loader from "@/components/ui/Loader";
 import dynamic from "next/dynamic";
 const CodeSnapshot = dynamic(
-  () => import("@/components/code/codeSnapshot/CodeSnapshot"),
+  () => import("@/components/codeSnapshot/CodeSnapshot"),
   {
     ssr: false,
     loading: () => <Loader />,

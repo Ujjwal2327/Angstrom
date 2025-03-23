@@ -1,4 +1,4 @@
-import JsonSlicer from "@/components/code/JsonSlicer";
+import JsonSlicer from "@/components/JsonSlicer";
 
 export function generateMetadata({ params }) {
   return {

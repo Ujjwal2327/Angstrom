@@ -1,4 +1,4 @@
-import CodeDiffer from "@/components/code/CodeDiffer";
+import CodeDiffer from "@/components/CodeDiffer";
 
 export function generateMetadata({ params }) {
   return {

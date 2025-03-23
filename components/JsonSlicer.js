@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
 import { normalizeJsonValue } from "@/utils";
 import { ArrowBigDown, ArrowBigRight } from "lucide-react";
 
