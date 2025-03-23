@@ -64,7 +64,7 @@ async function SuspenseComponent() {
           />
         ) : user?.username ? (
           <MagicButton
-            title="View Your Profile"
+            title="Your Portfolio"
             href={`/users/${user?.username}`}
             icon={<Send size={20} />}
             position="right"

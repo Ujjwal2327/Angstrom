@@ -24,9 +24,9 @@ export default async function UserEditPage({ params }) {
       {params.username === user?.username && (
         <>
           <div className="bg-slate-900 rounded-md p-3 mb-6 w-full flex flex-wrap gap-3 justify-center items-center">
-            View your profile
+            View Portfolio
             <Link href={`/users/${user.username}`}>
-              <Button variant="outline" aria-label="view your profile">
+              <Button variant="outline" aria-label="view portfolio">
                 Here
               </Button>
             </Link>
