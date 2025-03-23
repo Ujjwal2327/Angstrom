@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { normalizeJsonValue } from "@/utils";
@@ -82,7 +82,7 @@ const initialInputJson = `{
 
 export default function JsonSlicer() {
   const [inputJson, setInputJson] = useState(initialInputJson);
-  const [parsedJson, setParsedJson] = useState(null);
+  const [parsedJson, setParsedJson] = useState({});
   const [selectedFields, setSelectedFields] = useState({});
   const [copied, setCopied] = useState(false);
 
@@ -95,6 +95,11 @@ export default function JsonSlicer() {
       console.error("Invalid JSON");
     }
   };
+
+  useEffect(() => {
+    handleJsonInput();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleSelection = (path, data) => {
     setSelectedFields((prev) => {

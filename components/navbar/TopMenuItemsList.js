@@ -5,29 +5,6 @@ import { Button } from "@/components/ui/button";
 import { menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
 import { SheetClose } from "@/components/ui/sheet";
-import {
-  BookOpen,
-  Braces,
-  ListTodo,
-  SquareDashedBottomCode,
-} from "lucide-react";
-import Image from "next/image";
-
-const navIcons = {
-  "Code Differ": <BookOpen size={20} />,
-  "Code Snapshot": <SquareDashedBottomCode size={20} />,
-  "JSON Slicer": <Braces size={20} />,
-  "Markdown Editor": (
-    <Image
-      src="/icons/navbar/Markdown Editor.svg"
-      alt="markdown logo"
-      width={25}
-      height={25}
-      className="relative -right-1"
-    />
-  ),
-  Tasks: <ListTodo size={20} />,
-};
 
 export default function TopMenuItemsList() {
   const pathname = usePathname();
@@ -45,7 +22,7 @@ export default function TopMenuItemsList() {
               aria-label={item.name}
             >
               <span>{item.name}</span>
-              <span>{navIcons[item.name]}</span>
+              <span>{item.icon || item.iconSrc}</span>
             </Button>
           </Link>
         </SheetClose>

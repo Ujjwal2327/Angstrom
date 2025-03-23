@@ -1,10 +1,38 @@
+import { BookOpen, Braces, SquareDashedBottomCode } from "lucide-react";
+import Image from "next/image";
+
 export const menuItems = {
   top: [
-    { name: "Code Differ", path: "/code-differ" },
-    { name: "Code Snapshot", path: "/code-snapshot" },
-    { name: "JSON Slicer", path: "/json-slicer" },
-    { name: "Markdown Editor", path: "/markdown-editor" },
-    // { name: "Tasks", path: "/tasks" },
+    { name: "Code Differ", path: "/code-differ", icon: <BookOpen size={20} /> },
+    {
+      name: "Code Snapshot",
+      path: "/code-snapshot",
+      icon: <SquareDashedBottomCode size={20} />,
+    },
+    { name: "JSON Slicer", path: "/json-slicer", icon: <Braces size={20} /> },
+    {
+      name: "Markdown Editor",
+      path: "/markdown-editor",
+      iconSrc: (
+        <Image
+          src="/icons/navbar/Markdown Editor.svg"
+          alt="markdown logo"
+          width={25}
+          height={25}
+          className="relative -right-10"
+        />
+      ),
+      iconSrcLight: (
+        <Image
+          src="/icons/navbar/Markdown Editor Light.svg"
+          alt="markdown logo"
+          width={25}
+          height={25}
+          className="relative -right-10"
+        />
+      ),
+    },
+    // { name: "Tasks", path: "/tasks", icon: <ListTodo size={20} /> },
   ],
   bottom: [{ name: "My Profile", path: "/users" }],
 };
@@ -252,6 +280,10 @@ export const categorizedSkills = {
       spring: {
         icon: `${skillIconBaseUrl}backend_dev/spring.svg`,
         url: "https://spring.io/",
+      },
+      springboot: {
+        icon: `${skillIconBaseUrl}backend_dev/springboot.svg`,
+        url: "https://spring.io/projects/spring-boot/",
       },
     },
     title: "Backend Development",

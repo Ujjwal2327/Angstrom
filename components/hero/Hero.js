@@ -3,10 +3,11 @@ import { Spotlight } from "@/components/ui/Spotlight";
 import { MagicButton } from "@/components/ui/MagicButton";
 import { FaGoogle } from "react-icons/fa";
 import { getUserByEmail } from "@/action/user";
-import { Braces, Send, SquareDashedBottomCode } from "lucide-react";
+import { Send } from "lucide-react";
 import { Suspense } from "react";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import { EmptySpace } from "@/components/ui/EmptySpace";
+import HeroMenu from "./HeroMenu";
 
 export default function Hero() {
   return (
@@ -52,30 +53,27 @@ async function SuspenseComponent() {
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
   return (
-    <div className="flex flex-col md:flex-row gap-4 gap-x-8">
-      {!session?.user?.email ? (
-        <MagicButton
-          title="Sign in with Google"
-          href="/sign-in"
-          icon={<FaGoogle className="text-lg" />}
-          position="right"
-        />
-      ) : user?.username ? (
-        <MagicButton
-          title="View Your Profile"
-          href={`/users/${user?.username}`}
-          icon={<Send size={20} />}
-          position="right"
-        />
-      ) : (
-        <></>
-      )}
-      <MagicButton
-        title="JSON Slicer"
-        href="/json-slicer"
-        icon={<Braces size={20} />}
-        position="right"
-      />
+    <div className="flex flex-col items-center justify-center gap-6">
+      <div className="mx-auto">
+        {!session?.user?.email ? (
+          <MagicButton
+            title="Sign in with Google"
+            href="/sign-in"
+            icon={<FaGoogle className="text-lg" />}
+            position="right"
+          />
+        ) : user?.username ? (
+          <MagicButton
+            title="View Your Profile"
+            href={`/users/${user?.username}`}
+            icon={<Send size={20} />}
+            position="right"
+          />
+        ) : (
+          <></>
+        )}
+      </div>
+      <HeroMenu />
     </div>
   );
 }

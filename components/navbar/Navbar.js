@@ -12,11 +12,13 @@ import { auth } from "@/auth";
 import { Suspense } from "react";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
+import Logo from "../Logo";
 
 export default async function Navbar() {
   const session = await auth();
   return (
     <div className="fixed top-0 pt-4 pr-4 z-50 flex justify-end items-center gap-x-4 w-full backdrop-blur bg-background/80">
+      <Logo />
       <Link href="https://github.com/Ujjwal2327/Angstrom" target="_blank">
         <FaGithub size={20} />
       </Link>
