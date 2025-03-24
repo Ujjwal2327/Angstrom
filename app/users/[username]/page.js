@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
-import { default_user_pic, profiles } from "@/constants";
+import { default_user_pic, profiles, skills as allSkills } from "@/constants";
 import { capitalizeString, resolveUrl } from "@/utils";
 import Loader from "@/components/ui/Loader";
 import dynamic from "next/dynamic";
@@ -209,9 +209,20 @@ function SkillsSection({ skills }) {
     <div className="my-10">
       <h2 className="text-2xl">Skills</h2>
       <div className=" w-full mt-2">
-        <div className="w-full">
+        <div className="w-full flex flex-wrap justify-between items-center gap-y-2">
           {skills.map((skill) => (
-            <Badge key={skill} variant="secondary" className="mt-4 mr-6">
+            <Badge
+              key={skill}
+              variant="secondary"
+              className="mt-3 mr-4 font-normal text-xs"
+            >
+              {/* <Image
+                src={allSkills[skill].icon}
+                alt={`${skill} logo`}
+                height={20}
+                width={20}
+                className="mr-2"
+              /> */}
               {skill}
             </Badge>
           ))}

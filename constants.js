@@ -854,4 +854,14 @@ export const categorizedSkills = {
   },
 };
 
+export const skills = Object.entries(categorizedSkills).reduce(
+  (acc, [category, data]) => {
+    Object.entries(data.skills).forEach(([skill, details]) => {
+      acc[skill] = { ...details, category };
+    });
+    return acc;
+  },
+  {}
+);
+
 export const default_user_pic = "/images/default_user_pic.png";
