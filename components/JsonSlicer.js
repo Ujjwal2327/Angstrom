@@ -674,7 +674,7 @@ export default function JsonSlicer() {
               Collapse All
             </Button>
           </div>
-          <div className="w-full h-[calc(100vh-230px)] overflow-auto border p-2">
+          <div className="w-full h-[calc(100vh-194px)] rounded-md overflow-auto border p-2">
             {parsedJson !== null && renderJsonTree(parsedJson)}
           </div>
         </div>
@@ -684,7 +684,7 @@ export default function JsonSlicer() {
         {/* Result JSON panel */}
         <div className="sm:w-1/3 max-w-1/3 flex flex-col gap-y-5">
           <h2 className="font-bold text-xl">Result JSON</h2>
-          <pre className="w-full h-[calc(100vh-190px)] overflow-auto border p-2">
+          <pre className="w-full h-[calc(100vh-190px)] rounded-md overflow-auto border p-2">
             {filteredJsonResult}
           </pre>
           <Button onClick={copyToClipboard}>
