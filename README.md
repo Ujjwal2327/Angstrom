@@ -1,3 +1,5 @@
+this is my final readme, is this alright?
+
 # Angstrom
 
 **The Ultimate Developer Toolbox**  
@@ -42,25 +44,22 @@ A developer toolbox designed to simplify workflows by providing essential tools 
 
 1. **Clone the repository:**
 
-   
-bash
+   ```bash
    git clone https://github.com/Ujjwal2327/Angstrom.git
    cd Angstrom
-
+   ```
 
 2. **Install dependencies:**
 
-   
-bash
+   ```bash
    npm install
-
+   ```
 
 3. **Set up environment variables:**
 
-   Create a .env file in the root directory and add the necessary environment variables.
+   Create a `.env` file in the root directory and add the necessary environment variables.
 
-    
-env
+    ```env
     NODE_ENV=development       # Environment mode ("development" | "production")
     NEXT_PUBLIC_BASE_URL=      # Base URL of site ("http://localhost:3000" for local env)
     
@@ -73,14 +72,13 @@ env
     AUTH_GOOGLE_SECRET=        # Google OAuth client secret
     
     MY_USERNAME=               # Username for showing "Creator of Angstrom" badge in my portfolio
-
+    ```
 
 4. **Run the development server:**
 
-   
-bash
+   ```bash
    npm run dev
-
+   ```
 
 5. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
