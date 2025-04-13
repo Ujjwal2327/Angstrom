@@ -629,7 +629,7 @@ export default function JsonSlicer() {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col sm:flex-row gap-1">
+      <div className="flex flex-col sm:flex-row sm:gap-x-1 gap-y-7">
         {/* Input JSON panel */}
         <div className="sm:w-1/3 flex flex-col gap-y-5">
           <h2 className="font-bold text-xl">Input JSON</h2>
