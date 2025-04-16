@@ -18,8 +18,8 @@ const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
 export function generateMetadata({ params }) {
   const username = decodeURIComponent(params.username);
   return {
-    title: `${capitalizeString(username)}'s Profile | Angstrom`,
-    description: `View the career profile of ${capitalizeString(username)}.`,
+    title: `${capitalizeString(username)}'s Portfolio | Angstrom`,
+    description: `View the portfolio of ${capitalizeString(username)}.`,
   };
 }
 
