@@ -58,8 +58,8 @@ export default function RegisterForm({ session }) {
       const data = await response.json();
 
       if (data.user) {
-        router.push("/");
         toast.success("User created successfully");
+        router.push("/");
       } else if (data.error) throw new Error(data.error);
     } catch (error) {
       console.log("Error submitting form:", error.message);
