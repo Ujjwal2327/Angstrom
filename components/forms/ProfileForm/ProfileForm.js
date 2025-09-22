@@ -45,7 +45,7 @@ export default function ProfileForm({ user }) {
           name: project.name,
           live_url: project.live_url,
           code_url: project.code_url,
-          skills: project.skills,
+          skills: project.skills || [],
           about: project.about,
         })) || [],
       education:
