@@ -21,7 +21,9 @@ export const projectSchema = z
       .min(1, { message: "Project description is required" }),
   })
   .transform((data) => {
-    const filteredSkills = data.skills.filter((skill) => skill.trim() !== "");
+    const filteredSkills = (data.skills || []).filter(
+      (skill) => skill.trim() !== ""
+    );
     return {
       ...data,
       live_url: data.live_url || data.code_url,

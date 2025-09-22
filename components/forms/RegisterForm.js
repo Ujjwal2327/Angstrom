@@ -59,7 +59,8 @@ export default function RegisterForm({ session }) {
 
       if (data.user) {
         toast.success("User created successfully");
-        router.push("/");
+        router.push(`/users/${data.user.username}`);
+        router.refresh();
       } else if (data.error) throw new Error(data.error);
     } catch (error) {
       console.log("Error submitting form:", error.message);

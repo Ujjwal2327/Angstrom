@@ -171,7 +171,7 @@ export async function updateUser(data, throwable = false) {
         );
 
         // Handle experience updates or creates
-        const experienceToDelete = user.experience.filter(
+        const experienceToDelete = (user.experience || []).filter(
           (exp) => !newExperienceSet.has(`${exp.company}-${exp.position}`)
         );
         const deleteExperiencePromises = experienceToDelete.map((exp) =>
@@ -192,7 +192,7 @@ export async function updateUser(data, throwable = false) {
         );
 
         // Handle project updates or creates
-        const projectsToDelete = user.projects.filter(
+        const projectsToDelete = (user.projects || []).filter(
           (project) => !newProjectsSet.has(project.name)
         );
         const deleteProjectPromises = projectsToDelete.map((project) =>
@@ -207,7 +207,7 @@ export async function updateUser(data, throwable = false) {
         );
 
         // Handle education updates or creates
-        const educationToDelete = user.education.filter(
+        const educationToDelete = (user.education || []).filter(
           (edu) => !newEducationSet.has(edu.degree)
         );
         const deleteEducationPromises = educationToDelete.map((edu) =>
