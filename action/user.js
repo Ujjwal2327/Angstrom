@@ -1,4 +1,3 @@
-import { revalidatePath } from "next/cache";
 import prisma from "@/lib/db";
 import { handleRedisOperation, updateUserCache } from "@/lib/redis";
 import { handleActionError, handleCaughtActionError } from "@/utils";
@@ -261,12 +260,6 @@ export async function updateUser(data, throwable = false) {
     );
 
     await updateUserCache(updatedUser, user.username);
-
-    revalidatePath(`/users/${updatedUser.username}`);
-    revalidatePath("/users");
-    if (user.username !== updatedUser.username) {
-      revalidatePath(`/users/${user.username}`);
-    }
 
     return updatedUser;
   } catch (error) {

@@ -146,6 +146,7 @@ export default function ProfileForm({ user }) {
       if (data.user) {
         setUser(data.user);
         router.push(`/users/${data.user.username}`);
+        router.refresh();
         toast.success("User updated successfully");
       } else throw new Error(data.error);
     } catch (error) {
