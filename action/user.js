@@ -163,11 +163,13 @@ export async function updateUser(data, throwable = false) {
       async (tx) => {
         // Prepare sets and operations
         const newExperienceSet = new Set(
-          data.experience.map((exp) => `${exp.company}-${exp.position}`)
+          (data.experience || []).map((exp) => `${exp.company}-${exp.position}`)
         );
-        const newProjectsSet = new Set(data.projects.map((proj) => proj.name));
+        const newProjectsSet = new Set(
+          (data.projects || []).map((proj) => proj.name)
+        );
         const newEducationSet = new Set(
-          data.education.map((edu) => edu.degree)
+          (data.education || []).map((edu) => edu.degree)
         );
 
         // Handle experience updates or creates
@@ -177,7 +179,7 @@ export async function updateUser(data, throwable = false) {
         const deleteExperiencePromises = experienceToDelete.map((exp) =>
           tx.experience.delete({ where: { id: exp.id } })
         );
-        const upsertExperiencePromises = data.experience.map((exp) =>
+        const upsertExperiencePromises = (data.experience || []).map((exp) =>
           tx.experience.upsert({
             where: {
               userId_company_position: {
@@ -198,7 +200,7 @@ export async function updateUser(data, throwable = false) {
         const deleteProjectPromises = projectsToDelete.map((project) =>
           tx.project.delete({ where: { id: project.id } })
         );
-        const upsertProjectPromises = data.projects.map((project) =>
+        const upsertProjectPromises = (data.projects || []).map((project) =>
           tx.project.upsert({
             where: { userId_name: { userId: user.id, name: project.name } },
             update: project,
@@ -213,7 +215,7 @@ export async function updateUser(data, throwable = false) {
         const deleteEducationPromises = educationToDelete.map((edu) =>
           tx.education.delete({ where: { id: edu.id } })
         );
-        const upsertEducationPromises = data.education.map((edu) =>
+        const upsertEducationPromises = (data.education || []).map((edu) =>
           tx.education.upsert({
             where: { userId_degree: { userId: user.id, degree: edu.degree } },
             update: edu,
