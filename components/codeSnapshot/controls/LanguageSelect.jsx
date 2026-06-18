@@ -50,7 +50,7 @@ export default function LanguageSelect() {
 
   return (
     <div>
-      <label className="block mb-2 text-xs font-medium text-neutral-400">
+      <label className="block mb-2 text-xs font-medium text-muted-foreground">
         Language
       </label>
       <Select value={language} onValueChange={handleChange}>
@@ -58,7 +58,7 @@ export default function LanguageSelect() {
           {autoDetectLanguage && <WandSparkles className="mr-2" size={20} />}
           <SelectValue placeholder="Select Language" />
         </SelectTrigger>
-        <SelectContent className="dark max-h-[500px]">
+        <SelectContent className="max-h-[500px]">
           <SelectItem value="auto-detect">Auto Detect</SelectItem>
           {Object.entries(languages).map(([lang, value]) => (
             <SelectItem key={lang} value={lang}>

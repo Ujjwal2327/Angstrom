@@ -24,7 +24,7 @@ export default function ExperienceSection({
       {fields.map((item, index) => (
         <div
           key={item.id}
-          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2 mb-2"
+          className="flex flex-col gap-4 bg-card border border-border rounded-md p-2 mb-2"
         >
           <div className="flex justify-between items-center gap-10">
             <div className="flex flex-col sm:flex-row gap-4 w-full">

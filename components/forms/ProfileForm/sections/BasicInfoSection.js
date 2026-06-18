@@ -84,7 +84,7 @@ export default function BasicInfoSection({ user, control }) {
                   <Link
                     href="https://postimages.org/"
                     target="_blank"
-                    className="text-blue-300 text-xs"
+                    className="text-accent-link text-xs"
                   >
                     (Upload & Use Direct link)
                   </Link>

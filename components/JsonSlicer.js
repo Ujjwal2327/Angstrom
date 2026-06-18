@@ -178,7 +178,7 @@ export default function JsonSlicer() {
 
       return siblingPaths;
     },
-    [getArrayInfo, isTopLevelArray]
+    [getArrayInfo, isTopLevelArray],
   );
 
   // Retrieves the data at a specific path in the JSON structure
@@ -214,7 +214,7 @@ export default function JsonSlicer() {
       }
       return current;
     },
-    [isTopLevelArray]
+    [isTopLevelArray],
   );
 
   // When selecting a node, also select all its parent nodes
@@ -240,7 +240,7 @@ export default function JsonSlicer() {
       });
       return newSelected;
     },
-    [isTopLevelArray]
+    [isTopLevelArray],
   );
 
   // Recursively toggle selection for all children of a node
@@ -279,7 +279,7 @@ export default function JsonSlicer() {
       }
       return newSelected;
     },
-    []
+    [],
   );
 
   // Main handler for toggling selection of a node in the JSON tree
@@ -340,7 +340,7 @@ export default function JsonSlicer() {
       parsedJson,
       selectAncestors,
       toggleChildren,
-    ]
+    ],
   );
 
   // Toggles expansion state of a node in the tree view
@@ -421,7 +421,7 @@ export default function JsonSlicer() {
             const newPath = `${path}[${index}]`;
             // Check if this item or any of its children are selected
             const childExists = Object.keys(selectedFields).some((p) =>
-              p.startsWith(newPath)
+              p.startsWith(newPath),
             );
 
             if (selectedFields[newPath] || childExists) {
@@ -441,7 +441,7 @@ export default function JsonSlicer() {
         const newPath = path ? `${path}.${key}` : key;
         // Check if this property or any of its children are selected
         const childExists = Object.keys(selectedFields).some((p) =>
-          p.startsWith(newPath)
+          p.startsWith(newPath),
         );
 
         if (selectedFields[newPath] || childExists) {
@@ -451,7 +451,7 @@ export default function JsonSlicer() {
       }
       return result;
     },
-    [selectedFields, isTopLevelArray]
+    [selectedFields, isTopLevelArray],
   );
 
   // Copies the filtered JSON to clipboard
@@ -460,7 +460,7 @@ export default function JsonSlicer() {
     const resultJson = JSON.stringify(
       generateFilteredJson(parsedJson),
       null,
-      4
+      4,
     );
     // Use clipboard API to copy the text
     navigator.clipboard.writeText(resultJson);
@@ -515,19 +515,19 @@ export default function JsonSlicer() {
                 <span>[{index}]</span>
                 {/* Display primitive values directly */}
                 {!hasChildren && (
-                  <span className="text-gray-500 text-sm ml-2">
+                  <span className="text-muted-foreground text-sm ml-2">
                     {typeof item === "string"
                       ? `"${item}"` // Show strings with quotes
                       : item === null
-                      ? "null" // Special handling for null
-                      : item === undefined
-                      ? "undefined" // Special handling for undefined
-                      : String(item)}{" "}
+                        ? "null" // Special handling for null
+                        : item === undefined
+                          ? "undefined" // Special handling for undefined
+                          : String(item)}{" "}
                   </span>
                 )}
                 {/* Show summary for collapsed objects/arrays */}
                 {!isExpanded && hasChildren && (
-                  <span className="text-gray-500 text-sm ml-2">
+                  <span className="text-muted-foreground text-sm ml-2">
                     {Array.isArray(item)
                       ? `[${item.length} items]` // Show array length
                       : `{${Object.keys(item).length} properties}`}{" "}
@@ -578,19 +578,19 @@ export default function JsonSlicer() {
               <span>{key}</span>
               {/* Display primitive values directly */}
               {!hasChildren && (
-                <span className="text-gray-500 text-sm ml-2">
+                <span className="text-muted-foreground text-sm ml-2">
                   {typeof data[key] === "string"
                     ? `"${data[key]}"` // Show strings with quotes
                     : data[key] === null
-                    ? "null" // Special handling for null
-                    : data[key] === undefined
-                    ? "undefined" // Special handling for undefined
-                    : String(data[key])}{" "}
+                      ? "null" // Special handling for null
+                      : data[key] === undefined
+                        ? "undefined" // Special handling for undefined
+                        : String(data[key])}{" "}
                 </span>
               )}
               {/* Show summary for collapsed objects/arrays */}
               {!isExpanded && hasChildren && (
-                <span className="text-gray-500 text-sm ml-2">
+                <span className="text-muted-foreground text-sm ml-2">
                   {Array.isArray(data[key])
                     ? `[${data[key].length} items]` // Show array length
                     : `{${Object.keys(data[key]).length} properties}`}{" "}
@@ -609,13 +609,13 @@ export default function JsonSlicer() {
       toggleNodeExpansion,
       toggleSelection,
       isTopLevelArray,
-    ]
+    ],
   );
 
   // Memoize the filtered JSON result to avoid unnecessary recalculations
   const filteredJsonResult = useMemo(
     () => JSON.stringify(generateFilteredJson(parsedJson), null, 4),
-    [generateFilteredJson, parsedJson]
+    [generateFilteredJson, parsedJson],
   );
 
   // Memoize the input JSON string representation
@@ -624,7 +624,7 @@ export default function JsonSlicer() {
       typeof inputJson === "string"
         ? inputJson
         : JSON.stringify(inputJson, null, 2),
-    [inputJson]
+    [inputJson],
   );
 
   return (

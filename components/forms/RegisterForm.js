@@ -87,7 +87,7 @@ export default function RegisterForm({ session }) {
               <FormControl>
                 <Input placeholder="johndoe" {...field} />
               </FormControl>
-              <FormMessage className="dark:text-red-400" />
+              <FormMessage />
             </FormItem>
           )}
         />

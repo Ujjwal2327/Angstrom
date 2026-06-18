@@ -17,7 +17,7 @@ export default function TopMenuItemsList() {
             <Button
               className={`w-full mb-1.5 justify-between gap-x-2 px-8 ${
                 pathname.includes(item.path) &&
-                "bg-slate-300 hover:bg-slate-300"
+                "bg-accent text-accent-foreground hover:bg-accent"
               }`}
               aria-label={item.name}
             >

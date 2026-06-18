@@ -26,7 +26,7 @@ export default function ProjectsSection({
       {fields.map((item, index) => (
         <div
           key={item.id}
-          className="flex flex-col gap-4 bg-slate-900 rounded-md p-2 mb-2"
+          className="flex flex-col gap-4 bg-card border border-border rounded-md p-2 mb-2"
         >
           <div className="flex justify-between items-center gap-10">
             <FormField
@@ -177,7 +177,7 @@ function ProjectSkillsComponent({ skills, field }) {
             </Badge>
           ))}
         {!field.value.length && (
-          <div className="w-full text-center text-red-400">
+          <div className="w-full text-center text-destructive">
             No Skills Selected
           </div>
         )}

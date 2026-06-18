@@ -31,14 +31,14 @@ export default function Hero() {
 
       <div className="flex flex-col gap-6 items-center justify-center px-10 w-full">
         <h2 className=" text-4xl sm:text-7xl font-bold text-center text-white font-sans tracking-tight">
-          <div className=" bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r pb-4 from-purple-500 via-violet-500 to-pink-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
+          <div className=" bg-clip-text bg-no-repeat text-transparent bg-gradient-to-r pb-4 from-cyan-400 via-sky-400 to-blue-500 [text-shadow:0_0_rgba(0,0,0,0.1)]">
             <span>Angstrom</span>
           </div>
         </h2>
 
         <TextGenerateEffect
           words="The Ultimate Toolbox for Coders and Engineers"
-          className="text-xl sm:text-2xl font-extrabold text-center text-neutral-300 -mt-4 sm:mt-0 text-wrap-balance"
+          className="text-xl sm:text-2xl font-extrabold text-center text-muted-foreground -mt-4 sm:mt-0 text-wrap-balance"
         />
 
         <Suspense fallback={<EmptySpace h="20" />}>

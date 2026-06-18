@@ -18,7 +18,7 @@ export default function ThemeSelect() {
 
   return (
     <div>
-      <label className="block mb-2 text-xs font-medium text-neutral-400">
+      <label className="block mb-2 text-xs font-medium text-muted-foreground">
         Theme
       </label>
       <Select value={theme} onValueChange={handleChange}>
@@ -27,7 +27,7 @@ export default function ThemeSelect() {
             className={cn("h-4 w-4 rounded-full", themes[theme]?.background)}
           />
         </SelectTrigger>
-        <SelectContent className="dark">
+        <SelectContent>
           {Object.entries(themes).map(([name, theme]) => (
             <SelectItem key={name} value={name}>
               <div className="flex gap-2 items-center">

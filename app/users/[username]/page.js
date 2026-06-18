@@ -33,7 +33,7 @@ export default async function UserPage({ params }) {
   return (
     <div className="flex flex-col justify-center items-center max-w-3xl mx-auto -mb-10">
       {params.username === user?.username && (
-        <div className="bg-slate-900 rounded-md p-3 mb-6 w-full flex flex-wrap justify-center items-center gap-3">
+        <div className="bg-card border border-border rounded-md p-3 mb-6 w-full flex flex-wrap justify-center items-center gap-3">
           Build Portfolio
           <Link href={`${user.username}/edit`}>
             <Button variant="outline" aria-label="build portfolio">
@@ -240,7 +240,7 @@ function ExperienceSection({ experience }) {
       {experience.map((item, index) => (
         <div
           key={item.id}
-          className="flex flex-col gap-x-4 gap-y-2 bg-slate-900 rounded-md p-4"
+          className="flex flex-col gap-x-4 gap-y-2 bg-card border border-border rounded-md p-4"
         >
           <div className="grid sm:flex sm:flex-wrap gap-x-4 gap-y-2 items-center">
             <div className=" grid sm:flex sm:flex-wrap items-center gap-x-4 gap-y-2 overflow-hidden">
@@ -280,7 +280,7 @@ function ProjectsSection({ projects }) {
       {projects.map((project, index) => (
         <div
           key={project.id}
-          className="flex flex-col gap-x-4 gap-y-2 bg-slate-900 rounded-md p-4"
+          className="flex flex-col gap-x-4 gap-y-2 bg-card border border-border rounded-md p-4"
         >
           <div className="sm:flex gap-x-4 overflow-hidden">
             <h4 className="text-[17px] font-semibold truncate max-w-full break-words my-2 sm:my-0">
@@ -336,7 +336,7 @@ function EducationSection({ education }) {
       {education.map((item, index) => (
         <div
           key={item.id}
-          className="flex flex-col gap-x-4 gap-y-2 bg-slate-900 rounded-md p-4"
+          className="flex flex-col gap-x-4 gap-y-2 bg-card border border-border rounded-md p-4"
         >
           <div className="grid lg:flex gap-x-4 gap-y-2">
             <div className="sm:flex gap-x-4 gap-y-2 overflow-hidden">

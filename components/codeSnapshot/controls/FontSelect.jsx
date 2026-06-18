@@ -14,7 +14,7 @@ export default function FontSelect() {
 
   return (
     <div>
-      <label className="block mb-2 text-xs font-medium text-neutral-400">
+      <label className="block mb-2 text-xs font-medium text-muted-foreground">
         Font
       </label>
       <Select
@@ -24,7 +24,7 @@ export default function FontSelect() {
         <SelectTrigger className="w-40">
           <SelectValue placeholder="Select Font" />
         </SelectTrigger>
-        <SelectContent className="dark max-h-[500px]">
+        <SelectContent className="max-h-[500px]">
           {Object.entries(fonts).map(([id, font]) => (
             <SelectItem
               key={id}

@@ -54,9 +54,9 @@ export default function BottomMenuItemsList({ session }) {
                     className={`w-full mb-1.5 justify-between gap-x-2 px-8 ${
                       item.name === "My Profile"
                         ? pathname === `${item.path}/${user.username}` &&
-                          "bg-slate-300 hover:bg-slate-300"
+                          "bg-accent text-accent-foreground hover:bg-accent"
                         : pathname.includes(item.path) &&
-                          "bg-slate-300 hover:bg-slate-300"
+                          "bg-accent text-accent-foreground hover:bg-accent"
                     }`}
                     aria-label={item.name}
                   >
