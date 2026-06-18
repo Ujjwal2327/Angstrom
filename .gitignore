@@ -43,3 +43,4 @@ next-env.d.ts
 
 ############ DEPLOYMENT ############
 !node_modules/.prisma
+ALL FILES
