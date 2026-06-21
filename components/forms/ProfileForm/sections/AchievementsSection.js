@@ -1,8 +1,9 @@
+// components/forms/ProfileForm/sections/AchievementsSection.js
+
 import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import Loader from "@/components/ui/Loader";
@@ -14,20 +15,19 @@ const Tiptap = dynamic(() => import("@/components/Tiptap/Tiptap"), {
 
 export default function AchievementsSection({ control }) {
   return (
-    <div className="my-10">
-      <FormField
-        control={control}
-        name="achievements"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel className="text-2xl">Achievements</FormLabel>
-            <FormControl>
+    <FormField
+      control={control}
+      name="achievements"
+      render={({ field }) => (
+        <FormItem>
+          <FormControl>
+            <div className="border border-border">
               <Tiptap desc={field.value} onChange={field.onChange} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
+            </div>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
   );
 }

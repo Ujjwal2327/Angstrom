@@ -1,7 +1,10 @@
+// app/users/[username]/edit/page.js
+
+// app/users/[username]/edit/page.js
+
 import { getUserByEmail } from "@/action/user";
 import { auth } from "@/auth";
 import ProfileForm from "@/components/forms/ProfileForm/ProfileForm";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
 
@@ -20,22 +23,29 @@ export default async function UserEditPage({ params }) {
     permanentRedirect(`/users/${params.username}`);
 
   return (
-    <div className="flex flex-col justify-center items-center max-w-3xl mx-auto">
-      {params.username === user?.username && (
-        <>
-          <div className="bg-card border border-border rounded-md p-3 mb-6 w-full flex flex-wrap gap-3 justify-center items-center">
-            View Portfolio
-            <Link href={`/users/${user.username}`}>
-              <Button variant="outline" aria-label="view portfolio">
-                Here
-              </Button>
-            </Link>
+    <div className="-m-10">
+      <div className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">
+        <div className="max-w-5xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between gap-4">
+          <div className="min-w-0">
+            <div className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-muted-foreground">
+              editing
+            </div>
+            <div className="font-mono text-sm text-primary truncate">
+              @{user.username}
+            </div>
           </div>
-          <div className="flex flex-col justify-center items-center">
-            <ProfileForm user={user} />
-          </div>
-        </>
-      )}
+          <Link
+            href={`/users/${user.username}`}
+            className="flex-shrink-0 font-mono text-xs text-muted-foreground hover:text-primary transition-colors border-b border-border hover:border-primary pb-1"
+          >
+            view live portfolio ↗
+          </Link>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-5 sm:px-8 pb-24">
+        <ProfileForm user={user} />
+      </div>
     </div>
   );
 }

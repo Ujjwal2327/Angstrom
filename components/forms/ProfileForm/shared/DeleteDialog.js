@@ -1,3 +1,5 @@
+// components/forms/ProfileForm/shared/DeleteDialog.js
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,11 +15,12 @@ import { Trash } from "lucide-react";
 export function DeleteDialog({ category, deleteHandler }) {
   return (
     <Dialog>
-      <DialogTrigger>
-        <Trash
-          className="w-4 h-4"
-          aria-label={`remove ${category.toLowerCase()}`}
-        />
+      <DialogTrigger
+        type="button"
+        className="text-muted-foreground hover:text-destructive transition-colors"
+        aria-label={`remove ${category.toLowerCase()}`}
+      >
+        <Trash className="w-4 h-4" />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -29,7 +32,11 @@ export function DeleteDialog({ category, deleteHandler }) {
         </DialogHeader>
         <div className="flex items-center gap-5">
           <DialogClose asChild>
-            <Button type="button" variant="secondary" className="flex-1">
+            <Button
+              type="button"
+              variant="secondary"
+              className="flex-1 rounded-none"
+            >
               Cancel
             </Button>
           </DialogClose>
@@ -37,7 +44,7 @@ export function DeleteDialog({ category, deleteHandler }) {
             type="button"
             onClick={deleteHandler}
             variant="destructive"
-            className="flex-1"
+            className="flex-1 rounded-none"
             aria-label={`remove ${category.toLowerCase()}`}
           >
             Delete {category}

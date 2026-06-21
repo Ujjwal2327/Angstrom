@@ -1,3 +1,5 @@
+// components/forms/ProfileForm/ProfileForm.js
+
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -9,9 +11,9 @@ import SkillsSection from "./sections/SkillsSection";
 import ExperienceSection from "./sections/ExperienceSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import EducationSection from "./sections/EducationSection";
+import FormSectionShell from "./shared/FormSectionShell";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { profiles, categorizedSkills, default_user_pic } from "@/constants";
 import { useEffect, useState } from "react";
@@ -79,7 +81,7 @@ export default function ProfileForm({ user }) {
     fields: experienceFields,
     append: appendExperience,
     remove: removeExperience,
-    update: updateExperience,
+    move: moveExperience,
   } = useFieldArray({
     control,
     name: "experience",
@@ -88,7 +90,7 @@ export default function ProfileForm({ user }) {
     fields: projectFields,
     append: appendProject,
     remove: removeProject,
-    update: updateProject,
+    move: moveProject,
   } = useFieldArray({
     control,
     name: "projects",
@@ -97,36 +99,12 @@ export default function ProfileForm({ user }) {
     fields: educationFields,
     append: appendEducation,
     remove: removeEducation,
-    update: updateEducation,
+    move: moveEducation,
   } = useFieldArray({
     control,
     name: "education",
   });
   const skills = watch("skills");
-
-  const moveItem = (watchFunc, updateFunc, index, direction) => {
-    const fields = watchFunc(); // get current values from the form state
-    if (
-      (direction === "up" && index <= 0) ||
-      (direction === "down" && index >= fields.length - 1)
-    )
-      return;
-
-    const swapIndex = direction === "up" ? index - 1 : index + 1;
-    const currentItem = fields[index];
-    const swapItem = fields[swapIndex];
-    updateFunc(swapIndex, currentItem);
-    updateFunc(index, swapItem);
-  };
-  const moveExperience = (index, direction) => {
-    moveItem(() => watch("experience"), updateExperience, index, direction);
-  };
-  const moveProject = (index, direction) => {
-    moveItem(() => watch("projects"), updateProject, index, direction);
-  };
-  const moveEducation = (index, direction) => {
-    moveItem(() => watch("education"), updateEducation, index, direction);
-  };
 
   const onSubmit = async (formdata) => {
     // Handle form submission
@@ -191,69 +169,98 @@ export default function ProfileForm({ user }) {
       <form
         onSubmit={handleSubmit(onSubmit)}
         onKeyDown={loading ? (e) => e.preventDefault() : handleKeyDown}
-        className={`w-full max-w-3xl -mb-10 ${
-          loading && "loading opacity-50"
-        }`}
+        className={`w-full ${loading && "loading opacity-50"}`}
       >
-        <BasicInfoSection user={user} control={control} />
-        <Separator />
+        <FormSectionShell index="01" title="basic info">
+          <BasicInfoSection user={user} control={control} />
+        </FormSectionShell>
 
-        <AchievementsSection control={control} />
-        <Separator />
-
-        <ProfilesSection control={control} />
-        <Separator />
-
-        <SkillsSection
-          fields={skills}
-          append={appendSkill}
-          remove={removeSkill}
-          setValue={setValue}
-        />
-        <Separator />
-
-        <ExperienceSection
-          fields={experienceFields}
-          append={appendExperience}
-          remove={removeExperience}
-          move={moveExperience}
-          control={control}
-        />
-        <Separator />
-
-        <ProjectsSection
-          skills={skills}
-          fields={projectFields}
-          append={appendProject}
-          remove={removeProject}
-          move={moveProject}
-          control={control}
-        />
-        <Separator />
-
-        <EducationSection
-          fields={educationFields}
-          append={appendEducation}
-          remove={removeEducation}
-          move={moveEducation}
-          control={control}
-        />
-        <Separator />
-
-        <Button
-          type="submit"
-          disabled={loading}
-          className={`w-full font-bold my-10 ${loading && "loading"}`}
-          aria-label="submit your details"
+        <FormSectionShell
+          index="02"
+          title="achievements"
+          description="Highlight awards, certifications, or milestones worth calling out."
         >
-          {loading ? (
-            <>
-              Saving <Spinner className="size-4 ml-2" />
-            </>
-          ) : (
-            "Save Changes"
-          )}
-        </Button>
+          <AchievementsSection control={control} />
+        </FormSectionShell>
+
+        <FormSectionShell
+          index="03"
+          title="profiles"
+          description="Link your presence elsewhere — GitHub, LinkedIn, competitive programming, etc."
+        >
+          <ProfilesSection control={control} />
+        </FormSectionShell>
+
+        <FormSectionShell
+          index="04"
+          title="skills"
+          description="Drag to reorder — skills you place first appear largest and most prominent on your public profile."
+        >
+          <SkillsSection
+            fields={skills}
+            append={appendSkill}
+            remove={removeSkill}
+            setValue={setValue}
+          />
+        </FormSectionShell>
+
+        <FormSectionShell
+          index="05"
+          title="experience"
+          description="Drag the grip to reorder. Most recent or most relevant first is usually the strongest read."
+        >
+          <ExperienceSection
+            fields={experienceFields}
+            append={appendExperience}
+            remove={removeExperience}
+            move={moveExperience}
+            control={control}
+          />
+        </FormSectionShell>
+
+        <FormSectionShell
+          index="06"
+          title="projects"
+          description="Add a live link to get an automatic live screenshot on your profile — otherwise we'll show your GitHub repo card."
+        >
+          <ProjectsSection
+            skills={skills}
+            fields={projectFields}
+            append={appendProject}
+            remove={removeProject}
+            move={moveProject}
+            control={control}
+          />
+        </FormSectionShell>
+
+        <FormSectionShell index="07" title="education">
+          <EducationSection
+            fields={educationFields}
+            append={appendEducation}
+            remove={removeEducation}
+            move={moveEducation}
+            control={control}
+          />
+        </FormSectionShell>
+
+        <div className="pt-10">
+          <Button
+            type="submit"
+            disabled={loading}
+            className={`w-full rounded-none font-mono uppercase tracking-wide text-sm h-12 ${
+              loading && "loading"
+            }`}
+            aria-label="submit your details"
+          >
+            {loading ? (
+              <>
+                saving <Spinner className="size-4 ml-2" />
+              </>
+            ) : (
+              "save changes →"
+            )}
+          </Button>
+        </div>
       </form>
     </Form>
   );
