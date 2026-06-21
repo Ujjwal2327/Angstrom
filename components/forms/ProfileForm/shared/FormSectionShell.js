@@ -17,7 +17,11 @@ export default function FormSectionShell({
       </span>
       <div className="relative z-10">
         <div className="font-mono text-sm uppercase tracking-[0.12em] text-primary mb-1.5">
-          // {title}
+          {/* BUGFIX: was bare text `// {title}` — same
+              react/jsx-no-comment-textnodes lint failure as
+              components/profile/SectionShell.js. Combined into one
+              template-literal expression. */}
+          {`// ${title}`}
         </div>
         {description && (
           <p className="text-sm text-muted-foreground mb-8 max-w-xl">

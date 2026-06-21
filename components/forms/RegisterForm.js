@@ -43,7 +43,15 @@ export default function RegisterForm({ session }) {
 
   async function onSubmit(formdata) {
     const { name, email, image: pic } = session.user;
-    const [firstname, lastname] = name.split(" ");
+    // BUGFIX: `name.split(" ")` assumed every Google account name has at
+    // least a first and last word. A single-word name (or, in rare cases,
+    // a missing name if the profile scope didn't return one) made
+    // `lastname` come back `undefined`, which is harmless since it's
+    // optional in the schema, but a `name` of `undefined` would have
+    // thrown outright on `.split()`. Guarding here so registration never
+    // crashes on an unusual Google profile.
+    const [firstname, ...rest] = (name || "").trim().split(" ");
+    const lastname = rest.join(" ") || undefined;
     formdata = { ...formdata, email, firstname, lastname, pic };
 
     try {

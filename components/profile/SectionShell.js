@@ -17,7 +17,12 @@ export default function SectionShell({ id, index, title, children, noBorder }) {
       </span>
       <div className="relative z-10">
         <div className="font-mono text-sm uppercase tracking-[0.12em] text-primary mb-10 sm:mb-12">
-          // {title}
+          {/* BUGFIX: was bare text `// {title}` — a literal "//" text node
+              right next to a JSX expression reads as an accidental comment
+              to ESLint's react/jsx-no-comment-textnodes rule and fails the
+              build. Combining into one template-literal expression makes
+              the intent (stylized text, not a forgotten comment) explicit. */}
+          {`// ${title}`}
         </div>
         {children}
       </div>

@@ -19,7 +19,7 @@ export function handleCaughtActionError(
   errorMessageStart,
   errorMessage,
   throwable,
-  returnValue
+  returnValue,
 ) {
   errorMessage = errorMessage
     ? `${errorMessageStart}: ${errorMessage}`
@@ -29,8 +29,15 @@ export function handleCaughtActionError(
   else return returnValue;
 }
 
+// BUGFIX: previously did `url.trim()` with no null check, so any user with a
+// missing/null `pic` (e.g. a Google account with no avatar, or an explicitly
+// cleared field) crashed the edit form, profile hero, and nav menu the moment
+// their data loaded. Now any non-string / empty / invalid url safely falls
+// back to defaultUrl instead of throwing.
 export function resolveUrl(url, defaultUrl) {
+  if (!url || typeof url !== "string") return defaultUrl;
   const trimmedUrl = url.trim();
+  if (!trimmedUrl) return defaultUrl;
   try {
     new URL(trimmedUrl);
     return trimmedUrl;
@@ -113,9 +120,6 @@ export function normalizeJsonValue(value) {
   // value is string
   try {
     let parsedValue = value;
-
-    // // Ensure any backticks-wrapped strings are treated properly (no effect on value)
-    // parsedValue = parsedValue.replace(/`([^`]+)`/g, '"$1"');
 
     // Check if the value is wrapped in backticks (``) and remove them
     if (/^`.*`$/.test(parsedValue)) {

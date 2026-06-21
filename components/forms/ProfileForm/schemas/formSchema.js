@@ -34,8 +34,19 @@ export const formSchema = z.object({
   profiles: z
     .record(z.string().trim(), z.string().trim().optional())
     .transform((profiles) => {
+      // BUGFIX: ProfilesSection renders a form field for every known
+      // platform (~25 of them), but `defaultValues` only seeds the ones the
+      // user actually has set. Untouched fields stay `undefined` rather than
+      // `""`, so the old filter (`value !== ""`) let dozens of
+      // `platform: undefined` entries through on every save. They happened
+      // to get silently dropped by JSON serialization on the way into
+      // Prisma's Json column, but only by accident — filtering them out
+      // explicitly here is the actual fix, not a coincidence we should rely
+      // on.
       return Object.fromEntries(
-        Object.entries(profiles).filter(([key, value]) => value !== "")
+        Object.entries(profiles).filter(
+          ([key, value]) => value !== undefined && value !== "",
+        ),
       );
     }),
   skills: z
@@ -44,7 +55,7 @@ export const formSchema = z.object({
         .string()
         .trim()
         .min(1, "Skill must be at least 1 character")
-        .max(30, "Skill cannot exceed 30 characters")
+        .max(30, "Skill cannot exceed 30 characters"),
     )
     .default([]),
   experience: z
@@ -52,17 +63,17 @@ export const formSchema = z.object({
     .refine(
       (experience) => {
         const combinations = experience.map(
-          (item) => `${item.company}|${item.position}`
+          (item) => `${item.company}|${item.position}`,
         );
         return uniqueValidator(combinations);
       },
-      { message: "Company and Position combinations must be unique." }
+      { message: "Company and Position combinations must be unique." },
     )
     .transform((experience) =>
       experience.map((exp, index) => ({
         ...exp,
         order: index,
-      }))
+      })),
     ),
   projects: z
     .array(projectSchema)
@@ -71,13 +82,13 @@ export const formSchema = z.object({
         const projectNames = projects.map((item) => item.name);
         return uniqueValidator(projectNames);
       },
-      { message: "Project names must be unique." }
+      { message: "Project names must be unique." },
     )
     .transform((projects) =>
       projects.map((project, index) => ({
         ...project,
         order: index,
-      }))
+      })),
     ),
   education: z
     .array(educationSchema)
@@ -86,12 +97,12 @@ export const formSchema = z.object({
         const degrees = education.map((item) => item.degree);
         return uniqueValidator(degrees);
       },
-      { message: "Degrees must be unique." }
+      { message: "Degrees must be unique." },
     )
     .transform((education) =>
       education.map((edu, index) => ({
         ...edu,
         order: index,
-      }))
+      })),
     ),
 });

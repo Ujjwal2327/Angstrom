@@ -7,6 +7,7 @@ import { capitalizeString } from "@/utils";
 import ProfileHero from "@/components/profile/ProfileHero";
 import DotNav from "@/components/profile/DotNav";
 import AboutSection from "@/components/profile/sections/AboutSection";
+import AchievementsSection from "@/components/profile/sections/AchievementsSection";
 import ExperienceSection from "@/components/profile/sections/ExperienceSection";
 import ProjectsSection from "@/components/profile/sections/ProjectsSection";
 import EducationSection from "@/components/profile/sections/EducationSection";
@@ -31,8 +32,18 @@ export default async function UserPage({ params }) {
   const isOwner = params.username === viewer?.username;
 
   // Drives both the floating dot-nav and the render order, so they can never drift apart.
+  // BUGFIX: `achievements` was being captured and saved by the edit form
+  // (Tiptap editor, full schema validation, the works) but never rendered
+  // anywhere on the actual public profile — the data went in and just
+  // vanished from view. Added here, positioned right after "about" to match
+  // where it sits in the edit form's own section order.
   const sections = [
     { id: "about", label: "about", show: Boolean(user.about) },
+    {
+      id: "achievements",
+      label: "achievements",
+      show: Boolean(user.achievements?.trim()),
+    },
     {
       id: "experience",
       label: "experience",
@@ -47,6 +58,17 @@ export default async function UserPage({ params }) {
     { id: "skills", label: "skills", show: Boolean(user.skills?.length) },
   ].filter((s) => s.show);
 
+  // BUGFIX: indexes were hardcoded literals ("01", "02", "03"...), so
+  // hiding any one section (e.g. a user with no achievements) left every
+  // section after it showing the wrong number — experience would still say
+  // "03" even though it's actually the 2nd section on the page. Deriving
+  // each section's index from its position in the already-filtered
+  // `sections` array keeps the numbering sequential and gap-free no matter
+  // which sections a given user happens to have.
+  const sectionIndexById = Object.fromEntries(
+    sections.map((s, i) => [s.id, String(i + 1).padStart(2, "0")]),
+  );
+
   return (
     <div className="-m-10 overflow-x-hidden">
       <DotNav sections={sections} />
@@ -60,19 +82,31 @@ export default async function UserPage({ params }) {
       {sections.length === 0 ? (
         <div className="max-w-5xl mx-auto px-8 py-24 text-center">
           <p className="font-mono text-xs text-muted-foreground tracking-wide">
-            // nothing here yet
+            {"// nothing here yet"}
           </p>
         </div>
       ) : (
         <>
           {user.about && (
-            <AboutSection id="about" index="01" about={user.about} />
+            <AboutSection
+              id="about"
+              index={sectionIndexById.about}
+              about={user.about}
+            />
+          )}
+
+          {user.achievements?.trim() && (
+            <AchievementsSection
+              id="achievements"
+              index={sectionIndexById.achievements}
+              achievements={user.achievements}
+            />
           )}
 
           {user.experience?.length > 0 && (
             <ExperienceSection
               id="experience"
-              index="02"
+              index={sectionIndexById.experience}
               experience={user.experience}
             />
           )}
@@ -80,7 +114,7 @@ export default async function UserPage({ params }) {
           {user.projects?.length > 0 && (
             <ProjectsSection
               id="projects"
-              index="03"
+              index={sectionIndexById.projects}
               projects={user.projects}
             />
           )}
@@ -88,7 +122,7 @@ export default async function UserPage({ params }) {
           {user.education?.length > 0 && (
             <EducationSection
               id="education"
-              index="04"
+              index={sectionIndexById.education}
               education={user.education}
             />
           )}
@@ -96,7 +130,7 @@ export default async function UserPage({ params }) {
           {user.skills?.length > 0 && (
             <SkillsSection
               id="skills"
-              index="05"
+              index={sectionIndexById.skills}
               skills={user.skills}
               noBorder
             />

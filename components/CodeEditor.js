@@ -55,7 +55,13 @@ export default function CodeEditor({
     window.addEventListener("resize", updateEditorHeight);
 
     return () => window.removeEventListener("resize", updateEditorHeight);
-  }, []);
+    // BUGFIX: this effect reads the `editorHeight` prop but didn't list it
+    // as a dependency. Harmless in practice (this component is never
+    // re-rendered with a different `editorHeight` prop in current usage),
+    // but it's technically stale-closure-prone and was the one
+    // build-warning ESLint flagged. Listing it makes the effect correctly
+    // recompute if a caller ever does pass a changing `editorHeight`.
+  }, [editorHeight]);
 
   const handleChange = (key, value) => {
     setEditorSettings((prev) => ({

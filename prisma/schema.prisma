@@ -8,9 +8,21 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// BUGFIX: this previously only had `url`, pointed at Neon's pooled
+// (PgBouncer, "-pooler") connection string. That's fine for simple one-shot
+// queries, but `updateUser` in action/user.js uses an INTERACTIVE transaction
+// (`prisma.$transaction(async (tx) => {...})`), which needs to hold one
+// connection open across several round-trips. PgBouncer's transaction-pooling
+// mode is not reliably compatible with that without `pgbouncer=true` on the
+// connection string, and Prisma additionally needs a *direct* (unpooled)
+// connection for things like migrations regardless. `directUrl` here tells
+// Prisma to use the unpooled connection for those cases while `url` (with
+// `pgbouncer=true` added) still handles normal pooled queries. See:
+// https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#external-connection-poolers
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {

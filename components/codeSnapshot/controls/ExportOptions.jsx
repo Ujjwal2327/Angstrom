@@ -40,12 +40,22 @@ export default function ExportOptions({ targetRef }) {
     e.preventDefault();
 
     try {
-      const state = getEffectiveSettings();
-      delete state.isSharable;
-      delete state.autoDetectLanguage;
+      // BUGFIX: `getEffectiveSettings()` returns the actual live settings
+      // object from the Zustand store by reference (not a copy). The
+      // previous code did `delete state.isSharable; delete state.autoDetectLanguage;`
+      // directly on that returned object — mutating the store's real state
+      // outside of `set()`. Zustand never gets notified of this change (same
+      // object reference in/out), so subscribers can silently miss updates
+      // and the store ends up with fields removed that other code paths
+      // (e.g. CodeSnapshot.jsx's `setEffectiveSettings`) expect to exist.
+      // Fixed by destructuring into a brand-new plain object instead of
+      // mutating the store's object.
+      const { isSharable, autoDetectLanguage, code, ...shareableState } =
+        getEffectiveSettings();
+
       const queryParams = new URLSearchParams({
-        ...state,
-        code: btoa(state.code),
+        ...shareableState,
+        code: btoa(code),
       }).toString();
       navigator.clipboard?.writeText(`${baseurl}/code-snapshot?${queryParams}`);
 
