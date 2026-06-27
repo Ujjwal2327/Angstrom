@@ -1,3 +1,4 @@
+// components/auth/SignOut.js
 import { LogOut } from "lucide-react";
 import { signOut } from "@/auth.js";
 import { Button } from "@/components/ui/button.jsx";
@@ -11,12 +12,13 @@ export default function SignOut({ isFull }) {
       }}
     >
       <Button
-        variant="outline"
+        variant="destructive"
         type="submit"
-        className={isFull && "w-full"}
-        aria-label="go to sign-out page"
+        className={`h-11 gap-2.5 font-medium ${isFull ? "w-full" : ""}`}
+        aria-label="Sign out of Angstrom"
       >
-        Sign Out <LogOut className="ml-2 text-xl" />
+        <LogOut size={15} className="flex-shrink-0" />
+        Sign Out
       </Button>
     </form>
   );

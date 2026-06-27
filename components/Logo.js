@@ -1,10 +1,15 @@
+// components/Logo.js
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="/">
-      <Image src="/icons/logo.png" alt="angstrom logo" width={25} height={25} />
-    </Link>
+    <Image
+      src="/icons/logo.png"
+      alt="Angstrom"
+      width={22}
+      height={22}
+      className="transition-transform duration-200 group-hover:scale-110 flex-shrink-0"
+      priority
+    />
   );
 }

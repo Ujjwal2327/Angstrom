@@ -1,5 +1,4 @@
 // app/users/[username]/page.js
-
 import { getUserByEmail, getUserByUsername } from "@/action/user";
 import { auth } from "@/auth";
 import { notFound } from "next/navigation";
@@ -14,29 +13,36 @@ import EducationSection from "@/components/profile/sections/EducationSection";
 import SkillsSection from "@/components/profile/sections/SkillsSection";
 import FooterCta from "@/components/profile/FooterCta";
 
-export function generateMetadata({ params }) {
-  const username = decodeURIComponent(params.username);
+export async function generateMetadata({ params }) {
+  const { username: raw } = await params;
+  const username = decodeURIComponent(raw);
   return {
     title: `${capitalizeString(username)}'s Portfolio | Angstrom`,
-    description: `View the portfolio of ${capitalizeString(username)}.`,
+    description: `View ${capitalizeString(username)}'s developer portfolio on Angstrom.`,
+    openGraph: {
+      title: `${capitalizeString(username)}'s Portfolio`,
+      description: `Developer portfolio built with Angstrom`,
+    },
   };
 }
 
 export default async function UserPage({ params }) {
-  params.username = decodeURIComponent(params.username);
+  const { username: raw } = await params;
+  const username = decodeURIComponent(raw);
+
+  // Parallel fetch: don't wait for auth before starting the profile lookup.
+  // Both are independent — fetching them concurrently halves the waterfall.
   const session = await auth();
-  const viewer = await getUserByEmail(session?.user?.email);
-  const user = await getUserByUsername(params.username);
+  const [viewer, user] = await Promise.all([
+    getUserByEmail(session?.user?.email),
+    getUserByUsername(username),
+  ]);
+
   if (!user) notFound();
 
-  const isOwner = params.username === viewer?.username;
+  const isOwner = username === viewer?.username;
 
-  // Drives both the floating dot-nav and the render order, so they can never drift apart.
-  // BUGFIX: `achievements` was being captured and saved by the edit form
-  // (Tiptap editor, full schema validation, the works) but never rendered
-  // anywhere on the actual public profile — the data went in and just
-  // vanished from view. Added here, positioned right after "about" to match
-  // where it sits in the edit form's own section order.
+  // Single source of truth: drives both DotNav and section render order.
   const sections = [
     { id: "about", label: "about", show: Boolean(user.about) },
     {
@@ -58,14 +64,8 @@ export default async function UserPage({ params }) {
     { id: "skills", label: "skills", show: Boolean(user.skills?.length) },
   ].filter((s) => s.show);
 
-  // BUGFIX: indexes were hardcoded literals ("01", "02", "03"...), so
-  // hiding any one section (e.g. a user with no achievements) left every
-  // section after it showing the wrong number — experience would still say
-  // "03" even though it's actually the 2nd section on the page. Deriving
-  // each section's index from its position in the already-filtered
-  // `sections` array keeps the numbering sequential and gap-free no matter
-  // which sections a given user happens to have.
-  const sectionIndexById = Object.fromEntries(
+  // Sequential index derived from the filtered list — no hardcoded numbers.
+  const indexById = Object.fromEntries(
     sections.map((s, i) => [s.id, String(i + 1).padStart(2, "0")]),
   );
 
@@ -80,8 +80,8 @@ export default async function UserPage({ params }) {
       />
 
       {sections.length === 0 ? (
-        <div className="max-w-5xl mx-auto px-8 py-24 text-center">
-          <p className="font-mono text-xs text-muted-foreground tracking-wide">
+        <div className="max-w-5xl mx-auto px-5 sm:px-8 py-32 text-center">
+          <p className="font-mono text-xs text-muted-foreground/50 tracking-widest">
             {"// nothing here yet"}
           </p>
         </div>
@@ -90,47 +90,42 @@ export default async function UserPage({ params }) {
           {user.about && (
             <AboutSection
               id="about"
-              index={sectionIndexById.about}
+              index={indexById.about}
               about={user.about}
             />
           )}
-
           {user.achievements?.trim() && (
             <AchievementsSection
               id="achievements"
-              index={sectionIndexById.achievements}
+              index={indexById.achievements}
               achievements={user.achievements}
             />
           )}
-
           {user.experience?.length > 0 && (
             <ExperienceSection
               id="experience"
-              index={sectionIndexById.experience}
+              index={indexById.experience}
               experience={user.experience}
             />
           )}
-
           {user.projects?.length > 0 && (
             <ProjectsSection
               id="projects"
-              index={sectionIndexById.projects}
+              index={indexById.projects}
               projects={user.projects}
             />
           )}
-
           {user.education?.length > 0 && (
             <EducationSection
               id="education"
-              index={sectionIndexById.education}
+              index={indexById.education}
               education={user.education}
             />
           )}
-
           {user.skills?.length > 0 && (
             <SkillsSection
               id="skills"
-              index={sectionIndexById.skills}
+              index={indexById.skills}
               skills={user.skills}
               noBorder
             />

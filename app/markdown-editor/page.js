@@ -2,10 +2,10 @@ import MarkdownEditor from "@/components/MarkdownEditor/MarkdownEditor";
 import { auth } from "@/auth";
 import { getUserByEmail } from "@/action/user";
 
-export function generateMetadata({ params }) {
+export function generateMetadata() {
   return {
     title: `Markdown Editor | Angstrom`,
-    description: `Enhance your GitHub profile effortlessly with Angstrom's Markdown Editor. Enjoy seamless editing, live previews, and one-click generation of customized README profiles.`,
+    description: `Enhance your GitHub profile with Angstrom's Markdown Editor. Live preview and one-click README generation.`,
   };
 }
 

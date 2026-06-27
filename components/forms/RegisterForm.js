@@ -1,8 +1,8 @@
 "use client";
+// components/forms/RegisterForm.js
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -22,12 +22,10 @@ const FormSchema = z.object({
   username: z
     .string()
     .trim()
-    .min(2, { message: "Username must be at least 2 characters." })
-    .max(15, { message: "Username must be at most 15 characters." })
-    .refine((username) => !/\s/.test(username), {
-      message: "Username must not contain spaces.",
-    })
-    .transform((username) => username.toLowerCase()),
+    .min(2, { message: "Must be at least 2 characters." })
+    .max(15, { message: "Must be at most 15 characters." })
+    .refine((u) => !/\s/.test(u), { message: "No spaces allowed." })
+    .transform((u) => u.toLowerCase()),
 });
 
 export default function RegisterForm({ session }) {
@@ -36,43 +34,33 @@ export default function RegisterForm({ session }) {
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      username: "",
-    },
+    defaultValues: { username: "" },
   });
 
   async function onSubmit(formdata) {
-    const { name, email, image: pic } = session.user;
-    // BUGFIX: `name.split(" ")` assumed every Google account name has at
-    // least a first and last word. A single-word name (or, in rare cases,
-    // a missing name if the profile scope didn't return one) made
-    // `lastname` come back `undefined`, which is harmless since it's
-    // optional in the schema, but a `name` of `undefined` would have
-    // thrown outright on `.split()`. Guarding here so registration never
-    // crashes on an unusual Google profile.
+    const { name, email, image: pic } = session?.user ?? {};
     const [firstname, ...rest] = (name || "").trim().split(" ");
     const lastname = rest.join(" ") || undefined;
-    formdata = { ...formdata, email, firstname, lastname, pic };
+    const payload = { ...formdata, email, firstname, lastname, pic };
 
     try {
       setLoading(true);
       const response = await fetch("/api/user", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formdata),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
       const data = await response.json();
 
       if (data.user) {
-        toast.success("User created successfully");
+        toast.success("Welcome to Angstrom!");
         router.push(`/users/${data.user.username}`);
         router.refresh();
-      } else if (data.error) throw new Error(data.error);
+      } else {
+        throw new Error(data.error);
+      }
     } catch (error) {
-      console.log("Error submitting form:", error.message);
-      toast.error(error.message);
+      toast.error(error.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -82,35 +70,42 @@ export default function RegisterForm({ session }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={`w-2/3 p-5 rounded-md space-y-6 bg-primary-foreground flex flex-col max-w-96 ${
-          loading && "loading opacity-50"
-        }`}
+        className={`space-y-4 ${loading ? "loading opacity-50" : ""}`}
       >
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel className="font-mono text-[0.68rem] uppercase tracking-[0.1em] text-muted-foreground">
+                Username
+              </FormLabel>
               <FormControl>
-                <Input placeholder="johndoe" {...field} />
+                <Input
+                  placeholder="yourname"
+                  autoComplete="username"
+                  autoFocus
+                  className="rounded-none border-border bg-transparent focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary h-11 font-mono"
+                  {...field}
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className="text-xs" />
             </FormItem>
           )}
         />
+
         <Button
           type="submit"
           disabled={loading}
-          className={`w-full font-bold ${loading && "loading"}`}
-          aria-label="register username"
+          className="w-full h-11 font-mono uppercase tracking-wide text-sm rounded-none"
+          aria-label="Register username"
         >
           {loading ? (
-            <>
-              Loading <Spinner className="size-4 ml-2" />
-            </>
+            <span className="flex items-center gap-2">
+              Creating account <Spinner className="size-4" />
+            </span>
           ) : (
-            "Register"
+            "Claim username →"
           )}
         </Button>
       </form>

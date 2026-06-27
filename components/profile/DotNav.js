@@ -1,6 +1,6 @@
 // components/profile/DotNav.js
-
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 
 export default function DotNav({ sections }) {
@@ -14,6 +14,7 @@ export default function DotNav({ sections }) {
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting);
         if (visible.length === 0) return;
+        // Pick the topmost visible section
         const topMost = visible.reduce((a, b) =>
           a.boundingClientRect.top < b.boundingClientRect.top ? a : b,
         );
@@ -39,9 +40,10 @@ export default function DotNav({ sections }) {
 
   return (
     <>
+      {/* ── Desktop: floating dot nav on the right ─────────────────────── */}
       <nav
         aria-label="Profile sections"
-        className="hidden lg:flex fixed right-9 top-1/2 -translate-y-1/2 z-40 flex-col gap-[1.1rem]"
+        className="hidden lg:flex fixed right-8 top-1/2 -translate-y-1/2 z-40 flex-col gap-4"
       >
         {sections.map((section) => {
           const isActive = section.id === activeId;
@@ -50,22 +52,27 @@ export default function DotNav({ sections }) {
               key={section.id}
               href={`#${section.id}`}
               onClick={(e) => handleClick(e, section.id)}
-              className="group relative flex items-center justify-end"
+              className="group relative flex items-center justify-end gap-2"
+              aria-label={`Jump to ${section.label}`}
+              aria-current={isActive ? "true" : undefined}
             >
+              {/* Tooltip label */}
               <span
-                className={`absolute right-4 font-mono text-[0.7rem] whitespace-nowrap bg-card border border-border text-foreground px-2 py-0.5 rounded-sm transition-all duration-200 ${
+                className={`font-mono text-[0.65rem] uppercase tracking-wider whitespace-nowrap bg-card border border-border text-foreground px-2 py-1 rounded-sm transition-all duration-200 ${
                   isActive
                     ? "opacity-100 translate-x-0"
-                    : "opacity-0 translate-x-1.5 group-hover:opacity-100 group-hover:translate-x-0"
+                    : "opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
                 }`}
               >
                 {section.label}
               </span>
+
+              {/* Dot */}
               <span
-                className={`w-1.5 h-1.5 rounded-full transition-all duration-250 ${
+                className={`flex-shrink-0 rounded-full transition-all duration-250 ${
                   isActive
-                    ? "bg-primary shadow-[0_0_0_4px_hsl(var(--primary)/0.15)]"
-                    : "bg-border"
+                    ? "w-2.5 h-2.5 bg-primary shadow-[0_0_0_4px_hsl(var(--primary)/0.15)]"
+                    : "w-1.5 h-1.5 bg-border group-hover:bg-muted-foreground"
                 }`}
               />
             </a>
@@ -73,29 +80,36 @@ export default function DotNav({ sections }) {
         })}
       </nav>
 
+      {/* ── Mobile: sticky horizontal pill tabs ────────────────────────── */}
       <nav
         aria-label="Profile sections"
-        className="lg:hidden sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border overflow-x-auto"
+        className="lg:hidden sticky top-14 z-30 bg-background/95 backdrop-blur border-b border-border"
       >
-        <ol className="flex gap-5 px-5 sm:px-8 py-3 whitespace-nowrap max-w-[1400px] mx-auto">
+        <ol
+          className="flex gap-1 px-4 sm:px-6 py-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          role="tablist"
+        >
           {sections.map((section) => {
             const isActive = section.id === activeId;
             return (
-              <li key={section.id}>
+              <li key={section.id} role="presentation">
                 <a
                   href={`#${section.id}`}
                   onClick={(e) => handleClick(e, section.id)}
-                  className={`flex items-baseline gap-1.5 text-sm transition-colors ${
+                  role="tab"
+                  aria-selected={isActive}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full font-mono text-[0.65rem] uppercase tracking-wider whitespace-nowrap transition-all duration-150 ${
                     isActive
-                      ? "text-foreground font-medium"
-                      : "text-muted-foreground"
+                      ? "bg-primary/15 text-primary border border-primary/25"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   }`}
                 >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      isActive ? "bg-primary" : "bg-border"
-                    }`}
-                  />
+                  {isActive && (
+                    <span
+                      className="w-1 h-1 rounded-full bg-primary flex-shrink-0"
+                      aria-hidden="true"
+                    />
+                  )}
                   {section.label}
                 </a>
               </li>

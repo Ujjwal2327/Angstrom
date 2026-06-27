@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { default_user_pic, menuItems } from "@/constants.js";
 import { usePathname } from "next/navigation";
@@ -10,12 +9,13 @@ import useStore from "@/stores/useStore";
 import { toast } from "sonner";
 import { extractFirstLetters, resolveUrl } from "@/utils";
 import { SheetClose } from "@/components/ui/sheet";
-import { LogOut } from "lucide-react";
+import { LogOut, UserCircle } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 
 export default function BottomMenuItemsList({ session }) {
   const pathname = usePathname();
   const { user, setUser } = useStore();
+
   useEffect(() => {
     const getUser = async (email) => {
       try {
@@ -24,7 +24,6 @@ export default function BottomMenuItemsList({ session }) {
         if (data.user) setUser(data.user);
         else if (data.error) throw new Error(data.error);
       } catch (error) {
-        console.log(error.message);
         toast.error(error.message);
       }
     };
@@ -35,75 +34,76 @@ export default function BottomMenuItemsList({ session }) {
   const fullname =
     [user?.firstname, user?.lastname].filter(Boolean).join(" ").trim() ||
     user?.username;
+
+  if (!session?.user?.email) {
+    return (
+      <SheetClose asChild>
+        <Link
+          href="/sign-in"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-muted/60 transition-all duration-150"
+          aria-label="Sign in with Google"
+        >
+          <FaGoogle size={15} className="text-muted-foreground" />
+          Sign in with Google
+        </Link>
+      </SheetClose>
+    );
+  }
+
   return (
-    <div className="absolute bottom-0 w-full">
-      {session?.user?.email ? (
+    <div className="space-y-0.5">
+      {/* Profile link (only if registered) */}
+      {user?.username && (
         <>
-          {user?.username ? (
-            menuItems.bottom.map((item) => (
+          <p className="px-2 pb-1 font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground/60">
+            Account
+          </p>
+          {menuItems.bottom.map((item) => {
+            const href =
+              item.name === "My Profile"
+                ? `${item.path}/${user.username}`
+                : item.path;
+            const isActive =
+              item.name === "My Profile"
+                ? pathname === href
+                : pathname.includes(item.path);
+
+            return (
               <SheetClose asChild key={item.path}>
                 <Link
-                  href={
-                    item.name === "My Profile"
-                      ? `${item.path}/${user.username}`
-                      : item.path
-                  }
-                  className="w-full"
+                  href={href}
+                  className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
+                    isActive
+                      ? "bg-primary/10 text-primary"
+                      : "text-foreground/70 hover:text-foreground hover:bg-muted/60"
+                  }`}
+                  aria-label={item.name}
                 >
-                  <Button
-                    className={`w-full mb-1.5 justify-between gap-x-2 px-8 ${
-                      item.name === "My Profile"
-                        ? pathname === `${item.path}/${user.username}` &&
-                          "bg-accent text-accent-foreground hover:bg-accent"
-                        : pathname.includes(item.path) &&
-                          "bg-accent text-accent-foreground hover:bg-accent"
-                    }`}
-                    aria-label={item.name}
-                  >
-                    {item.name}
-                    {item.name === "My Profile" && (
-                      <Avatar className="ml-3 size-7 text-foreground">
-                        <AvatarImage
-                          src={resolveUrl(user.pic, default_user_pic)}
-                        />
-                        <AvatarFallback>
-                          {extractFirstLetters(fullname)}
-                        </AvatarFallback>
-                      </Avatar>
-                    )}
-                  </Button>
+                  <Avatar className="size-5">
+                    <AvatarImage src={resolveUrl(user.pic, default_user_pic)} />
+                    <AvatarFallback className="text-[10px]">
+                      {extractFirstLetters(fullname || "?")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="truncate">{fullname || user.username}</span>
                 </Link>
               </SheetClose>
-            ))
-          ) : (
-            <></>
-          )}
-          <SheetClose asChild>
-            <Link href="/sign-out" className="w-full">
-              <Button
-                variant="ghost"
-                className="w-full justify-between gap-x-2 px-8"
-                aria-label="go to sign-out page"
-              >
-                Sign Out <LogOut className="ml-2 text-xl" />
-              </Button>
-            </Link>
-          </SheetClose>
+            );
+          })}
         </>
-      ) : (
-        <SheetClose asChild>
-          <Link href="/sign-in" className="w-full">
-            <Button
-              variant="ghost"
-              className="w-full"
-              aria-label="go to sign-in page"
-            >
-              Sign in with Google
-              <FaGoogle className="ml-2 text-xl" />
-            </Button>
-          </Link>
-        </SheetClose>
       )}
+
+      {/* Sign out */}
+      <SheetClose asChild>
+        <Link
+          href="/sign-out"
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all duration-150"
+          aria-label="Sign out"
+        >
+          <LogOut size={15} />
+          Sign Out
+        </Link>
+      </SheetClose>
     </div>
   );
 }

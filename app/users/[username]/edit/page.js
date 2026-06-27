@@ -1,26 +1,28 @@
 // app/users/[username]/edit/page.js
 
-// app/users/[username]/edit/page.js
-
 import { getUserByEmail } from "@/action/user";
 import { auth } from "@/auth";
 import ProfileForm from "@/components/forms/ProfileForm/ProfileForm";
 import Link from "next/link";
 import { permanentRedirect } from "next/navigation";
 
-export function generateMetadata({ params }) {
+export async function generateMetadata({ params }) {
+  const { username } = await params;
   return {
     title: `Edit Portfolio | Angstrom`,
-    description: `Update your Angstrom portfolio with new information. Modify your personal details, career achievements, and more.`,
+    description: `Update ${decodeURIComponent(username)}'s Angstrom portfolio.`,
   };
 }
 
 export default async function UserEditPage({ params }) {
-  params.username = decodeURIComponent(params.username);
+  // Next.js 16: sync params access is fully removed — always await.
+  const { username: rawUsername } = await params;
+  const username = decodeURIComponent(rawUsername);
+
   const session = await auth();
   const user = await getUserByEmail(session?.user?.email);
-  if (params.username !== user?.username)
-    permanentRedirect(`/users/${params.username}`);
+
+  if (username !== user?.username) permanentRedirect(`/users/${username}`);
 
   return (
     <div className="-m-10">

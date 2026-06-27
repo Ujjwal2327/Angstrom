@@ -8,27 +8,32 @@ export default function FormSectionShell({
 }) {
   return (
     <section className="relative py-14 sm:py-16 border-b border-border last:border-b-0">
+      {/* Ghost section number */}
       <span
         aria-hidden="true"
-        className="absolute -top-2 left-0 font-mono font-bold leading-none select-none pointer-events-none text-[clamp(3.5rem,9vw,6rem)]"
-        style={{ color: "hsl(var(--foreground) / 0.04)" }}
+        className="absolute -top-2 left-0 font-mono font-bold leading-none select-none pointer-events-none"
+        style={{
+          fontSize: "clamp(3.5rem,9vw,6rem)",
+          color: "hsl(var(--foreground) / 0.04)",
+        }}
       >
         {index}
       </span>
+
       <div className="relative z-10">
+        {/* // section-label */}
         <div className="font-mono text-sm uppercase tracking-[0.12em] text-primary mb-1.5">
-          {/* BUGFIX: was bare text `// {title}` — same
-              react/jsx-no-comment-textnodes lint failure as
-              components/profile/SectionShell.js. Combined into one
-              template-literal expression. */}
           {`// ${title}`}
         </div>
+
         {description && (
-          <p className="text-sm text-muted-foreground mb-8 max-w-xl">
+          <p className="text-sm text-muted-foreground mb-8 max-w-xl leading-relaxed">
             {description}
           </p>
         )}
+
         {!description && <div className="mb-8" />}
+
         {children}
       </div>
     </section>

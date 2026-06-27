@@ -1,4 +1,13 @@
 "use client";
+// components/Tiptap/Tiptap.js
+//
+// ProseMirror and the useEditor hook both require the DOM and browser APIs.
+// "use client" is required here in Next.js 16 — the component is imported
+// both directly (profile viewer AchievementsSection) and transitively
+// (edit form AchievementsSection → ProfileForm). Marking it explicitly here
+// ensures the client boundary is set at the right level regardless of which
+// parent imports it.
+
 import "./Tiptap.scss";
 import { useEditor, EditorContent } from "@tiptap/react";
 import Document from "@tiptap/extension-document";
@@ -40,21 +49,15 @@ const lowlight = createLowlight(all);
 export default function Tiptap({ desc, onChange }) {
   const editor = useEditor({
     extensions: [
-      Placeholder.configure({
-        placeholder: "Write your achievements here …",
-      }),
+      Placeholder.configure({ placeholder: "Write your achievements here…" }),
       Document,
       Paragraph,
       Text,
-      CodeBlockLowlight.configure({
-        lowlight,
-      }),
+      CodeBlockLowlight.configure({ lowlight }),
       BulletList,
       ListItem,
       Blockquote,
-      Heading.configure({
-        levels: [2],
-      }),
+      Heading.configure({ levels: [2] }),
       Bold,
       Italic,
       Link.configure({
@@ -67,14 +70,14 @@ export default function Tiptap({ desc, onChange }) {
     content: desc,
     editorProps: {
       attributes: {
-        class: `w-full rounded-md text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none  focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+        class: `w-full rounded-md text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
           onChange
             ? "p-4 pb-2 my-4 min-h-32 border border-input bg-background"
             : "-mb-5"
         }`,
       },
     },
-    editable: onChange ? true : false,
+    editable: Boolean(onChange),
     onUpdate({ editor }) {
       if (onChange) onChange(editor.getHTML());
     },
@@ -90,233 +93,148 @@ export default function Tiptap({ desc, onChange }) {
   );
 }
 
+function ToolbarButton({ label, pressed, onClick, children, disabled }) {
+  return (
+    <Tooltip>
+      {/* asChild prevents nested <button> — TooltipTrigger renders its own
+          button element; asChild merges those props onto the child instead. */}
+      <TooltipTrigger asChild>
+        {pressed !== undefined ? (
+          <Toggle
+            type="button"
+            pressed={pressed}
+            variant="outline"
+            size="sm"
+            onClick={onClick}
+            aria-label={label}
+          >
+            {children}
+          </Toggle>
+        ) : (
+          <Button
+            type="button"
+            disabled={disabled}
+            variant="outline"
+            size="sm"
+            onClick={onClick}
+            aria-label={label}
+          >
+            {children}
+          </Button>
+        )}
+      </TooltipTrigger>
+      <TooltipContent>
+        <p>{label}</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
 function Toolbar({ editor }) {
   const setLink = () => {
     const previousUrl = editor.getAttributes("link").href;
     const url = window.prompt("URL", previousUrl);
-
     if (url === null || url.trim() === "") {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
       return;
     }
-
-    let normalizedUrl = url.trim();
-
-    // Regex to match supported protocols with their `:`
+    let normalized = url.trim();
     const protocolRegex =
       /^(https?|mailto|ftp|tel|sms|data|file|geo|news|irc|telnet|ssh|javascript|magnet):/i;
-
-    // If URL does not start with a recognized protocol, add "https://"
-    if (!protocolRegex.test(normalizedUrl))
-      normalizedUrl = `https://${normalizedUrl}`;
-
-    // Validate URL and ensure it doesn't start with the current window's URL
+    if (!protocolRegex.test(normalized)) normalized = `https://${normalized}`;
     try {
-      new URL(normalizedUrl);
+      new URL(normalized);
       editor
         .chain()
         .focus()
         .extendMarkRange("link")
-        .setLink({ href: normalizedUrl })
+        .setLink({ href: normalized })
         .run();
-    } catch (error) {
-      window.alert("Invalid URL:", normalizedUrl);
+    } catch {
+      window.alert("Invalid URL");
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
     }
   };
 
   return (
     <div className="control-group">
-      <div className="button-group flex flex-wrap items-center gap-1">
-        <TooltipProvider>
-          {/* heading */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Toggle
-                type="button"
-                pressed={editor.isActive("heading", { level: 2 })}
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  editor.chain().focus().toggleHeading({ level: 2 }).run();
-                }}
-                aria-label="toggle heading"
-              >
-                <HeadingIcon />
-              </Toggle>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Heading</p>
-            </TooltipContent>
-          </Tooltip>
+      <TooltipProvider>
+        <div className="button-group flex flex-wrap items-center gap-1">
+          <ToolbarButton
+            label="Heading"
+            pressed={editor.isActive("heading", { level: 2 })}
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+          >
+            <HeadingIcon />
+          </ToolbarButton>
 
-          {/* bold */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Toggle
-                type="button"
-                pressed={editor.isActive("bold")}
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  editor.chain().focus().toggleBold().run();
-                }}
-                aria-label="toggle bold"
-              >
-                <BoldIcon />
-              </Toggle>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Bold</p>
-            </TooltipContent>
-          </Tooltip>
+          <ToolbarButton
+            label="Bold"
+            pressed={editor.isActive("bold")}
+            onClick={() => editor.chain().focus().toggleBold().run()}
+          >
+            <BoldIcon />
+          </ToolbarButton>
 
-          {/* italic */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Toggle
-                type="button"
-                pressed={editor.isActive("italic")}
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  editor.chain().focus().toggleItalic().run();
-                }}
-                aria-label="toggle italic"
-              >
-                <ItalicIcon />
-              </Toggle>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Italic</p>
-            </TooltipContent>
-          </Tooltip>
+          <ToolbarButton
+            label="Italic"
+            pressed={editor.isActive("italic")}
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+          >
+            <ItalicIcon />
+          </ToolbarButton>
 
-          {/* link */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Toggle
-                type="button"
-                pressed={editor.isActive("link")}
-                variant="outline"
-                size="sm"
-                onClick={setLink}
-                aria-label="toggle link"
-              >
-                <LinkIcon />
-              </Toggle>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Link</p>
-            </TooltipContent>
-          </Tooltip>
+          <ToolbarButton
+            label="Link"
+            pressed={editor.isActive("link")}
+            onClick={setLink}
+          >
+            <LinkIcon />
+          </ToolbarButton>
 
-          {/* code */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Toggle
-                type="button"
-                pressed={editor.isActive("codeBlock")}
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  editor.chain().focus().toggleCodeBlock().run();
-                }}
-                aria-label="toggle code"
-              >
-                <Code />
-              </Toggle>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Code</p>
-            </TooltipContent>
-          </Tooltip>
+          <ToolbarButton
+            label="Code"
+            pressed={editor.isActive("codeBlock")}
+            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+          >
+            <Code />
+          </ToolbarButton>
 
-          {/* unordered list */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Toggle
-                type="button"
-                pressed={editor.isActive("bulletList")}
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  editor.chain().focus().toggleBulletList().run();
-                }}
-                aria-label="toggle list"
-              >
-                <List />
-              </Toggle>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Bullet List</p>
-            </TooltipContent>
-          </Tooltip>
+          <ToolbarButton
+            label="Bullet List"
+            pressed={editor.isActive("bulletList")}
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+          >
+            <List />
+          </ToolbarButton>
 
-          {/* blockquote */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Toggle
-                type="button"
-                pressed={editor.isActive("blockquote")}
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  editor.chain().focus().toggleBlockquote().run();
-                }}
-                aria-label="toggle blockquote"
-              >
-                <TextQuote />
-              </Toggle>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Blockquote</p>
-            </TooltipContent>
-          </Tooltip>
+          <ToolbarButton
+            label="Blockquote"
+            pressed={editor.isActive("blockquote")}
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+          >
+            <TextQuote />
+          </ToolbarButton>
 
-          {/* undo */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                disabled={!editor.can().undo()}
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  editor.chain().focus().undo().run();
-                }}
-                aria-label="undo"
-              >
-                <Undo />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Undo</p>
-            </TooltipContent>
-          </Tooltip>
+          <ToolbarButton
+            label="Undo"
+            disabled={!editor.can().undo()}
+            onClick={() => editor.chain().focus().undo().run()}
+          >
+            <Undo />
+          </ToolbarButton>
 
-          {/* redo */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                disabled={!editor.can().redo()}
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  editor.chain().focus().redo().run();
-                }}
-                aria-label="redo"
-              >
-                <Redo />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Redo</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
+          <ToolbarButton
+            label="Redo"
+            disabled={!editor.can().redo()}
+            onClick={() => editor.chain().focus().redo().run()}
+          >
+            <Redo />
+          </ToolbarButton>
+        </div>
+      </TooltipProvider>
     </div>
   );
 }

@@ -1,12 +1,33 @@
-const svgToDataUri = require("mini-svg-data-uri");
+// tailwind.config.js
+//
+// Uses ESM syntax at the top level (required by "type":"module" in package.json)
+// but loads CJS-only Tailwind internals and plugins via createRequire.
+//
+// WHY createRequire FOR SOME IMPORTS:
+// Turbopack's ESM↔CJS interop layer wraps CJS module.exports in a Proxy-like
+// object when you use `import ... from "..."`. For simple values (strings,
+// numbers) this is transparent. For objects that Tailwind inspects with
+// `typeof plugin === "function"` or `plugin.handler`, the wrapped version
+// fails the check → "adapterFn is not a function".
+//
+// createRequire returns the raw module.exports without any wrapping, so
+// Tailwind receives exactly the same value as it did with require().
 
-const colors = require("tailwindcss/colors");
-const {
-  default: flattenColorPalette,
-} = require("tailwindcss/lib/util/flattenColorPalette");
+import { createRequire } from "module";
+import { fileURLToPath } from "url";
+import svgToDataUri from "mini-svg-data-uri"; // pure ESM, no interop needed
+
+const require = createRequire(fileURLToPath(import.meta.url));
+
+// CJS-only Tailwind internals — must use createRequire
+const flattenColorPalette =
+  require("tailwindcss/lib/util/flattenColorPalette").default;
+
+// Tailwind plugin (returns { handler, config } object — breaks with ESM interop)
+const tailwindcssAnimate = require("tailwindcss-animate");
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{js,jsx}",
@@ -19,9 +40,7 @@ module.exports = {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      screens: { "2xl": "1400px" },
     },
     extend: {
       colors: {
@@ -78,14 +97,8 @@ module.exports = {
           to: { height: "0" },
         },
         spotlight: {
-          "0%": {
-            opacity: 0,
-            transform: "translate(-72%, -62%) scale(0.5)",
-          },
-          "100%": {
-            opacity: 1,
-            transform: "translate(-50%,-40%) scale(1)",
-          },
+          "0%": { opacity: 0, transform: "translate(-72%, -62%) scale(0.5)" },
+          "100%": { opacity: 1, transform: "translate(-50%,-40%) scale(1)" },
         },
       },
       animation: {
@@ -94,12 +107,15 @@ module.exports = {
         spotlight: "spotlight 2s ease .75s 1 forwards",
       },
       screens: {
-        xs: { min: "350px" }, // Custom screen for 350px
+        xs: { min: "350px" },
       },
     },
   },
   plugins: [
-    require("tailwindcss-animate"),
+    // Loaded via createRequire — avoids ESM interop wrapping the plugin object
+    tailwindcssAnimate,
+
+    // Custom background pattern utilities used in Hero (grid, dot patterns)
     function ({ matchUtilities, theme }) {
       matchUtilities(
         {

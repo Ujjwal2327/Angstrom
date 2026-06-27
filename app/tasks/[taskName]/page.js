@@ -1,15 +1,13 @@
+// app/tasks/[taskName]/page.js
 import { getNextTask, getPreviousTask, tasksData } from "@/data/tasks";
 import { notFound } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Loader from "@/components/ui/Loader";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import dynamic from "next/dynamic";
 import PreviewComponent from "@/components/tasks/PreviewComponent";
-const CodeHighlighter = dynamic(() => import("@/components/CodeHighlighter"), {
-  ssr: false,
-  loading: () => <Loader />,
-});
+// Client wrapper — hosts the dynamic({ ssr: false }) import so this Server
+// Component doesn't violate Next.js 16's restriction.
+import CodeHighlighter from "@/components/tasks/CodeHighlighterWrapper";
 
 const renderFileTreeTabs = (tree, parentPath = "") => {
   const defaultTab = `${parentPath}/${Object.keys(tree)[0]}`;
@@ -43,7 +41,7 @@ const renderFileTreeTabs = (tree, parentPath = "") => {
           >
             {renderFileTreeTabs(value, `${parentPath}/${key}`)}
           </TabsContent>
-        )
+        ),
       )}
     </Tabs>
   );
@@ -53,34 +51,29 @@ export async function generateStaticParams() {
   return Object.keys(tasksData).map((taskName) => ({ taskName }));
 }
 
-export function generateMetadata({ params }) {
-  const { taskName } = params;
+export async function generateMetadata({ params }) {
+  const { taskName } = await params;
   const task = tasksData[taskName];
   if (task)
-    return {
-      title: `${taskName} | Angstrom`,
-      description: task.description,
-    };
-  else
-    return {
-      title: `Page Not Found | Angstrom`,
-      description: `The page you're looking for does not exist. Please check the URL or return to the homepage.`,
-    };
+    return { title: `${taskName} | Angstrom`, description: task.description };
+  return { title: `Page Not Found | Angstrom` };
 }
 
 export default async function TaskPage({ params }) {
-  const { taskName } = params;
+  const { taskName } = await params;
   const task = tasksData[taskName];
   if (!task) notFound();
 
-  const previousTask = getPreviousTask(taskName),
-    nextTask = getNextTask(taskName);
+  const previousTask = getPreviousTask(taskName);
+  const nextTask = getNextTask(taskName);
 
   return (
     <div className="sm:ml-64 sm:max-w-3xl flex flex-col gap-y-5">
       <div className="flex sm:justify-between sm:items-center flex-col sm:flex-row gap-y-2 gap-x-10">
         <h2 className="font-bold text-3xl">{task.name}</h2>
-        <span className="text-xs">Duration: {task.duration} minutes</span>
+        <span className="text-xs text-muted-foreground">
+          Duration: {task.duration} min
+        </span>
       </div>
 
       <p className="text-muted-foreground">{task.description}</p>
@@ -114,7 +107,7 @@ export default async function TaskPage({ params }) {
         {previousTask ? (
           <Link
             href={previousTask}
-            className="flex justify-center items-center gap-x-2"
+            className="flex items-center gap-x-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ChevronLeft size={15} /> {previousTask}
           </Link>
@@ -124,7 +117,7 @@ export default async function TaskPage({ params }) {
         {nextTask && (
           <Link
             href={nextTask}
-            className="flex justify-center items-center gap-x-2"
+            className="flex items-center gap-x-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             {nextTask} <ChevronRight size={15} />
           </Link>

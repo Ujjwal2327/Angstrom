@@ -1,19 +1,16 @@
 // components/forms/ProfileForm/shared/formFieldStyles.js
 
-// Sharp-cornered, cyan-focus input language matching the bold view-page identity.
-// Applied as className overrides on shadcn primitives (Input/Textarea), not by
-// editing the primitives themselves.
+// Sharp-cornered inputs with cyan focus — matches the portfolio's identity.
+// Applied as className overrides on shadcn Input/Textarea primitives.
 export const fieldInputClass =
-  "rounded-none border-border bg-transparent focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary transition-colors";
+  "rounded-none border-border/70 bg-transparent focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary hover:border-border transition-colors duration-150 placeholder:text-muted-foreground/40";
 
 export const fieldTextareaClass = `${fieldInputClass} resize-none`;
 
-// Mono, uppercase, tracked-out — matches the "// about" style section labels
-// and the @handle treatment from the view page.
+// Mono uppercase tracking label — the "// about" eyebrow style
 export const fieldLabelClass =
-  "font-mono text-[0.7rem] uppercase tracking-[0.08em] text-muted-foreground";
+  "font-mono text-[0.68rem] uppercase tracking-[0.1em] text-muted-foreground";
 
-// Sharp-cornered card wrapper used for each row in a draggable list
-// (experience/projects/education) and other grouped field clusters.
+// Card wrapper for draggable rows (experience / projects / education)
 export const fieldCardClass =
-  "border border-border bg-card hover:border-primary/40 transition-colors p-4 sm:p-5";
+  "border border-border/70 bg-card hover:border-primary/30 transition-colors duration-200 p-4 sm:p-5";

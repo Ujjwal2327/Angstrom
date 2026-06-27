@@ -1,24 +1,17 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// prisma/schema.prisma
 
 generator client {
-  provider = "prisma-client-js"
+  provider   = "prisma-client-js"
+  // Prisma 6 defaults to the WASM engine. For standard Node.js / Vercel
+  // deployments the native "library" engine gives better cold-start perf
+  // and avoids a separate WASM fetch on each invocation.
+  engineType = "library"
 }
 
-// BUGFIX: this previously only had `url`, pointed at Neon's pooled
-// (PgBouncer, "-pooler") connection string. That's fine for simple one-shot
-// queries, but `updateUser` in action/user.js uses an INTERACTIVE transaction
-// (`prisma.$transaction(async (tx) => {...})`), which needs to hold one
-// connection open across several round-trips. PgBouncer's transaction-pooling
-// mode is not reliably compatible with that without `pgbouncer=true` on the
-// connection string, and Prisma additionally needs a *direct* (unpooled)
-// connection for things like migrations regardless. `directUrl` here tells
-// Prisma to use the unpooled connection for those cases while `url` (with
-// `pgbouncer=true` added) still handles normal pooled queries. See:
-// https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections#external-connection-poolers
+// `url`       → pooled connection (Neon PgBouncer). Handles all regular queries.
+// `directUrl` → direct connection (no pooler). Required for Prisma migrations
+//               and interactive $transaction calls that hold a connection open.
+// Add DIRECT_URL to your .env — same as DATABASE_URL but without &pgbouncer=true.
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
@@ -52,7 +45,7 @@ model Project {
   userId   Int
   user     User     @relation(fields: [userId], references: [id])
 
-  @@unique([userId, name]) // Composite unique constraint
+  @@unique([userId, name])
 }
 
 model Education {
@@ -67,7 +60,7 @@ model Education {
   userId         Int
   user           User    @relation(fields: [userId], references: [id])
 
-  @@unique([userId, degree]) // Composite unique constraint
+  @@unique([userId, degree])
 }
 
 model Experience {
@@ -81,5 +74,5 @@ model Experience {
   userId   Int
   user     User    @relation(fields: [userId], references: [id])
 
-  @@unique([userId, company, position]) // Composite unique constraint
+  @@unique([userId, company, position])
 }

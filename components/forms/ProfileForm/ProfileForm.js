@@ -1,6 +1,6 @@
 // components/forms/ProfileForm/ProfileForm.js
-
 "use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { formSchema } from "./schemas/formSchema";
@@ -21,11 +21,13 @@ import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/Spinner";
 import { isSameObject, resolveUrl } from "@/utils";
+import { CheckCircle } from "lucide-react";
 
 export default function ProfileForm({ user }) {
   const [loading, setLoading] = useState(false);
   const { setUser } = useStore();
   const router = useRouter();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,37 +44,38 @@ export default function ProfileForm({ user }) {
         return acc;
       }, {}),
       projects:
-        user.projects?.map((project) => ({
-          order: project.order,
-          name: project.name,
-          live_url: project.live_url,
-          code_url: project.code_url,
-          skills: project.skills || [],
-          about: project.about,
+        user.projects?.map((p) => ({
+          order: p.order,
+          name: p.name,
+          live_url: p.live_url,
+          code_url: p.code_url,
+          skills: p.skills || [],
+          about: p.about,
         })) || [],
       education:
-        user.education?.map((edu) => ({
-          order: edu.order,
-          institution: edu.institution,
-          degree: edu.degree,
-          score: edu.score || "",
-          specialization: edu.specialization || "",
-          start: edu.start,
-          end: edu.end,
+        user.education?.map((e) => ({
+          order: e.order,
+          institution: e.institution,
+          degree: e.degree,
+          score: e.score || "",
+          specialization: e.specialization || "",
+          start: e.start,
+          end: e.end,
         })) || [],
       experience:
-        user.experience?.map((exp) => ({
-          order: exp.order,
-          company: exp.company,
-          position: exp.position,
-          start: exp.start,
-          end: exp.end || "",
-          about: exp.about,
+        user.experience?.map((e) => ({
+          order: e.order,
+          company: e.company,
+          position: e.position,
+          start: e.start,
+          end: e.end || "",
+          about: e.about,
         })) || [],
     },
   });
 
   const { control, handleSubmit, watch, setValue, formState } = form;
+
   const { append: appendSkill, remove: removeSkill } = useFieldArray({
     control,
     name: "skills",
@@ -82,76 +85,65 @@ export default function ProfileForm({ user }) {
     append: appendExperience,
     remove: removeExperience,
     move: moveExperience,
-  } = useFieldArray({
-    control,
-    name: "experience",
-  });
+  } = useFieldArray({ control, name: "experience" });
   const {
     fields: projectFields,
     append: appendProject,
     remove: removeProject,
     move: moveProject,
-  } = useFieldArray({
-    control,
-    name: "projects",
-  });
+  } = useFieldArray({ control, name: "projects" });
   const {
     fields: educationFields,
     append: appendEducation,
     remove: removeEducation,
     move: moveEducation,
-  } = useFieldArray({
-    control,
-    name: "education",
-  });
+  } = useFieldArray({ control, name: "education" });
+
   const skills = watch("skills");
 
   const onSubmit = async (formdata) => {
-    // Handle form submission
-    if (isSameObject(formdata, form.control._defaultValues))
-      return toast.info("No changes detected. Nothing to update.");
+    if (isSameObject(formdata, form.control._defaultValues)) {
+      toast.info("No changes to save.");
+      return;
+    }
     try {
       setLoading(true);
       const response = await fetch("/api/user", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formdata),
       });
       const data = await response.json();
-
       if (data.user) {
         setUser(data.user);
+        toast.success("Portfolio saved.", {
+          icon: <CheckCircle className="text-success" size={16} />,
+        });
         router.push(`/users/${data.user.username}`);
-        toast.success("User updated successfully");
-      } else throw new Error(data.error);
+      } else {
+        throw new Error(data.error);
+      }
     } catch (error) {
-      console.log("Error submitting form:", error.message);
-      toast.error(error.message);
+      toast.error(error.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
 
   const handleKeyDown = (e) => {
-    const skipTags = ["INPUT", "DIV"]; // Enter key behavior is naturally prevented for textarea elements
+    const skipTags = ["INPUT", "DIV"];
     if (e.key === "Enter" && skipTags.includes(e.target.tagName))
       e.preventDefault();
   };
 
   function handleErrors(errors) {
-    // unique identifier error in experience, projects, education
     for (const key of Object.keys(errors)) {
       if (errors[key]?.root?.message) {
         toast.error(errors[key].root.message);
         return;
       }
     }
-
-    // at least 1 skill error in project
-    if (!errors.projects || !errors.projects?.length) return;
-
+    if (!errors.projects?.length) return;
     for (const key of errors.projects) {
       if (key?.skills?.message) {
         toast.error(key.skills.message);
@@ -169,7 +161,7 @@ export default function ProfileForm({ user }) {
       <form
         onSubmit={handleSubmit(onSubmit)}
         onKeyDown={loading ? (e) => e.preventDefault() : handleKeyDown}
-        className={`w-full ${loading && "loading opacity-50"}`}
+        className={`w-full ${loading ? "loading opacity-50 pointer-events-none" : ""}`}
       >
         <FormSectionShell index="01" title="basic info">
           <BasicInfoSection user={user} control={control} />
@@ -178,7 +170,7 @@ export default function ProfileForm({ user }) {
         <FormSectionShell
           index="02"
           title="achievements"
-          description="Highlight awards, certifications, or milestones worth calling out."
+          description="Awards, certifications, or milestones worth calling out."
         >
           <AchievementsSection control={control} />
         </FormSectionShell>
@@ -194,7 +186,7 @@ export default function ProfileForm({ user }) {
         <FormSectionShell
           index="04"
           title="skills"
-          description="Drag to reorder — skills you place first appear largest and most prominent on your public profile."
+          description="Drag to reorder. Skills you place first appear largest on your public profile."
         >
           <SkillsSection
             fields={skills}
@@ -207,7 +199,7 @@ export default function ProfileForm({ user }) {
         <FormSectionShell
           index="05"
           title="experience"
-          description="Drag the grip to reorder. Most recent or most relevant first is usually the strongest read."
+          description="Most recent or most relevant first gives the strongest read."
         >
           <ExperienceSection
             fields={experienceFields}
@@ -221,7 +213,7 @@ export default function ProfileForm({ user }) {
         <FormSectionShell
           index="06"
           title="projects"
-          description="Add a live link to get an automatic live screenshot on your profile — otherwise we'll show your GitHub repo card."
+          description="Add a live link to get an automatic screenshot — otherwise we show your GitHub repo card."
         >
           <ProjectsSection
             skills={skills}
@@ -243,19 +235,18 @@ export default function ProfileForm({ user }) {
           />
         </FormSectionShell>
 
-        <div className="pt-10">
+        {/* Sticky save bar */}
+        <div className="sticky bottom-0 z-20 bg-background/95 backdrop-blur border-t border-border -mx-5 sm:-mx-8 px-5 sm:px-8 py-4 mt-10">
           <Button
             type="submit"
             disabled={loading}
-            className={`w-full rounded-none font-mono uppercase tracking-wide text-sm h-12 ${
-              loading && "loading"
-            }`}
-            aria-label="submit your details"
+            className="w-full max-w-xs mx-auto flex rounded-none font-mono uppercase tracking-wide text-sm h-11"
+            aria-label="Save your portfolio changes"
           >
             {loading ? (
-              <>
-                saving <Spinner className="size-4 ml-2" />
-              </>
+              <span className="flex items-center gap-2">
+                saving <Spinner className="size-4" />
+              </span>
             ) : (
               "save changes →"
             )}

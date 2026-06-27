@@ -1,9 +1,9 @@
 import CodeDiffer from "@/components/CodeDiffer";
 
-export function generateMetadata({ params }) {
+export function generateMetadata() {
   return {
     title: `Code Differ | Angstrom`,
-    description: `Easily compare and highlight differences between two code blocks. Perfect for code reviews, debugging, and tracking changes across versions. This tool helps streamline the comparison process and improve your coding workflow.`,
+    description: `Easily compare and highlight differences between two code blocks. Perfect for code reviews, debugging, and tracking changes across versions.`,
   };
 }
 

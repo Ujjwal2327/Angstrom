@@ -4,26 +4,20 @@ export default function SectionShell({ id, index, title, children, noBorder }) {
   return (
     <section
       id={id}
-      className={`relative max-w-5xl mx-auto px-5 sm:px-8 py-16 sm:py-24 scroll-mt-16 lg:scroll-mt-0 ${
+      // scroll-mt-28 on mobile: fixed navbar (56px) + sticky mobile tab bar (~56px)
+      // scroll-mt-20 on lg: fixed navbar (56px) + breathing room
+      className={`relative max-w-5xl mx-auto px-5 sm:px-8 py-16 sm:py-24 scroll-mt-28 lg:scroll-mt-20 ${
         noBorder ? "" : "border-b border-border"
       }`}
     >
-      <span
-        aria-hidden="true"
-        className="absolute top-4 left-5 sm:left-8 font-mono font-bold leading-none select-none pointer-events-none text-[clamp(4.5rem,14vw,11rem)]"
-        style={{ color: "hsl(var(--foreground) / 0.035)" }}
-      >
+      {/* Ghost index number — decorative watermark */}
+      <span aria-hidden="true" className="section-num top-4 left-5 sm:left-8">
         {index}
       </span>
+
       <div className="relative z-10">
-        <div className="font-mono text-sm uppercase tracking-[0.12em] text-primary mb-10 sm:mb-12">
-          {/* BUGFIX: was bare text `// {title}` — a literal "//" text node
-              right next to a JSX expression reads as an accidental comment
-              to ESLint's react/jsx-no-comment-textnodes rule and fails the
-              build. Combining into one template-literal expression makes
-              the intent (stylized text, not a forgotten comment) explicit. */}
-          {`// ${title}`}
-        </div>
+        {/* // section-title label */}
+        <div className="mono-label mb-10 sm:mb-14">{`// ${title}`}</div>
         {children}
       </div>
     </section>
