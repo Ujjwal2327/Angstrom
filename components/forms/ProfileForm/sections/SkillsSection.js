@@ -116,6 +116,7 @@ export default function SkillsSection({
           items={skills}
           onReorder={handleReorder}
           orientation="horizontal"
+          id="skills-sortable"
         >
           {skills.map((item, index) => (
             <SortableSkillBadge

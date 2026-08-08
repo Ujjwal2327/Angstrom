@@ -48,6 +48,16 @@ const lowlight = createLowlight(all);
 
 export default function Tiptap({ desc, onChange }) {
   const editor = useEditor({
+    // BUGFIX: Tiptap 2.11+ renders its first pass synchronously by default,
+    // which it flags as unsafe under SSR frameworks (logged as "Tiptap
+    // Error: SSR has been detected..." even though this component is only
+    // ever mounted client-side via dynamic(..., { ssr: false }) — Tiptap's
+    // check fires from being hydrated inside a tree that WAS server-rendered
+    // overall, not from this subtree specifically). Setting this to false is
+    // Tiptap's own documented fix: it defers the first render to an effect
+    // after mount instead of during render, which matches what
+    // ssr:false + the Loader fallback already assume is happening.
+    immediatelyRender: false,
     extensions: [
       Placeholder.configure({ placeholder: "Write your achievements here…" }),
       Document,

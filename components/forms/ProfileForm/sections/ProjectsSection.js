@@ -129,7 +129,11 @@ export default function ProjectsSection({
 }) {
   return (
     <div>
-      <SortableList items={fields.map((f) => f.id)} onReorder={move}>
+      <SortableList
+        items={fields.map((f) => f.id)}
+        onReorder={move}
+        id="projects-sortable"
+      >
         {fields.map((item, index) => (
           <ProjectRow
             key={item.id}

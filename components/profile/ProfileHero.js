@@ -43,6 +43,20 @@ export default function ProfileHero({ user, isOwner, isCreator }) {
             )}
           </div>
 
+          {/* Bio — folded in here instead of its own AboutSection further
+              down the page, so it reads as part of the introduction rather
+              than a separate stop.
+              BUGFIX: this had `max-w-xl` (576px), which — on anything wider
+              than a phone — squeezed it into a visibly narrower column than
+              the name above it. Dropped the cap so it uses the same width as
+              the rest of this block (min-w-0 flex-1, bounded only by the
+              header's own max-w-5xl and the profile-pic column). */}
+          {user.about && (
+            <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed whitespace-pre-wrap">
+              {user.about}
+            </p>
+          )}
+
           {/* Owner / contact + creator badge */}
           <div className="flex items-center flex-wrap gap-4 mt-6">
             {isOwner ? (

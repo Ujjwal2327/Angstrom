@@ -37,12 +37,23 @@ export default function ProfilesSection({ control }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
+                  {/* BUGFIX: not every source SVG under /icons/profiles is
+                      perfectly square. Tailwind's preflight sets
+                      `img { height: auto }`, which — combined with the fixed
+                      width/height props below — let the browser compute an
+                      effective height that didn't match what was declared,
+                      triggering Next's "width or height modified, but not
+                      the other" dev warning (seen for codechef, discord,
+                      geeksforgeeks, leetcode). Pinning both dimensions with
+                      an explicit utility class overrides the preflight rule
+                      and keeps every icon in a consistent square slot. */}
                   <Image
                     src={`/icons/profiles/${profileName}.svg`}
                     width={26}
                     height={26}
                     alt={`${profileName} logo`}
                     loading="lazy"
+                    className="size-[26px]"
                   />
                 </Link>
               </FormLabel>

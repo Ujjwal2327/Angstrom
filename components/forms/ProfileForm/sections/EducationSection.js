@@ -144,7 +144,11 @@ export default function EducationSection({
 }) {
   return (
     <div>
-      <SortableList items={fields.map((f) => f.id)} onReorder={move}>
+      <SortableList
+        items={fields.map((f) => f.id)}
+        onReorder={move}
+        id="education-sortable"
+      >
         {fields.map((item, index) => (
           <EducationRow
             key={item.id}

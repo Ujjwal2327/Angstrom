@@ -133,7 +133,11 @@ export default function ExperienceSection({
 }) {
   return (
     <div>
-      <SortableList items={fields.map((f) => f.id)} onReorder={move}>
+      <SortableList
+        items={fields.map((f) => f.id)}
+        onReorder={move}
+        id="experience-sortable"
+      >
         {fields.map((item, index) => (
           <ExperienceRow
             key={item.id}

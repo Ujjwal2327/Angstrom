@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { capitalizeString } from "@/utils";
 import ProfileHero from "@/components/profile/ProfileHero";
 import DotNav from "@/components/profile/DotNav";
-import AboutSection from "@/components/profile/sections/AboutSection";
 import AchievementsSection from "@/components/profile/sections/AchievementsSection";
 import ExperienceSection from "@/components/profile/sections/ExperienceSection";
 import ProjectsSection from "@/components/profile/sections/ProjectsSection";
@@ -43,8 +42,9 @@ export default async function UserPage({ params }) {
   const isOwner = username === viewer?.username;
 
   // Single source of truth: drives both DotNav and section render order.
+  // "about" isn't in here — it's rendered inside ProfileHero as part of the
+  // intro instead of getting its own stop on the page / dot-nav entry.
   const sections = [
-    { id: "about", label: "about", show: Boolean(user.about) },
     {
       id: "achievements",
       label: "achievements",
@@ -87,13 +87,6 @@ export default async function UserPage({ params }) {
         </div>
       ) : (
         <>
-          {user.about && (
-            <AboutSection
-              id="about"
-              index={indexById.about}
-              about={user.about}
-            />
-          )}
           {user.achievements?.trim() && (
             <AchievementsSection
               id="achievements"

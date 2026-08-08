@@ -12,15 +12,16 @@ import ExperienceSection from "./sections/ExperienceSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import EducationSection from "./sections/EducationSection";
 import FormSectionShell from "./shared/FormSectionShell";
+import AiImportDialog from "./shared/AiImportDialog";
+import { getFormDefaultValues } from "./shared/getFormDefaultValues";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
-import { profiles, categorizedSkills, default_user_pic } from "@/constants";
 import { useEffect, useState } from "react";
 import useStore from "@/stores/useStore";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/Spinner";
-import { isSameObject, resolveUrl } from "@/utils";
+import { isSameObject } from "@/utils";
 import { CheckCircle } from "lucide-react";
 
 export default function ProfileForm({ user }) {
@@ -30,48 +31,7 @@ export default function ProfileForm({ user }) {
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: user.username,
-      email: user.email,
-      firstname: user.firstname || "",
-      lastname: user.lastname || "",
-      pic: resolveUrl(user.pic, default_user_pic),
-      about: user.about || "",
-      achievements: user.achievements || "",
-      skills: user.skills || [],
-      profiles: Object.keys(profiles).reduce((acc, p) => {
-        if (user.profiles?.[p]) acc[p] = user.profiles[p];
-        return acc;
-      }, {}),
-      projects:
-        user.projects?.map((p) => ({
-          order: p.order,
-          name: p.name,
-          live_url: p.live_url,
-          code_url: p.code_url,
-          skills: p.skills || [],
-          about: p.about,
-        })) || [],
-      education:
-        user.education?.map((e) => ({
-          order: e.order,
-          institution: e.institution,
-          degree: e.degree,
-          score: e.score || "",
-          specialization: e.specialization || "",
-          start: e.start,
-          end: e.end,
-        })) || [],
-      experience:
-        user.experience?.map((e) => ({
-          order: e.order,
-          company: e.company,
-          position: e.position,
-          start: e.start,
-          end: e.end || "",
-          about: e.about,
-        })) || [],
-    },
+    defaultValues: getFormDefaultValues(user),
   });
 
   const { control, handleSubmit, watch, setValue, formState } = form;
@@ -130,6 +90,24 @@ export default function ProfileForm({ user }) {
     }
   };
 
+  // Populates the form from the AI's JSON so the person can review every
+  // field before saving. Does NOT touch the database — Save still goes
+  // through the normal onSubmit flow above, unchanged.
+  //
+  // BUGFIX: plain form.reset(data) re-baselines react-hook-form's internal
+  // _defaultValues to the AI's data — so if the person then clicked Save
+  // without touching anything else, onSubmit's isSameObject(formdata,
+  // _defaultValues) check compared the AI data against itself and always
+  // matched, firing "No changes to save." even though the AI import clearly
+  // changed things relative to what's actually saved in the DB.
+  // { keepDefaultValues: true } updates the visible field values as before,
+  // but leaves _defaultValues pointing at the original, pre-import data —
+  // so the dirty check (and formState.isDirty) correctly sees a difference.
+  const handleAiApply = (data) => {
+    form.reset(data, { keepDefaultValues: true });
+    form.trigger();
+  };
+
   const handleKeyDown = (e) => {
     const skipTags = ["INPUT", "DIV"];
     if (e.key === "Enter" && skipTags.includes(e.target.tagName))
@@ -163,6 +141,26 @@ export default function ProfileForm({ user }) {
         onKeyDown={loading ? (e) => e.preventDefault() : handleKeyDown}
         className={`w-full ${loading ? "loading opacity-50 pointer-events-none" : ""}`}
       >
+        {/* AI import — optional, sits above every section since it can
+            populate all of them at once.
+            BUGFIX: this used to have no top padding, so it sat flush against
+            the edit page's sticky "editing / @username" header (that header
+            has no bottom margin of its own — the original first section,
+            FormSectionShell, supplied the gap via its own py-14). Matching
+            that same top padding here restores the gap. */}
+        <div className="pt-14 sm:pt-16 pb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border">
+          <div>
+            <div className="font-mono text-xs uppercase tracking-[0.12em] text-primary mb-1.5">
+              {`// optional`}
+            </div>
+            <p className="text-sm text-muted-foreground max-w-md">
+              Let an AI research your links and rewrite the whole profile in one
+              pass — you review everything below before saving.
+            </p>
+          </div>
+          <AiImportDialog user={user} onApply={handleAiApply} />
+        </div>
+
         <FormSectionShell index="01" title="basic info">
           <BasicInfoSection user={user} control={control} />
         </FormSectionShell>

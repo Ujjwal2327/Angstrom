@@ -1,9 +1,12 @@
 // app/users/[username]/edit/loading.js
 export default function EditLoading() {
   return (
-    <div className="-m-10 animate-pulse">
-      {/* Sticky header skeleton */}
-      <div className="sticky top-0 z-30 bg-background/95 backdrop-blur border-b border-border">
+    // Same fix as page.js: -mx-10 -mb-10 (not -m-10) preserves the parent's
+    // pt-14 navbar clearance instead of shaving it down to 16px.
+    <div className="-mx-10 -mb-10 animate-pulse">
+      {/* Sticky header skeleton — top-14 to match the real header, so it
+          sticks below the fixed navbar rather than under it once scrolled. */}
+      <div className="sticky top-14 z-30 bg-background/95 backdrop-blur border-b border-border">
         <div className="max-w-5xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
           <div className="space-y-1.5">
             <div className="h-2 w-14 bg-muted rounded-sm" />
