@@ -113,16 +113,15 @@ export async function createUser(data, throwable = false) {
 
 export async function updateUser(data, throwable = false) {
   try {
-    // Always read from Postgres — never rely on the cache for the "before" state.
-    // Stale cache entries (especially across environments sharing a Redis instance)
-    // can carry the wrong user.id which causes FK violations in the transaction.
+    // Only need id + username here — the diff-by-row logic below is gone,
+    // so we no longer need the full projects/education/experience arrays.
     const user = await prisma.user.findUnique({
       where: { email: data.email },
-      include: { projects: true, education: true, experience: true },
+      select: { id: true, username: true },
     });
     if (!user) return handleActionError("User not found.", throwable, null);
 
-    // Username collision check — also against Postgres, not cache.
+    // Username collision check — against Postgres, not cache.
     if (user.username !== data.username) {
       const collision = await prisma.user.findUnique({
         where: { username: data.username },
@@ -135,54 +134,58 @@ export async function updateUser(data, throwable = false) {
 
     const updatedUser = await prisma.$transaction(
       async (tx) => {
-        // Build sets for diffing
-        const newExpSet = new Set(
-          (data.experience || []).map((e) => `${e.company}|${e.position}`),
-        );
-        const newProjSet = new Set((data.projects || []).map((p) => p.name));
-        const newEduSet = new Set((data.education || []).map((e) => e.degree));
-
+        // Wipe + bulk-recreate instead of diffing row-by-row.
+        //
+        // BUGFIX (Vercel 504 / FUNCTION_INVOCATION_TIMEOUT): the previous
+        // version deleted/upserted experience, projects, and education one
+        // row at a time inside Promise.all(). That looks parallel but isn't —
+        // an interactive transaction is bound to a single DB connection, so
+        // every one of those queries actually gets sent to Postgres one
+        // after another. With N rows across the three tables that's up to
+        // 2N sequential round trips, on top of the initial lookup and the
+        // closing update. On localhost the latency per round trip is small
+        // enough to hide this; against a remote/serverless Postgres from a
+        // Vercel function it adds up fast enough to blow past the function's
+        // time limit.
+        //
+        // Safe to replace with delete-all + recreate-all because nothing
+        // outside this table references these rows by their DB `id` —
+        // uniqueness is on [userId, name] / [userId, degree] /
+        // [userId, company, position], not `id`, and
+        // shared/getFormDefaultValues.js never even sends `id` back to the
+        // server. This turns an unbounded number of round trips into a
+        // fixed ~6, regardless of profile size.
         await Promise.all([
-          // Deletions
-          ...(user.experience || [])
-            .filter((e) => !newExpSet.has(`${e.company}|${e.position}`))
-            .map((e) => tx.experience.delete({ where: { id: e.id } })),
-          ...(user.projects || [])
-            .filter((p) => !newProjSet.has(p.name))
-            .map((p) => tx.project.delete({ where: { id: p.id } })),
-          ...(user.education || [])
-            .filter((e) => !newEduSet.has(e.degree))
-            .map((e) => tx.education.delete({ where: { id: e.id } })),
-
-          // Upserts
-          ...(data.experience || []).map((exp) =>
-            tx.experience.upsert({
-              where: {
-                userId_company_position: {
-                  userId: user.id,
-                  company: exp.company,
-                  position: exp.position,
-                },
-              },
-              update: exp,
-              create: { ...exp, userId: user.id },
-            }),
-          ),
-          ...(data.projects || []).map((proj) =>
-            tx.project.upsert({
-              where: { userId_name: { userId: user.id, name: proj.name } },
-              update: proj,
-              create: { ...proj, userId: user.id },
-            }),
-          ),
-          ...(data.education || []).map((edu) =>
-            tx.education.upsert({
-              where: { userId_degree: { userId: user.id, degree: edu.degree } },
-              update: edu,
-              create: { ...edu, userId: user.id },
-            }),
-          ),
+          tx.experience.deleteMany({ where: { userId: user.id } }),
+          tx.project.deleteMany({ where: { userId: user.id } }),
+          tx.education.deleteMany({ where: { userId: user.id } }),
         ]);
+
+        await Promise.all(
+          [
+            data.experience?.length &&
+              tx.experience.createMany({
+                data: data.experience.map((exp) => ({
+                  ...exp,
+                  userId: user.id,
+                })),
+              }),
+            data.projects?.length &&
+              tx.project.createMany({
+                data: data.projects.map((proj) => ({
+                  ...proj,
+                  userId: user.id,
+                })),
+              }),
+            data.education?.length &&
+              tx.education.createMany({
+                data: data.education.map((edu) => ({
+                  ...edu,
+                  userId: user.id,
+                })),
+              }),
+          ].filter(Boolean),
+        );
 
         return tx.user.update({
           where: { email: data.email },
