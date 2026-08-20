@@ -74,6 +74,7 @@
     "react-icons": "^5.5.0",
     "react-simple-code-editor": "^0.14.1",
     "rehype-rewrite": "^4.0.2",
+    "sanitize-html": "^2.17.7",
     "sass": "^1.86.0",
     "sonner": "^2.0.4",
     "tailwind-merge": "^3.3.0",

@@ -19,6 +19,11 @@ import {
   fieldCardClass,
 } from "../shared/formFieldStyles";
 
+// Purely a nudge via <datalist> — the field underneath is free text, so
+// nothing forces these specific labels. See the doc comment on
+// ProjectsSection (below) for why "Personal" isn't one of them.
+const CATEGORY_SUGGESTIONS = ["Client Work", "Independent"];
+
 function ProjectRow({ item, index, control, remove, skills }) {
   const { attributes, listeners, setNodeRef, style } = useSortableItem(item.id);
 
@@ -86,6 +91,23 @@ function ProjectRow({ item, index, control, remove, skills }) {
             </FormItem>
           )}
         />
+        <FormField
+          control={control}
+          name={`projects.${index}.category`}
+          render={({ field }) => (
+            <FormItem className="w-full sm:w-56 flex-shrink-0">
+              <FormControl>
+                <Input
+                  {...field}
+                  list="project-category-suggestions"
+                  placeholder="Category (optional)"
+                  className={fieldInputClass}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </div>
       <FormField
         control={control}
@@ -129,6 +151,17 @@ export default function ProjectsSection({
 }) {
   return (
     <div>
+      {/* Referenced by every row's Category input via list=; a plain nudge
+          toward two sensible starting labels — freelancers don't have to
+          settle for "Personal" (see prisma/schema.prisma's Project.category
+          comment for why that word specifically gets avoided). Nothing here
+          is enforced; the field is still free text. */}
+      <datalist id="project-category-suggestions">
+        {CATEGORY_SUGGESTIONS.map((c) => (
+          <option key={c} value={c} />
+        ))}
+      </datalist>
+
       <SortableList
         items={fields.map((f) => f.id)}
         onReorder={move}
@@ -156,6 +189,7 @@ export default function ProjectsSection({
             name: "",
             live_url: "",
             code_url: "",
+            category: "",
             skills: [],
             about: "",
           })

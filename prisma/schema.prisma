@@ -29,6 +29,12 @@ model User {
   achievements String?
   profiles     Json?
   skills       String[]
+  // Order the 5 public profile sections render in (achievements, experience,
+  // projects, skills, education) — user-customizable via the edit form's
+  // "arrange sections" control (see constants.js's sectionMeta /
+  // defaultSectionOrder, which this default mirrors). "basic info" isn't
+  // part of this list since it isn't a section on the public profile.
+  sectionOrder String[]     @default(["achievements", "experience", "projects", "skills", "education"])
   projects     Project[]
   education    Education[]
   experience   Experience[]
@@ -42,6 +48,12 @@ model Project {
   code_url String
   skills   String[]
   about    String
+  // Free-form grouping label the user assigns (e.g. "Client Work",
+  // "Independent"). Optional and unrestricted on purpose — see
+  // components/profile/ProjectsGrid.js: a filter only ever appears once 2+
+  // distinct categories are actually in use, so someone with only one kind
+  // of project right now isn't nudged into labelling it at all.
+  category String?
   userId   Int
   user     User     @relation(fields: [userId], references: [id])
 

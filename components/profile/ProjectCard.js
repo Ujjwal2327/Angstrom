@@ -88,7 +88,7 @@ export default function ProjectCard({ project, index }) {
           {project.name}
         </h3>
 
-        <p className="text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-3">
+        <p className="text-sm text-muted-foreground leading-relaxed flex-1">
           {project.about}
         </p>
 

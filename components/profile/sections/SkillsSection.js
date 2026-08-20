@@ -15,7 +15,13 @@ function weightClassFor(index, total) {
 
 export default function SkillsSection({ id, index, skills, noBorder }) {
   return (
-    <SectionShell id={id} index={index} title="skills" noBorder={noBorder}>
+    <SectionShell
+      id={id}
+      index={index}
+      title="stack"
+      was="skills"
+      noBorder={noBorder}
+    >
       <div className="flex flex-wrap items-baseline gap-x-5 gap-y-3 max-w-4xl">
         {skills.map((skill, i) => (
           <span

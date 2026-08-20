@@ -1,6 +1,19 @@
 // components/profile/SectionShell.js
+//
+// `was` is optional. When present, the heading shows the plain/expected
+// word struck through immediately before the real `title` — e.g.
+// "// achievements  highlights", with "achievements" crossed out — instead
+// of the plain "// {title}" this always rendered before. Every other prop
+// behaves exactly as it did.
 
-export default function SectionShell({ id, index, title, children, noBorder }) {
+export default function SectionShell({
+  id,
+  index,
+  title,
+  was,
+  children,
+  noBorder,
+}) {
   return (
     <section
       id={id}
@@ -17,7 +30,16 @@ export default function SectionShell({ id, index, title, children, noBorder }) {
 
       <div className="relative z-10">
         {/* // section-title label */}
-        <div className="mono-label mb-10 sm:mb-14">{`// ${title}`}</div>
+        <div className="mono-label mb-10 sm:mb-14 flex items-baseline gap-x-2 flex-wrap">
+          {was ? (
+            <>
+              <s className="font-normal text-muted-foreground/35">{`// ${was}`}</s>
+              <span>{title}</span>
+            </>
+          ) : (
+            `// ${title}`
+          )}
+        </div>
         {children}
       </div>
     </section>

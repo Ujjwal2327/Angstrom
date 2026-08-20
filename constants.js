@@ -861,7 +861,27 @@ export const skills = Object.entries(categorizedSkills).reduce(
     });
     return acc;
   },
-  {}
+  {},
 );
 
 export const default_user_pic = "/images/default_user_pic.png";
+
+// ── Public profile sections ─────────────────────────────────────────────────
+// The 5 sections on a live /users/[username] profile that a user can reorder
+// (components/forms/ProfileForm/sections/SectionOrderSection.js) or hide
+// entirely just by leaving them empty — "basic info" isn't here because it
+// isn't a section on the public profile, it's what builds the hero
+// (name/about/pic), which always renders first no matter what.
+// `was` / `label` are the two halves of the "// achievements  highlights"
+// treatment on each section heading (components/profile/SectionShell.js) —
+// `was` is the plain word, `label` is what's actually shown. Insertion
+// order of these keys doubles as the default section order (education last).
+export const sectionMeta = {
+  achievements: { was: "achievements", label: "highlights" },
+  experience: { was: "experience", label: "changelog" },
+  projects: { was: "projects", label: "proof of work" },
+  skills: { was: "skills", label: "stack" },
+  education: { was: "education", label: "degree" },
+};
+
+export const defaultSectionOrder = Object.keys(sectionMeta);

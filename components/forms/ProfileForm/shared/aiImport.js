@@ -27,7 +27,7 @@ export function generateAiImportPrompt(user) {
 
 1. Read the CURRENT PROFILE below, then everything under MY LINKS & EXTRA INFO at the very end.
 2. Actually open every link you're able to reach — GitHub repos, live project URLs, coding-profile pages, a resume, a personal site, anything. Read READMEs, check the real tech stack (package.json / requirements.txt / actual code, not a guess from the project's name), and understand what each project actually does and who it's for.
-3. For every project, find the ONE thing about it that's genuinely interesting and lead with that. Then say what it does and how it's built. Two to four sentences — no more.
+3. For every project, find the ONE thing about it that's genuinely interesting and lead with that. Then say what it does, who it's for, and what problem it solves. Two to four sentences — no more. Don't describe what it's built with here — no framework, library, or tool names in this text. That's what the "skills" array is for; keep them separate.
 4. Build the skills list from everything you found: the current list, languages/frameworks you actually saw used in the repos, anything named in a resume or LinkedIn. Merge near-duplicates ("React" / "ReactJS" -> pick one), ordered strongest / most-used first.
 5. If a link is broken, private, or you can't open it (LinkedIn almost always blocks this) — don't guess. Say so in one short line above the JSON, and leave that piece of the profile exactly as it currently is.
 6. Order the "projects" array from strongest to weakest — not personal favorite, but "does this actually show real skill." The profile page renders them in a grid where project #1 and #4 in every group of four (then #5 and #8, #9 and #12, and so on) get a wide, prominent card, while #2 and #3 (then #6 and #7, ...) get a narrower one. Put the strongest project at #1, and try to land a strong second project on #4 rather than burying it at #2 or #3.
@@ -44,9 +44,9 @@ Avoid AI-sounding writing:
 - No vague claims with nothing behind them ("significantly improved performance" — improved it how, from what, if you actually know).
 - Sound like a good developer explaining their own work to another developer: some pride, no fluff, no press release.
 
-Prefer one concrete detail over three adjectives. Both lines below are 100% true — only one is worth reading:
+Prefer one concrete detail over three adjectives — but make it about what the thing *does*, not what it's *made of* (that's the skills array's job, not this text). Both lines below are 100% true — only one is worth reading:
   Before: "A todo app made with React and Firebase."
-  After:  "A todo app with real-time sync across devices via Firestore listeners — open it in two tabs and watch changes land instantly, no polling."
+  After:  "A todo app with real-time sync across devices — open it in two tabs and watch changes land instantly, no refresh needed."
 
 ## Output format
 
@@ -83,8 +83,9 @@ ${FENCE}json
       "name": "string",
       "code_url": "required — a real, valid URL",
       "live_url": "optional — a real, valid URL",
+      "category": "optional — a short label like \"Client Work\" or \"Independent\" only if it's genuinely clear which; leave blank if you can't tell",
       "skills": ["subset of the top-level skills array that this project actually uses"],
-      "about": "required — 2-4 sentences, the hook first"
+      "about": "required — 2-4 sentences, the hook first. What it does, who it's for, what problem it solves — never what it's built with (no framework/library/tool names; that belongs in the skills array below, not here)"
     }
   ],
   "education": [
@@ -209,6 +210,7 @@ function normalizeProjects(arr) {
     name: toStr(p?.name),
     code_url: toStr(p?.code_url),
     live_url: toStr(p?.live_url) || toStr(p?.code_url),
+    category: toStr(p?.category),
     skills: normalizeSkills(p?.skills),
     about: toStr(p?.about),
   }));

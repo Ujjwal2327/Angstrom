@@ -1,9 +1,15 @@
 // components/profile/sections/ExperienceSection.js
 import SectionShell from "@/components/profile/SectionShell";
 
-export default function ExperienceSection({ id, index, experience }) {
+export default function ExperienceSection({ id, index, experience, noBorder }) {
   return (
-    <SectionShell id={id} index={index} title="experience">
+    <SectionShell
+      id={id}
+      index={index}
+      title="changelog"
+      was="experience"
+      noBorder={noBorder}
+    >
       <div className="relative min-w-0">
         {/* Vertical timeline rail on desktop */}
         <div

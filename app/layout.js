@@ -36,7 +36,16 @@ export default function RootLayout({ children }) {
     // suppressHydrationWarning — next-themes sets className="dark" on <html> client-side.
     // Without this attribute React logs a hydration mismatch warning in the console.
     // Official fix: https://nextjs.org/docs/messages/react-hydration-error
-    <html lang={metadata.lang} suppressHydrationWarning>
+    //
+    // data-scroll-behavior="smooth" — globals.css sets `scroll-behavior: smooth`
+    // on `*`. Next.js 16's router needs this attribute to know that's
+    // intentional, otherwise it logs a console warning on every route
+    // transition. Official fix: https://nextjs.org/docs/messages/missing-data-scroll-behavior
+    <html
+      lang={metadata.lang}
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+    >
       <body className={inter.className}>
         <DynamicHeight />
         <ThemeProvider

@@ -3,7 +3,7 @@ import { projectSchema } from "./projectSchema";
 import { educationSchema } from "./educationSchema";
 import { experienceSchema } from "./experienceSchema";
 import { resolveUrl, uniqueValidator } from "@/utils";
-import { default_user_pic } from "@/constants";
+import { default_user_pic, defaultSectionOrder } from "@/constants";
 
 export const formSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email" }),
@@ -31,6 +31,18 @@ export const formSchema = z.object({
     .transform((val) => {
       return val === "<p></p>" || val === "<h2></h2>" ? "" : val;
     }),
+  // Which order the 5 public sections render in — see
+  // sections/SectionOrderSection.js. Must be exactly one of each known id;
+  // action/user.js re-checks this server-side too, since this schema only
+  // guards the real edit form, not a direct /api/user PUT.
+  sectionOrder: z
+    .array(z.enum(defaultSectionOrder))
+    .refine(
+      (order) =>
+        order.length === defaultSectionOrder.length &&
+        new Set(order).size === defaultSectionOrder.length,
+      { message: "Section order must include each section exactly once." },
+    ),
   profiles: z
     .record(z.string().trim(), z.string().trim().optional())
     .transform((profiles) => {

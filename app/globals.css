@@ -95,6 +95,7 @@
 ───────────────────────────────────────────────────────────────────────────── */
 
 @layer base {
+
   /* Fix horizontal overflow from -m-10 pattern used on full-bleed pages */
   html,
   body {
@@ -128,11 +129,16 @@
   width: 5px;
   height: 5px;
 }
-::-webkit-scrollbar-track { background: transparent; }
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--border));
   border-radius: 99px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.5);
 }
@@ -142,47 +148,93 @@
 ───────────────────────────────────────────────────────────────────────────── */
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes scale-in {
-  from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes slide-right {
-  from { opacity: 0; transform: translateX(-12px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes gradient-x {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--primary) / 0); }
-  50%       { box-shadow: 0 0 24px 4px hsl(var(--primary) / 0.25); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0);
+  }
+
+  50% {
+    box-shadow: 0 0 24px 4px hsl(var(--primary) / 0.25);
+  }
 }
 
 @keyframes border-spin {
-  to { --angle: 360deg; }
+  to {
+    --angle: 360deg;
+  }
 }
 
 /* spinner (existing) */
 @keyframes l23 {
-  100% { transform: rotate(1turn); }
+  100% {
+    transform: rotate(1turn);
+  }
 }
 
 /* loader text (existing) */
 @keyframes l4 {
-  to { clip-path: inset(0 -1ch 0 0); }
+  to {
+    clip-path: inset(0 -1ch 0 0);
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -190,26 +242,31 @@
 ───────────────────────────────────────────────────────────────────────────── */
 
 @layer utilities {
+
   /* ── Text ── */
-  .text-wrap-balance   { text-wrap: balance; }
-  .text-wrap-pretty    { text-wrap: pretty; }
+  .text-wrap-balance {
+    text-wrap: balance;
+  }
+
+  .text-wrap-pretty {
+    text-wrap: pretty;
+  }
 
   .text-accent-link {
     color: hsl(191 75% 55%);
   }
+
   .dark .text-accent-link {
     color: hsl(188 80% 62%);
   }
 
   /* Animated gradient text — the app's signature element */
   .gradient-text {
-    background: linear-gradient(
-      135deg,
-      hsl(188 95% 60%),
-      hsl(220 85% 65%),
-      hsl(270 70% 65%),
-      hsl(188 95% 60%)
-    );
+    background: linear-gradient(135deg,
+        hsl(188 95% 60%),
+        hsl(220 85% 65%),
+        hsl(270 70% 65%),
+        hsl(188 95% 60%));
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -219,11 +276,9 @@
 
   /* Subtle gradient text (less animated — for headings that need to breathe) */
   .gradient-text-static {
-    background: linear-gradient(
-      120deg,
-      hsl(var(--foreground)) 30%,
-      hsl(var(--primary)) 100%
-    );
+    background: linear-gradient(120deg,
+        hsl(var(--foreground)) 30%,
+        hsl(var(--primary)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -257,20 +312,54 @@
   }
 
   /* ── Animations ── */
-  .animate-fade-up   { animation: fade-up   0.45s ease both; }
-  .animate-fade-in   { animation: fade-in   0.4s  ease both; }
-  .animate-scale-in  { animation: scale-in  0.35s ease both; }
-  .animate-slide-right { animation: slide-right 0.4s ease both; }
-  .animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+  .animate-fade-up {
+    animation: fade-up 0.45s ease both;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.4s ease both;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.35s ease both;
+  }
+
+  .animate-slide-right {
+    animation: slide-right 0.4s ease both;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2.5s ease-in-out infinite;
+  }
 
   /* Staggered children */
-  .stagger-children > * { animation-fill-mode: both; }
-  .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-  .stagger-children > *:nth-child(2) { animation-delay: 80ms; }
-  .stagger-children > *:nth-child(3) { animation-delay: 160ms; }
-  .stagger-children > *:nth-child(4) { animation-delay: 240ms; }
-  .stagger-children > *:nth-child(5) { animation-delay: 320ms; }
-  .stagger-children > *:nth-child(6) { animation-delay: 400ms; }
+  .stagger-children>* {
+    animation-fill-mode: both;
+  }
+
+  .stagger-children>*:nth-child(1) {
+    animation-delay: 0ms;
+  }
+
+  .stagger-children>*:nth-child(2) {
+    animation-delay: 80ms;
+  }
+
+  .stagger-children>*:nth-child(3) {
+    animation-delay: 160ms;
+  }
+
+  .stagger-children>*:nth-child(4) {
+    animation-delay: 240ms;
+  }
+
+  .stagger-children>*:nth-child(5) {
+    animation-delay: 320ms;
+  }
+
+  .stagger-children>*:nth-child(6) {
+    animation-delay: 400ms;
+  }
 
   /* ── Interaction states ── */
   .loading {
@@ -308,6 +397,7 @@
   .hover-border-glow {
     transition: border-color 0.2s, box-shadow 0.2s;
   }
+
   .hover-border-glow:hover {
     border-color: hsl(var(--primary) / 0.5);
     box-shadow: 0 0 0 1px hsl(var(--primary) / 0.2);
@@ -319,6 +409,7 @@
 ───────────────────────────────────────────────────────────────────────────── */
 
 @layer components {
+
   /* Mono label — the app's characteristic eyebrow treatment */
   .mono-label {
     @apply font-mono text-xs uppercase tracking-[0.12em] text-primary;
@@ -329,6 +420,42 @@
     @apply absolute font-mono font-bold leading-none select-none pointer-events-none;
     color: hsl(var(--foreground) / 0.035);
     font-size: clamp(4.5rem, 14vw, 11rem);
+  }
+
+  /* Sanitized rich-text HTML (currently just `achievements`) rendered
+     directly via dangerouslySetInnerHTML instead of through Tiptap — see
+     components/profile/sections/AchievementsSection.js. Mirrors the small
+     tag set the editor already restricts users to. */
+  .rich-text {
+    @apply space-y-4;
+  }
+
+  .rich-text h2 {
+    @apply text-xl sm:text-2xl font-bold tracking-tight text-foreground;
+  }
+
+  .rich-text a {
+    @apply text-accent-link underline underline-offset-2 hover:opacity-80 transition-opacity;
+  }
+
+  .rich-text ul {
+    @apply list-disc pl-5 space-y-1.5;
+  }
+
+  .rich-text blockquote {
+    @apply border-l-2 border-primary/40 pl-4 italic text-muted-foreground;
+  }
+
+  .rich-text pre {
+    @apply bg-muted/50 border border-border rounded-md p-4 overflow-x-auto text-sm font-mono;
+  }
+
+  .rich-text code {
+    @apply font-mono text-sm bg-muted/50 px-1.5 py-0.5 rounded-sm;
+  }
+
+  .rich-text pre code {
+    @apply bg-transparent p-0;
   }
 }
 
@@ -346,6 +473,7 @@
   background-repeat: no-repeat;
   animation: l23 1s infinite steps(12);
 }
+
 .spinner::before,
 .spinner::after {
   content: "";
@@ -355,6 +483,7 @@
   opacity: 0.915;
   transform: rotate(30deg);
 }
+
 .spinner::after {
   opacity: 0.83;
   transform: rotate(60deg);
@@ -372,13 +501,17 @@
   clip-path: inset(0 3ch 0 0);
   animation: l4 2s steps(4) infinite;
 }
-.loader:before { content: "Loading..."; }
+
+.loader:before {
+  content: "Loading...";
+}
 
 /* ─────────────────────────────────────────────────────────────────────────────
    REDUCED MOTION
 ───────────────────────────────────────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -386,6 +519,12 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .gradient-text { animation: none; }
-  .animate-pulse-glow { animation: none; }
+
+  .gradient-text {
+    animation: none;
+  }
+
+  .animate-pulse-glow {
+    animation: none;
+  }
 }

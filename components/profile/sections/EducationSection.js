@@ -1,9 +1,15 @@
 // components/profile/sections/EducationSection.js
 import SectionShell from "@/components/profile/SectionShell";
 
-export default function EducationSection({ id, index, education }) {
+export default function EducationSection({ id, index, education, noBorder }) {
   return (
-    <SectionShell id={id} index={index} title="education">
+    <SectionShell
+      id={id}
+      index={index}
+      title="degree"
+      was="education"
+      noBorder={noBorder}
+    >
       <div className="min-w-0 space-y-0">
         {education.map((item) => (
           <div

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { formSchema } from "./schemas/formSchema";
 import BasicInfoSection from "./sections/BasicInfoSection";
+import SectionOrderSection from "./sections/SectionOrderSection";
 import AchievementsSection from "./sections/AchievementsSection";
 import ProfilesSection from "./sections/ProfilesSection";
 import SkillsSection from "./sections/SkillsSection";
@@ -60,6 +61,7 @@ export default function ProfileForm({ user }) {
   } = useFieldArray({ control, name: "education" });
 
   const skills = watch("skills");
+  const sectionOrder = watch("sectionOrder");
 
   const onSubmit = async (formdata) => {
     if (isSameObject(formdata, form.control._defaultValues)) {
@@ -167,6 +169,14 @@ export default function ProfileForm({ user }) {
 
         <FormSectionShell
           index="02"
+          title="arrange sections"
+          description="Drag to set the order these appear in on your live profile — lead with whatever makes the strongest case for you. A section only shows up once it actually has something in it, no matter where you put it."
+        >
+          <SectionOrderSection order={sectionOrder} setValue={setValue} />
+        </FormSectionShell>
+
+        <FormSectionShell
+          index="03"
           title="achievements"
           description="Awards, certifications, or milestones worth calling out."
         >
@@ -174,7 +184,7 @@ export default function ProfileForm({ user }) {
         </FormSectionShell>
 
         <FormSectionShell
-          index="03"
+          index="04"
           title="profiles"
           description="Link your presence elsewhere — GitHub, LinkedIn, competitive programming, etc."
         >
@@ -182,7 +192,7 @@ export default function ProfileForm({ user }) {
         </FormSectionShell>
 
         <FormSectionShell
-          index="04"
+          index="05"
           title="skills"
           description="Drag to reorder. Skills you place first appear largest on your public profile."
         >
@@ -195,7 +205,7 @@ export default function ProfileForm({ user }) {
         </FormSectionShell>
 
         <FormSectionShell
-          index="05"
+          index="06"
           title="experience"
           description="Most recent or most relevant first gives the strongest read."
         >
@@ -209,9 +219,9 @@ export default function ProfileForm({ user }) {
         </FormSectionShell>
 
         <FormSectionShell
-          index="06"
+          index="07"
           title="projects"
-          description="Add a live link to get an automatic screenshot — otherwise we show your GitHub repo card."
+          description="Add a live link to get an automatic screenshot — otherwise we show your GitHub repo card. Give a couple of projects the same Category and a filter appears automatically on your live profile."
         >
           <ProjectsSection
             skills={skills}
@@ -223,7 +233,7 @@ export default function ProfileForm({ user }) {
           />
         </FormSectionShell>
 
-        <FormSectionShell index="07" title="education">
+        <FormSectionShell index="08" title="education">
           <EducationSection
             fields={educationFields}
             append={appendEducation}

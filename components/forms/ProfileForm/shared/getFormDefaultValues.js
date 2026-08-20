@@ -6,7 +6,11 @@
 // JSON from the exact same shape the form itself uses — the two can't drift
 // apart the way two separate hand-written mappings eventually would.
 
-import { profiles as knownProfiles, default_user_pic } from "@/constants";
+import {
+  profiles as knownProfiles,
+  default_user_pic,
+  defaultSectionOrder,
+} from "@/constants";
 import { resolveUrl } from "@/utils";
 
 export function getFormDefaultValues(user) {
@@ -19,6 +23,15 @@ export function getFormDefaultValues(user) {
     about: user.about || "",
     achievements: user.achievements || "",
     skills: user.skills || [],
+    // Falls back to the default (education last) whenever the saved order
+    // doesn't look like a complete permutation of the known sections —
+    // covers both a brand-new user and a Redis-cached user object from
+    // before this field existed (see action/user.js).
+    sectionOrder:
+      Array.isArray(user.sectionOrder) &&
+      user.sectionOrder.length === defaultSectionOrder.length
+        ? user.sectionOrder
+        : defaultSectionOrder,
     profiles: Object.keys(knownProfiles).reduce((acc, p) => {
       if (user.profiles?.[p]) acc[p] = user.profiles[p];
       return acc;
@@ -29,6 +42,7 @@ export function getFormDefaultValues(user) {
         name: p.name,
         live_url: p.live_url,
         code_url: p.code_url,
+        category: p.category || "",
         skills: p.skills || [],
         about: p.about,
       })) || [],
